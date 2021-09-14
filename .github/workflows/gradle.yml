@@ -13,7 +13,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 16
-          distribution: adopt
 
       - name: Validate Gradle wrapper
         uses: gradle/wrapper-validation-action@v1
