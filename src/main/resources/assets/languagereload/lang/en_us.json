@@ -1,0 +1,5 @@
+{
+  "debug.reload_languages.help": "F3 + J = Reload languages",
+  "debug.reload_languages.message": "Reloaded languages",
+  "modmenu.descriptionTranslation.languagereload": "Reloads languages without resource pack reloading."
+}

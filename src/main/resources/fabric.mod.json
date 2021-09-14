@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "languagereload",
+  "version": "${version}",
+  "name": "Language Reload",
+  "description": "Reloads languages without resource pack reloading.",
+  "authors": [
+    {
+      "name": "Jerozgen",
+      "contact": {
+        "discord": "Jerozgen#5500"
+      }
+    }
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/language-reload",
+    "sources": "https://github.com/Jerozgen/LanguageReload",
+    "issues": "https://github.com/Jerozgen/LanguageReload/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/languagereload/icon.png",
+  "environment": "client",
+  "mixins": [
+    "languagereload.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.6",
+    "minecraft": ">=1.17"
+  }
+}

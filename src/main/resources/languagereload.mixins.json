@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "jerozgen.languagereload.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+  ],
+  "client": [
+    "MixinLanguageOptionsScreen",
+    "MixinKeyboard"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
