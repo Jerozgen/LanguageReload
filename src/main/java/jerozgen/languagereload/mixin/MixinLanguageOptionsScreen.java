@@ -50,7 +50,6 @@ public abstract class MixinLanguageOptionsScreen extends GameOptionsScreen imple
             at = @At("HEAD")
     )
     private void onInit(CallbackInfo ci) {
-        SharedConstants.isDevelopment = true;
         searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, searchBox, LiteralText.EMPTY);
         searchBox.setChangedListener(text -> ((ILanguageSelectionListWidget) languageSelectionList).filter(text));
         addSelectableChild(searchBox);
