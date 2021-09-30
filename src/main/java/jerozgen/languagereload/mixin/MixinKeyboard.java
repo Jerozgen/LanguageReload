@@ -30,14 +30,14 @@ public abstract class MixinKeyboard {
     @Inject(
             method = "processF3(I)Z",
             at = @At(
-                    value = "INVOKE_ASSIGN",
-                    target = "Lnet/minecraft/client/gui/hud/InGameHud;getChatHud()Lnet/minecraft/client/gui/hud/ChatHud;",
-                    ordinal = 1
-            ),
-            cancellable = true
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V",
+                    ordinal = 7,
+                    shift = At.Shift.AFTER
+            )
     )
     private void onProcessF3$addHelp(int key, CallbackInfoReturnable<Boolean> cir) {
-        this.client.inGameHud.getChatHud().addMessage(new TranslatableText("debug.reload_languages.help"));
+        client.inGameHud.getChatHud().addMessage(new TranslatableText("debug.reload_languages.help"));
     }
 
     @Inject(
