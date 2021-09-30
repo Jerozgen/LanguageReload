@@ -25,6 +25,7 @@
   ],
   "accessWidener": "languagereload.accesswidener",
   "depends": {
+    "fabric-resource-loader-v0": "*",
     "fabricloader": ">=0.11.6",
     "minecraft": ">=1.17"
   }
