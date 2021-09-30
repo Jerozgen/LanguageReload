@@ -1,5 +1,5 @@
 {
-  "debug.reload_languages.help": "F3 + J = Перезагрузить языки",
+  "debug.reload_languages.help": "F3 + J = Перезагрузить языки (можно использовать везде)",
   "debug.reload_languages.message": "Языки перезагружены",
   "modmenu.descriptionTranslation.languagereload": "Перезагружает языки без перезагрузки наборов ресурсов."
 }
