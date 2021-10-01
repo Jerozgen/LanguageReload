@@ -6,6 +6,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    if: "! contains(toJSON(github.event.head_commit.message), '[Skip CI]')"
     steps:
       - uses: actions/checkout@v2
 
