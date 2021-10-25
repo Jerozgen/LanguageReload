@@ -18,9 +18,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.Objects;
+
 @Mixin(Keyboard.class)
 public abstract class MixinKeyboard {
     @Shadow @Final private MinecraftClient client;
+    @Shadow private boolean switchF3State;
 
     @Shadow
     protected abstract void debugLog(String key, Object... args);
@@ -84,7 +87,12 @@ public abstract class MixinKeyboard {
     )
     private void onOnKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         if (InputUtil.isKeyPressed(window, GLFW.GLFW_KEY_F3) && key == GLFW.GLFW_KEY_J) {
-            if (action != 0) processLanguageReloadKeys();
+            if (action != 0) {
+                if (Objects.requireNonNull(client.currentScreen).passEvents) {
+                    switchF3State = true;
+                }
+                processLanguageReloadKeys();
+            }
             ci.cancel();
         }
     }
