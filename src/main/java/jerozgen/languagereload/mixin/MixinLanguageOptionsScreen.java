@@ -1,8 +1,7 @@
 package jerozgen.languagereload.mixin;
 
-import jerozgen.languagereload.ILanguageSelectionListWidget;
-import jerozgen.languagereload.ILanguageOptionsScreen;
-import net.minecraft.SharedConstants;
+import jerozgen.languagereload.access.ILanguageOptionsScreen;
+import jerozgen.languagereload.access.ILanguageSelectionListWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;

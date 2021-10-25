@@ -1,4 +1,4 @@
-package jerozgen.languagereload;
+package jerozgen.languagereload.access;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

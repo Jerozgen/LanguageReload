@@ -1,8 +1,8 @@
 package jerozgen.languagereload.mixin;
 
-import jerozgen.languagereload.ILanguageSelectionListWidget;
-import jerozgen.languagereload.ILanguageEntry;
-import jerozgen.languagereload.ILanguageOptionsScreen;
+import jerozgen.languagereload.access.ILanguageEntry;
+import jerozgen.languagereload.access.ILanguageOptionsScreen;
+import jerozgen.languagereload.access.ILanguageSelectionListWidget;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.option.LanguageOptionsScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
