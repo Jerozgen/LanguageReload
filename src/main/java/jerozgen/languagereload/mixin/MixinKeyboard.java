@@ -20,9 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Keyboard.class)
 public abstract class MixinKeyboard {
-    @Shadow
-    @Final
-    private MinecraftClient client;
+    @Shadow @Final private MinecraftClient client;
 
     @Shadow
     protected abstract void debugLog(String key, Object... args);

@@ -25,9 +25,8 @@ import java.util.concurrent.CompletableFuture;
 
 @Mixin(LanguageOptionsScreen.class)
 public abstract class MixinLanguageOptionsScreen extends GameOptionsScreen implements ILanguageOptionsScreen {
+    @Shadow private LanguageOptionsScreen.LanguageSelectionListWidget languageSelectionList;
     TextFieldWidget searchBox;
-    @Shadow
-    private LanguageOptionsScreen.LanguageSelectionListWidget languageSelectionList;
 
     public MixinLanguageOptionsScreen(Screen parent, GameOptions gameOptions, Text title) {
         super(parent, gameOptions, title);

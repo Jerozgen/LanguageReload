@@ -12,9 +12,7 @@ import org.spongepowered.asm.mixin.Shadow;
 public abstract class MixinLanguageEntry
         extends AlwaysSelectedEntryListWidget.Entry<LanguageOptionsScreen.LanguageSelectionListWidget.LanguageEntry>
         implements ILanguageEntry {
-    @Shadow
-    @Final
-    LanguageDefinition languageDefinition;
+    @Shadow @Final LanguageDefinition languageDefinition;
 
     @Override
     public LanguageDefinition getLanguageDefinition() {
