@@ -1,5 +1,7 @@
 {
-  "debug.reload_languages.help": "F3 + J = Recarregar idiomas (can be used everywhere)",
+  "debug.reload_languages.help": "F3 + J = Recarregar idiomas (shift to switch to previous one)",
   "debug.reload_languages.message": "Idiomas recarregados",
+  "debug.reload_languages.switch.success": "Set language to \"%s\"",
+  "debug.reload_languages.switch.failure": "Couldn't find previous language",
   "modmenu.descriptionTranslation.languagereload": "Troque o idioma de exibição do jogo sem recarregar o pacote de recursos."
 }

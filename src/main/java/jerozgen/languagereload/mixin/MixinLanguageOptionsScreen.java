@@ -1,6 +1,7 @@
 package jerozgen.languagereload.mixin;
 
 import jerozgen.languagereload.LanguageReload;
+import jerozgen.languagereload.access.IGameOptions;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.access.ILanguageSelectionListWidget;
 import net.minecraft.client.MinecraftClient;
@@ -32,7 +33,17 @@ public abstract class MixinLanguageOptionsScreen extends GameOptionsScreen imple
         super(parent, gameOptions, title);
     }
 
-    @SuppressWarnings("UnresolvedMixinReference")
+    @Inject(
+            method = "method_19820(Lnet/minecraft/client/gui/widget/ButtonWidget;)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/resource/language/LanguageManager;setLanguage(Lnet/minecraft/client/resource/language/LanguageDefinition;)V"
+            )
+    )
+    private void onLanguageSwitching(CallbackInfo ci) {
+        ((IGameOptions) gameOptions).savePreviousLanguage();
+    }
+
     @Redirect(
             method = "method_19820(Lnet/minecraft/client/gui/widget/ButtonWidget;)V",
             at = @At(

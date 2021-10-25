@@ -1,8 +1,12 @@
 package jerozgen.languagereload.mixin;
 
 import jerozgen.languagereload.LanguageReload;
+import jerozgen.languagereload.access.IGameOptions;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.resource.language.LanguageDefinition;
+import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.TranslatableText;
 import org.lwjgl.glfw.GLFW;
@@ -23,9 +27,28 @@ public abstract class MixinKeyboard {
     @Shadow
     protected abstract void debugLog(String key, Object... args);
 
+    @Shadow
+    protected abstract void debugError(String key, Object... args);
+
     private void processLanguageReloadKeys() {
-        LanguageReload.reloadLanguages(client);
-        this.debugLog("debug.reload_languages.message");
+        if (Screen.hasShiftDown()) {
+            LanguageManager languageManager = client.getLanguageManager();
+            String previousCode = ((IGameOptions) client.options).getPreviousLanguage();
+            LanguageDefinition previousLanguage = languageManager.getLanguage(previousCode);
+            if (previousLanguage != null && !previousCode.equals("") && !previousCode.equals(client.options.language)) {
+                languageManager.setLanguage(previousLanguage);
+                ((IGameOptions) client.options).savePreviousLanguage();
+                client.options.language = previousCode;
+                LanguageReload.reloadLanguages(client);
+                client.options.write();
+                this.debugLog("debug.reload_languages.switch.success", previousLanguage.toString());
+            } else {
+                this.debugError("debug.reload_languages.switch.failure");
+            }
+        } else {
+            LanguageReload.reloadLanguages(client);
+            this.debugLog("debug.reload_languages.message");
+        }
     }
 
     @Inject(

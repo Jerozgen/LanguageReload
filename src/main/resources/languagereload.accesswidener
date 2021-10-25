@@ -1,4 +1,5 @@
 accessWidener   v1  named
 
+accessible  class   net/minecraft/client/option/GameOptions$Visitor
 accessible  class   net/minecraft/client/gui/screen/option/LanguageOptionsScreen$LanguageSelectionListWidget
 extendable  class   net/minecraft/client/world/ClientChunkManager$ClientChunkMap
