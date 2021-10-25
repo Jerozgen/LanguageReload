@@ -1,5 +1,6 @@
 package jerozgen.languagereload.mixin;
 
+import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.access.ILanguageSelectionListWidget;
 import net.minecraft.client.MinecraftClient;
@@ -40,7 +41,7 @@ public abstract class MixinLanguageOptionsScreen extends GameOptionsScreen imple
             )
     )
     private CompletableFuture<Void> reloadResourcesRedirect(MinecraftClient client) {
-        client.getLanguageManager().reload(client.getResourceManager());
+        LanguageReload.reloadLanguages(client);
         return null;
     }
 

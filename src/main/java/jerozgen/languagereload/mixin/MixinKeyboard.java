@@ -1,5 +1,6 @@
 package jerozgen.languagereload.mixin;
 
+import jerozgen.languagereload.LanguageReload;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.InputUtil;
@@ -22,8 +23,8 @@ public abstract class MixinKeyboard {
     @Shadow
     protected abstract void debugLog(String key, Object... args);
 
-    private void reloadLanguages() {
-        client.getLanguageManager().reload(client.getResourceManager());
+    private void processLanguageReloadKeys() {
+        LanguageReload.reloadLanguages(client);
         this.debugLog("debug.reload_languages.message");
     }
 
@@ -47,7 +48,7 @@ public abstract class MixinKeyboard {
     )
     private void onProcessF3(int key, CallbackInfoReturnable<Boolean> cir) {
         if (key == GLFW.GLFW_KEY_J) {
-            reloadLanguages();
+            processLanguageReloadKeys();
             cir.setReturnValue(true);
         }
     }
@@ -62,7 +63,7 @@ public abstract class MixinKeyboard {
     )
     private void onOnKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         if (InputUtil.isKeyPressed(window, GLFW.GLFW_KEY_F3) && key == GLFW.GLFW_KEY_J) {
-            if (action != 0) reloadLanguages();
+            if (action != 0) processLanguageReloadKeys();
             ci.cancel();
         }
     }
