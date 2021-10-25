@@ -64,7 +64,7 @@ public abstract class MixinKeyboard {
 
     @Inject(
             method = "processF3(I)Z",
-            at = @At("TAIL"),
+            at = @At("RETURN"),
             cancellable = true
     )
     private void onProcessF3(int key, CallbackInfoReturnable<Boolean> cir) {
