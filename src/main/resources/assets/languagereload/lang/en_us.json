@@ -1,7 +1,7 @@
 {
-  "debug.reload_languages.help": "F3 + J = Reload languages (shift to switch to previous one)",
+  "debug.reload_languages.help": "F3 + J = Reload languages (shift to cycle languages)",
   "debug.reload_languages.message": "Reloaded languages",
   "debug.reload_languages.switch.success": "Set language to \"%s\"",
-  "debug.reload_languages.switch.failure": "Couldn't find previous language",
+  "debug.reload_languages.switch.failure": "Couldn't cycle languages. Switch to another language in the settings and try again",
   "modmenu.descriptionTranslation.languagereload": "Reloads languages without resource pack reloading."
 }
