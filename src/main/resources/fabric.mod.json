@@ -5,12 +5,10 @@
   "name": "Language Reload",
   "description": "Reloads languages without resource pack reloading.",
   "authors": [
-    {
-      "name": "Jerozgen",
-      "contact": {
-        "discord": "Jerozgen#5500"
-      }
-    }
+    {"name": "Jerozgen", "contact": {"homepage": "https://github.com/Jerozgen", "discord": "Jerozgen#5500"}}
+  ],
+  "contributors": [
+    {"name": "Benonardo", "contact": {"homepage": "https://github.com/Benonardo"}}
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/language-reload",
