@@ -16,6 +16,7 @@
     "MixinLanguageOptionsScreen",
     "MixinLanguageSelectionListWidget",
     "MixinMinecraftClient",
+    "MixinRecipeBookWidget",
     "MixinSignBlockEntity"
   ],
   "injectors": {
