@@ -3,5 +3,6 @@
   "debug.reload_languages.message": "Reloaded languages",
   "debug.reload_languages.switch.success": "Set language to \"%s\"",
   "debug.reload_languages.switch.failure": "Couldn't cycle languages. Switch to another language in the settings and try again",
-  "modmenu.descriptionTranslation.languagereload": "Reloads languages without resource pack reloading."
+  "modmenu.summaryTranslation.languagereload": "Makes language reloading and switching faster.",
+  "modmenu.descriptionTranslation.languagereload": "Makes language switching instant and adds debug features to cycle languages with Shift + F3 + J and to reload them with F3 + J."
 }

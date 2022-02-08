@@ -3,5 +3,6 @@
   "debug.reload_languages.message": "Языки перезагружены",
   "debug.reload_languages.switch.success": "Язык изменён на «%s»",
   "debug.reload_languages.switch.failure": "Не удалось сменить язык. Выберите другой язык в настройках и попробуйте снова",
-  "modmenu.descriptionTranslation.languagereload": "Перезагружает языки без перезагрузки наборов ресурсов."
+  "modmenu.summaryTranslation.languagereload": "Ускоряет перезагрузку и смену языка.",
+  "modmenu.descriptionTranslation.languagereload": "Делает смену языка моментальной и добавляет отладочные функции быстрого переключения языка с помощью Shift + F3 + J и его перезагрузки с помощью F3 + J."
 }
