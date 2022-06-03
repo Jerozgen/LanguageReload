@@ -1,6 +1,5 @@
 package jerozgen.languagereload.mixin;
 
-import jerozgen.languagereload.access.IAdvancementWidget;
 import jerozgen.languagereload.access.IAdvancementsTab;
 import net.minecraft.advancement.Advancement;
 import net.minecraft.client.MinecraftClient;
@@ -15,22 +14,22 @@ import java.util.Map;
 import java.util.Objects;
 
 @Mixin(AdvancementTab.class)
-public abstract class MixinAdvancementTab extends DrawableHelper implements IAdvancementsTab {
+public abstract class AdvancementTabMixin extends DrawableHelper implements IAdvancementsTab {
     @Shadow @Final private MinecraftClient client;
     @Shadow @Final private Map<Advancement, AdvancementWidget> widgets;
 
     @Override
     public void recreateWidgets() {
         widgets.replaceAll((advancement, widget) -> {
-            AdvancementWidget newWidget = new AdvancementWidget(
-                    ((IAdvancementWidget) widget).getTab(),
+            var newWidget = new AdvancementWidget(
+                    ((AdvancementWidgetAccessor) widget).getTab(),
                     client,
                     advancement,
                     Objects.requireNonNull(advancement.getDisplay())
             );
-            newWidget.setProgress(((IAdvancementWidget) widget).getProgress());
-            ((IAdvancementWidget) newWidget).setParent(((IAdvancementWidget) widget).getParent());
-            ((IAdvancementWidget) newWidget).setChildren(((IAdvancementWidget) widget).getChildren());
+            newWidget.setProgress(((AdvancementWidgetAccessor) widget).getProgress());
+            ((AdvancementWidgetAccessor) newWidget).setParent(((AdvancementWidgetAccessor) widget).getParent());
+            ((AdvancementWidgetAccessor) newWidget).setChildren(((AdvancementWidgetAccessor) widget).getChildren());
             return newWidget;
         });
     }

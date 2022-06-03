@@ -14,28 +14,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.concurrent.CompletableFuture;
 
 @Mixin(RecipeBookWidget.class)
-public class MixinRecipeBookWidget {
+public class RecipeBookWidgetMixin {
     @Shadow protected MinecraftClient client;
 
-    @Inject(
-            method = "triggerPirateSpeakEasterEgg(Ljava/lang/String;)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/resource/language/LanguageManager;setLanguage(Lnet/minecraft/client/resource/language/LanguageDefinition;)V"
-            )
-    )
+    @Inject(method = "triggerPirateSpeakEasterEgg", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/resource/language/LanguageManager;setLanguage(Lnet/minecraft/client/resource/language/LanguageDefinition;)V"))
     private void onLanguageSwitching(CallbackInfo ci) {
         ((IGameOptions) client.options).savePreviousLanguage();
     }
 
-    @Redirect(
-            method = "triggerPirateSpeakEasterEgg(Ljava/lang/String;)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/MinecraftClient;reloadResources()Ljava/util/concurrent/CompletableFuture;"
-            )
-    )
-    private CompletableFuture<Void> reloadResourcesRedirect(MinecraftClient client) {
+    @Redirect(method = "triggerPirateSpeakEasterEgg", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/client/MinecraftClient;reloadResources()Ljava/util/concurrent/CompletableFuture;"))
+    private CompletableFuture<Void> onLanguageSwitching$reloadResourcesRedirect(MinecraftClient client) {
         LanguageReload.reloadLanguages(client);
         return null;
     }

@@ -15,17 +15,17 @@ import org.spongepowered.asm.mixin.Shadow;
 import java.util.Map;
 
 @Mixin(AdvancementsScreen.class)
-public abstract class MixinAdvancementsScreen extends Screen implements ClientAdvancementManager.Listener, IAdvancementsScreen {
+public abstract class AdvancementsScreenMixin extends Screen implements ClientAdvancementManager.Listener, IAdvancementsScreen {
     @Shadow @Final private Map<Advancement, AdvancementTab> tabs;
 
-    protected MixinAdvancementsScreen(Text title) {
+    protected AdvancementsScreenMixin(Text title) {
         super(title);
     }
 
     @Override
     public void recreateWidgets() {
-        for (AdvancementTab tab : tabs.values()) {
-            ((IAdvancementsTab) tab).recreateWidgets();
+        for (var advancementTab : tabs.values()) {
+            ((IAdvancementsTab) advancementTab).recreateWidgets();
         }
     }
 }

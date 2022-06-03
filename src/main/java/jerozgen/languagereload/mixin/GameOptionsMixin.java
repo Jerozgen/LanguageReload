@@ -9,16 +9,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameOptions.class)
-public abstract class MixinGameOptions implements IGameOptions {
+public abstract class GameOptionsMixin implements IGameOptions {
     @Shadow public String language;
     String previousLanguage = "";
 
-    @Inject(
-            method = "accept(Lnet/minecraft/client/option/GameOptions$Visitor;)V",
-            at = @At("HEAD")
-    )
+    @Inject(method = "accept", at = @At("HEAD"))
     private void onAccept(GameOptions.Visitor visitor, CallbackInfo ci) {
-        this.previousLanguage = visitor.visitString("previousLang", this.previousLanguage);
+        previousLanguage = visitor.visitString("previousLang", previousLanguage);
     }
 
     @Override
@@ -28,6 +25,6 @@ public abstract class MixinGameOptions implements IGameOptions {
 
     @Override
     public void savePreviousLanguage() {
-        this.previousLanguage = language;
+        previousLanguage = language;
     }
 }

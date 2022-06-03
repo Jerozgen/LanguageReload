@@ -1,6 +1,5 @@
 package jerozgen.languagereload.mixin;
 
-import jerozgen.languagereload.access.ILanguageEntry;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.access.ILanguageSelectionListWidget;
 import net.minecraft.client.MinecraftClient;
@@ -17,22 +16,19 @@ import java.util.List;
 import java.util.Locale;
 
 @Mixin(LanguageOptionsScreen.LanguageSelectionListWidget.class)
-public abstract class MixinLanguageSelectionListWidget
+public abstract class LanguageSelectionListWidgetMixin
         extends AlwaysSelectedEntryListWidget<LanguageOptionsScreen.LanguageSelectionListWidget.LanguageEntry>
         implements ILanguageSelectionListWidget {
     private List<LanguageOptionsScreen.LanguageSelectionListWidget.LanguageEntry> initialChildren;
     private boolean mouseScrolled = false;
 
-    public MixinLanguageSelectionListWidget(MinecraftClient minecraftClient, int i, int j, int k, int l, int m) {
+    public LanguageSelectionListWidgetMixin(MinecraftClient minecraftClient, int i, int j, int k, int l, int m) {
         super(minecraftClient, i, j, k, l, m);
     }
 
-    @Inject(
-            method = "<init>",
-            at = @At("RETURN")
-    )
+    @Inject(method = "<init>", at = @At("RETURN"))
     private void onConstructed(CallbackInfo ci) {
-        this.top = 48;
+        top = 48;
         initialChildren = new ArrayList<>(children());
         if (client.currentScreen instanceof LanguageOptionsScreen languageOptionsScreen) {
             String searchText = ((ILanguageOptionsScreen) languageOptionsScreen).getSearchText();
@@ -51,11 +47,13 @@ public abstract class MixinLanguageSelectionListWidget
     @Override
     public void filter(String searchText) {
         clearEntries();
-        for (LanguageOptionsScreen.LanguageSelectionListWidget.LanguageEntry entry : initialChildren) {
-            LanguageDefinition lang = ((ILanguageEntry) entry).getLanguageDefinition();
+        for (var languageEntry : initialChildren) {
+            var lang = ((LanguageEntryAccessor) languageEntry).getLanguageDefinition();
+            String langName = lang.toString().toLowerCase(Locale.ROOT);
+            String langCode = lang.getCode().toLowerCase(Locale.ROOT);
             String query = searchText.toLowerCase(Locale.ROOT);
-            if (lang.toString().toLowerCase(Locale.ROOT).contains(query) || lang.getCode().toLowerCase(Locale.ROOT).contains(query)) {
-                addEntry(entry);
+            if (langName.contains(query) || langCode.contains(query)) {
+                addEntry(languageEntry);
             }
         }
 
