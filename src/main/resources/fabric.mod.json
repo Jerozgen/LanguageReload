@@ -8,7 +8,8 @@
     {"name": "Jerozgen", "contact": {"homepage": "https://github.com/Jerozgen", "discord": "Jerozgen#5500"}}
   ],
   "contributors": [
-    {"name": "Benonardo", "contact": {"homepage": "https://github.com/Benonardo"}}
+    {"name": "Benonardo", "contact": {"homepage": "https://github.com/Benonardo"}},
+    {"name": "IceAlin", "contact": {"homepage": "https://github.com/IceeAlin"}}
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/language-reload",
