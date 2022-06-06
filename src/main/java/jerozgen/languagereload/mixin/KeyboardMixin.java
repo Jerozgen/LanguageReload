@@ -52,7 +52,7 @@ public abstract class KeyboardMixin {
 
     @Inject(method = "processF3", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V",
-            ordinal = 7, shift = At.Shift.AFTER))
+            ordinal = 6, shift = At.Shift.AFTER))
     private void onProcessF3$addHelp(int key, CallbackInfoReturnable<Boolean> cir) {
         client.inGameHud.getChatHud().addMessage(Text.translatable("debug.reload_languages.help"));
     }
