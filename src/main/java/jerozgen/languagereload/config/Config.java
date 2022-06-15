@@ -41,6 +41,7 @@ public class Config {
 
         var currentLang = MinecraftClient.getInstance().getLanguageManager().getLanguage().getCode();
         if (!currentLang.equals(INSTANCE.language)) {
+            INSTANCE.language = currentLang;
             INSTANCE.fallbacks.clear();
         }
     }

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class LanguageEntry extends ElementListWidget.Entry<LanguageEntry> implements Narratable {
+public abstract class LanguageEntry extends ElementListWidget.Entry<LanguageEntry> {
     protected static final Identifier TEXTURE = new Identifier(LanguageReload.MOD_ID, "textures/gui/language_selection.png");
     protected static final int TEXTURE_WIDTH = 64;
     protected static final int TEXTURE_HEIGHT = 64;
@@ -75,7 +75,6 @@ public abstract class LanguageEntry extends ElementListWidget.Entry<LanguageEntr
         client.textRenderer.drawWithShadow(matrices, language.getRegion(), left + 29, top + 14, 0x808080);
     }
 
-    @Override
     public void appendNarrations(NarrationMessageBuilder builder) {
         builder.put(NarrationPart.TITLE, Text.translatable("narrator.select", language));
     }
