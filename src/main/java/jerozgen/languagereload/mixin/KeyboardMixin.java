@@ -1,10 +1,11 @@
 package jerozgen.languagereload.mixin;
 
 import jerozgen.languagereload.LanguageReload;
-import jerozgen.languagereload.access.IGameOptions;
+import jerozgen.languagereload.config.Config;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import org.lwjgl.glfw.GLFW;
@@ -16,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 @Mixin(Keyboard.class)
@@ -31,18 +33,36 @@ public abstract class KeyboardMixin {
 
     private void processLanguageReloadKeys() {
         if (Screen.hasShiftDown()) {
+            var config = Config.getInstance();
             var languageManager = client.getLanguageManager();
-            String previousCode = ((IGameOptions) client.options).getPreviousLanguage();
-            var previousLanguage = languageManager.getLanguage(previousCode);
-            if (previousLanguage != null && !previousCode.equals("") && !previousCode.equals(client.options.language)) {
-                languageManager.setLanguage(previousLanguage);
-                ((IGameOptions) client.options).savePreviousLanguage();
-                client.options.language = previousCode;
-                LanguageReload.reloadLanguages(client);
-                client.options.write();
-                debugLog("debug.reload_languages.switch.success", previousLanguage.toString());
-            } else {
+            var previousLangCode = config.previousLanguage;
+            var previousLanguage = languageManager.getLanguage(previousLangCode);
+            var previousFallbacks = config.previousFallbacks;
+
+            if (previousLanguage == null) {
                 debugError("debug.reload_languages.switch.failure");
+            } else {
+                config.previousFallbacks = config.fallbacks;
+                config.fallbacks = previousFallbacks;
+
+                config.previousLanguage = languageManager.getLanguage().getCode();
+                config.language = previousLangCode;
+                client.options.language = previousLangCode;
+                languageManager.setLanguage(previousLanguage);
+
+                LanguageReload.reloadLanguages(client);
+
+                var languages = new ArrayList<String>();
+                languages.add(previousLanguage.toString());
+                languages.addAll(previousFallbacks.stream()
+                        .map(languageManager::getLanguage)
+                        .filter(Objects::nonNull)
+                        .map(LanguageDefinition::toString)
+                        .toList());
+                debugLog("debug.reload_languages.switch.success", String.join(", ", languages));
+
+                client.options.write();
+                Config.save();
             }
         } else {
             LanguageReload.reloadLanguages(client);

@@ -1,8 +1,9 @@
 {
+  "language.default.tooltip": "The default language of Minecraft",
   "debug.reload_languages.help": "F3 + J = 重载语言（加上Shift以循环切换语言）",
   "debug.reload_languages.message": "语言已重载",
-  "debug.reload_languages.switch.success": "将语言设置为\"%s\"",
+  "debug.reload_languages.switch.success": "将语言设置为 %s",
   "debug.reload_languages.switch.failure": "无法循环切换语言，在设置中切换至其他语言后重试。",
-  "modmenu.summaryTranslation.languagereload": "让语言重载与切换变得更快。",
-  "modmenu.descriptionTranslation.languagereload": "使语言能被即时切换。添加了调试特性：用Shift + F3 + J循环切换语言，然后用F3 + J重载语言。"
+  "modmenu.summaryTranslation.languagereload": "让语言重载与切换变得更快。Adds language fallbacks.",
+  "modmenu.descriptionTranslation.languagereload": "使语言能被即时切换。添加了调试特性：用Shift + F3 + J循环切换语言，然后用F3 + J重载语言。 Introduces a search box and multi-selection in the language menu."
 }

@@ -1,6 +1,6 @@
 package jerozgen.languagereload;
 
-import jerozgen.languagereload.access.*;
+import jerozgen.languagereload.access.IAdvancementsScreen;
 import jerozgen.languagereload.mixin.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -8,9 +8,14 @@ import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Environment(EnvType.CLIENT)
 public class LanguageReload {
+    public static final Logger LOGGER = LogManager.getLogger("Language Reload");
+    public static final String MOD_ID = "languagereload";
+
     public static void reloadLanguages(MinecraftClient client) {
         // Reload language and search managers
         var resourceManager = client.getResourceManager();
