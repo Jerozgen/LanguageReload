@@ -39,7 +39,7 @@ public class Config {
             LanguageReload.LOGGER.error("Couldn't load config file: ", e);
         }
 
-        var currentLang = MinecraftClient.getInstance().getLanguageManager().getLanguage().getCode();
+        var currentLang = MinecraftClient.getInstance().options.language;
         if (!currentLang.equals(INSTANCE.language)) {
             INSTANCE.language = currentLang;
             INSTANCE.fallbacks.clear();
