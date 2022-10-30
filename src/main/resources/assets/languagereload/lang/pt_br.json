@@ -1,9 +1,9 @@
 {
-  "language.default.tooltip": "The default language of Minecraft",
-  "debug.reload_languages.help": "F3 + J = Recarregar idiomas (shift to cycle languages)",
+  "language.default.tooltip": "O idioma padrão do Minecraft",
+  "debug.reload_languages.help": "F3 + J = Recarregar idiomas (mudar para idiomas de ciclo)",
   "debug.reload_languages.message": "Idiomas recarregados",
-  "debug.reload_languages.switch.success": "Set language to %s",
-  "debug.reload_languages.switch.failure": "Couldn't cycle languages. Switch to another language in the settings and try again",
-  "modmenu.summaryTranslation.languagereload": "Reduces load times and adds fallbacks for languages.",
-  "modmenu.descriptionTranslation.languagereload": "Makes language switching instant, introduces a search box and multi-selection in the language menu, adds debug features to cycle languages with Shift + F3 + J and to reload them with F3 + J."
+  "debug.reload_languages.switch.success": "Definir idioma para %s",
+  "debug.reload_languages.switch.failure": "Não foi possível alternar idiomas. Mude para outro idioma nas configurações e tente novamente",
+  "modmenu.summaryTranslation.languagereload": "Reduz os tempos de carregamento e adiciona fallbacks para idiomas.",
+  "modmenu.descriptionTranslation.languagereload": "Torna a troca de idioma instantânea, introduz uma caixa de pesquisa e seleção múltipla no menu de idiomas, adiciona recursos de depuração aos idiomas de ciclo com Shift + F3 + J e os recarrega com F3 + J."
 }
