@@ -1,6 +1,6 @@
 {
   "language.default.tooltip": "O idioma padrão do Minecraft",
-  "debug.reload_languages.help": "F3 + J = Recarregar idiomas (mudar para idiomas de ciclo)",
+  "debug.reload_languages.help": "F3 + J = Recarregar idiomas (Shift para mudar idiomas de ciclo)",
   "debug.reload_languages.message": "Idiomas recarregados",
   "debug.reload_languages.switch.success": "Definir idioma para %s",
   "debug.reload_languages.switch.failure": "Não foi possível alternar idiomas. Mude para outro idioma nas configurações e tente novamente",
