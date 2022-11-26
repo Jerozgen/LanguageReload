@@ -18,9 +18,8 @@ public class LanguageReload {
 
     public static void reloadLanguages(MinecraftClient client) {
         // Reload language and search managers
-        var resourceManager = client.getResourceManager();
-        client.getLanguageManager().reload(resourceManager);
-        ((MinecraftClientAccessor) client).getSearchManager().reload(resourceManager);
+        client.getLanguageManager().reload(client.getResourceManager());
+        reloadSearch(client);
 
         // Update window title and chat
         client.updateWindowTitle();
@@ -45,5 +44,9 @@ public class LanguageReload {
                 ((SignBlockEntityAccessor) sign).setTextsBeingEdited(null);
             }
         }
+    }
+
+    public static void reloadSearch(MinecraftClient client) {
+        ((MinecraftClientAccessor) client).getSearchManager().reload(client.getResourceManager());
     }
 }

@@ -25,6 +25,11 @@
     "languagereload.mixins.json"
   ],
   "accessWidener": "languagereload.accesswidener",
+  "entrypoints": {
+    "modmenu": [
+      "jerozgen.languagereload.config.ModMenuEntrypoint"
+    ]
+  },
   "depends": {
     "fabric-resource-loader-v0": "*",
     "fabricloader": ">=0.14.6",

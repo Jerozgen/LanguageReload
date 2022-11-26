@@ -20,6 +20,7 @@ public class Config {
 
     private static Config INSTANCE;
 
+    public boolean multilingualItemSearch = true;
     public LinkedList<String> fallbacks = new LinkedList<>();
     public LinkedList<String> previousFallbacks = new LinkedList<>();
     public String language = "";
