@@ -1,0 +1,9 @@
+{
+  "language.default.tooltip": "Domyślny język Minecrafta",
+  "debug.reload_languages.help": "F3 + J = Ponowne wczytanie języków (shift, aby przełączać się między językami)",
+  "debug.reload_languages.message": "Języki zostały wczytane ponownie",
+  "debug.reload_languages.switch.success": "Ustawiono język na %s",
+  "debug.reload_languages.switch.failure": "Nie udało się przełączyć języka. Zmień język w ustawieniach i spróbuj ponownie",
+  "modmenu.summaryTranslation.languagereload": "Skraca czas ładowania i dodaje rezerwowe opcje dla języków.",
+  "modmenu.descriptionTranslation.languagereload": "Sprawia, że języki przełączają się natychmiastowo, dodaje pole wyszukiwania i możliwość wielokrotnego wyboru w menu języków, dodaje funkcje debugowania, by przełączać się między językami, używając Shift + F3 + J, i by je wczytać ponownie, używając F3 + J."
+}
