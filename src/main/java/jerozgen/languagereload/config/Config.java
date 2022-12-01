@@ -32,8 +32,7 @@ public class Config {
         if (Files.notExists(PATH)) {
             INSTANCE = new Config();
             save();
-        }
-        else try {
+        } else try {
             INSTANCE = GSON.fromJson(Files.readString(PATH), Config.class);
         } catch (Exception e) {
             INSTANCE = new Config();

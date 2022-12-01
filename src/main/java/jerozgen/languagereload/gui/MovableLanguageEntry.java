@@ -7,7 +7,7 @@ import net.minecraft.client.resource.language.LanguageDefinition;
 import java.util.LinkedList;
 
 public class MovableLanguageEntry extends LanguageEntry {
-    private final ButtonWidget addButton = addChild(createButton(15, 24,  0, 0, __ -> {
+    private final ButtonWidget addButton = addChild(createButton(15, 24, 0, 0, __ -> {
         selectedLanguages.add(language);
     }));
 

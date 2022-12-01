@@ -16,7 +16,7 @@ public class LanguageListWidget extends ElementListWidget<LanguageEntry> {
         super(client, width, height, 48, height - 55 + 4, 24);
         this.title = title;
 
-        setRenderHeader(true, (int)(9.0f * 1.5f));
+        setRenderHeader(true, (int) (9.0f * 1.5f));
         centerListVertically = false;
     }
 

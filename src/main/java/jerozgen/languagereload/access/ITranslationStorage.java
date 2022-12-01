@@ -7,5 +7,6 @@ import org.jetbrains.annotations.Nullable;
 @Environment(EnvType.CLIENT)
 public interface ITranslationStorage {
     @Nullable String getTargetLanguage();
+
     void setTargetLanguage(@Nullable String value);
 }
