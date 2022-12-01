@@ -1,15 +1,15 @@
 {
-  "language.default.tooltip": "The default language of Minecraft",
+  "language.default.tooltip": "这是Minecraft的默认语言",
 
   "options.languagereload.title": "Language Reload Options",
   "options.languagereload.multilingualItemSearch": "Multilingual Search",
   "options.languagereload.multilingualItemSearch.tooltip": "Enables searching in any of selected languages in the creative inventory and the recipe book.",
 
-  "debug.reload_languages.help": "F3 + J = 重载语言（加上Shift以循环切换语言）",
+  "debug.reload_languages.help": "F3 + J =重载语言（按住Shift以循环切换语言）",
   "debug.reload_languages.message": "语言已重载",
-  "debug.reload_languages.switch.success": "将语言设置为 %s",
+  "debug.reload_languages.switch.success": "将语言设置为%s",
   "debug.reload_languages.switch.failure": "无法循环切换语言，在设置中切换至其他语言后重试。",
 
-  "modmenu.summaryTranslation.languagereload": "让语言重载与切换变得更快。Adds language fallbacks.",
-  "modmenu.descriptionTranslation.languagereload": "使语言能被即时切换。添加了调试特性：用Shift + F3 + J循环切换语言，然后用F3 + J重载语言。Also, introduces a search box and multi-selection in the language menu, makes item search multilingual."
+  "modmenu.summaryTranslation.languagereload": "缩短了加载时间并添加了语言回退功能。",
+  "modmenu.descriptionTranslation.languagereload": "使语言能被即时切换，在语言菜单中添加了搜索框和多选功能，添加了调试功能：用Shift + F3 + J循环切换语言，以及用F3 + J重载语言。 Also, makes item search multilingual."
 }
