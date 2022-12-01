@@ -1,5 +1,6 @@
 package jerozgen.languagereload.mixin;
 
+import com.google.common.collect.Lists;
 import jerozgen.languagereload.config.Config;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.resource.language.LanguageManager;
@@ -21,7 +22,7 @@ public abstract class LanguageManagerMixin {
     @Inject(method = "reload", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z",
             remap = false), locals = LocalCapture.CAPTURE_FAILSOFT)
     void onReload$addFallbacks(ResourceManager manager, CallbackInfo ci, LanguageDefinition languageDefinition, List<LanguageDefinition> list) {
-        Config.getInstance().fallbacks.stream()
+        Lists.reverse(Config.getInstance().fallbacks).stream()
                 .map(this::getLanguage)
                 .filter(Objects::nonNull)
                 .forEach(list::add);
