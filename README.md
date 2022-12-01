@@ -1,7 +1,7 @@
 # ![Language Reload icon](https://i.imgur.com/ooQGaC7.png) Language Reload
 
-Language Reload is a Fabric mod that makes language switching instant and introduces a search box and multi-selection 
-into the language menu.
+Language Reload is a Fabric mod that speeds up language switching, introduces a search box and multi-selection in 
+the language menu and makes item search multilingual.
 
 ![Switching languages with fallbacks](https://i.imgur.com/Sb4YFCL.gif)
 

@@ -3,7 +3,7 @@
   "id": "languagereload",
   "version": "${version}",
   "name": "Language Reload",
-  "description": "Makes language reloading and switching faster.",
+  "description": "Reduces load times and adds fallbacks for languages.",
   "authors": [
     {"name": "Jerozgen", "contact": {"homepage": "https://github.com/Jerozgen", "discord": "Jerozgen#5500"}}
   ],
