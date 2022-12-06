@@ -1,7 +1,7 @@
 {
   "language.default.tooltip": "Minecraft 預設語言",
 
-  "options.languagereload.title": "語言重新載入選項",
+  "options.languagereload.title": "Language Reload 選項",
   "options.languagereload.multilingualItemSearch": "多語言搜尋",
   "options.languagereload.multilingualItemSearch.tooltip": "啟用在創造物品欄和配方手冊的所選語言搜尋。",
 
