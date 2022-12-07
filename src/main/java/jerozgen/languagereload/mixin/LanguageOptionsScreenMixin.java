@@ -91,8 +91,6 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen {
         if (client == null) return;
         client.setScreen(parent);
 
-        var config = Config.getInstance();
-
         var language = selectedLanguages.peekFirst();
         if (language == null) language = languageManager.getLanguage(LanguageManager.DEFAULT_LANGUAGE_CODE);
         var fallbacks = selectedLanguages.stream()
@@ -100,21 +98,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen {
                 .map(LanguageDefinition::getCode)
                 .collect(Collectors.toCollection(LinkedList::new));
 
-        var languageIsSame = languageManager.getLanguage().equals(language);
-        var fallbacksAreSame = config.fallbacks.equals(fallbacks);
-        if (languageIsSame && fallbacksAreSame) return;
-
-        config.previousLanguage = languageManager.getLanguage().getCode();
-        config.previousFallbacks = config.fallbacks;
-        config.language = language.getCode();
-        config.fallbacks = fallbacks;
-        Config.save();
-
-        languageManager.setLanguage(language);
-        gameOptions.language = language.getCode();
-        gameOptions.write();
-
-        LanguageReload.reloadLanguages(client);
+        LanguageReload.setLanguage(language, fallbacks);
     }
 
     private void refresh() {

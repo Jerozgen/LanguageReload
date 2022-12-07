@@ -14,7 +14,8 @@
     {"name": "Altegar", "contact": {"homepage": "https://github.com/Altegar"}},
     {"name": "FITFC", "contact": {"homepage": "https://github.com/FITFC"}},
     {"name": "PRO100KatYT", "contact": {"homepage": "https://github.com/PRO100KatYT"}},
-    {"name": "GodGun968 (神枪968)", "contact": {"homepage": "https://github.com/GodGun968"}}
+    {"name": "GodGun968 (神枪968)", "contact": {"homepage": "https://github.com/GodGun968"}},
+    {"name": "xMikux", "contact": {"homepage": "https://github.com/xMikux"}}
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/language-reload",
@@ -36,7 +37,7 @@
   "depends": {
     "fabric-resource-loader-v0": "*",
     "fabricloader": ">=0.14.6",
-    "minecraft": ">1.19.2",
+    "minecraft": ">=1.19.3",
     "java": ">=17"
   }
 }

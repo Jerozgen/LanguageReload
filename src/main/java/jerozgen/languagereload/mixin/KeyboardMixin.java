@@ -50,7 +50,7 @@ public abstract class KeyboardMixin {
                 client.options.language = previousLangCode;
                 languageManager.setLanguage(previousLanguage);
 
-                LanguageReload.reloadLanguages(client);
+                LanguageReload.reloadLanguages();
 
                 var languages = new ArrayList<String>();
                 languages.add(previousLanguage.toString());
@@ -65,7 +65,7 @@ public abstract class KeyboardMixin {
                 Config.save();
             }
         } else {
-            LanguageReload.reloadLanguages(client);
+            LanguageReload.reloadLanguages();
             debugLog("debug.reload_languages.message");
         }
     }

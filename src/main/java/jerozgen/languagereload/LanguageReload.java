@@ -1,6 +1,7 @@
 package jerozgen.languagereload;
 
 import jerozgen.languagereload.access.IAdvancementsScreen;
+import jerozgen.languagereload.config.Config;
 import jerozgen.languagereload.mixin.*;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -8,18 +9,25 @@ import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
+import net.minecraft.client.resource.language.LanguageDefinition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.util.LinkedList;
 
 @Environment(EnvType.CLIENT)
 public class LanguageReload {
     public static final Logger LOGGER = LogManager.getLogger("Language Reload");
     public static final String MOD_ID = "languagereload";
 
-    public static void reloadLanguages(MinecraftClient client) {
+    public static boolean shouldSetSystemLanguage = false;
+
+    public static void reloadLanguages() {
+        var client = MinecraftClient.getInstance();
+
         // Reload language and search managers
         client.getLanguageManager().reload(client.getResourceManager());
-        reloadSearch(client);
+        reloadSearch();
 
         // Update window title and chat
         client.updateWindowTitle();
@@ -46,7 +54,30 @@ public class LanguageReload {
         }
     }
 
-    public static void reloadSearch(MinecraftClient client) {
+    public static void reloadSearch() {
+        var client = MinecraftClient.getInstance();
         ((MinecraftClientAccessor) client).getSearchManager().reload(client.getResourceManager());
+    }
+
+    public static void setLanguage(LanguageDefinition language, LinkedList<String> fallbacks) {
+        var client = MinecraftClient.getInstance();
+        var languageManager = client.getLanguageManager();
+        var config = Config.getInstance();
+
+        var languageIsSame = languageManager.getLanguage().equals(language);
+        var fallbacksAreSame = config.fallbacks.equals(fallbacks);
+        if (languageIsSame && fallbacksAreSame) return;
+
+        config.previousLanguage = languageManager.getLanguage().getCode();
+        config.previousFallbacks = config.fallbacks;
+        config.language = language.getCode();
+        config.fallbacks = fallbacks;
+        Config.save();
+
+        languageManager.setLanguage(language);
+        client.options.language = language.getCode();
+        client.options.write();
+
+        reloadLanguages();
     }
 }
