@@ -1,9 +1,9 @@
 {
   "language.default.tooltip": "这是Minecraft的默认语言",
 
-  "options.languagereload.title": "Language Reload Options",
-  "options.languagereload.multilingualItemSearch": "Multilingual Search",
-  "options.languagereload.multilingualItemSearch.tooltip": "Enables searching in any of selected languages in the creative inventory and the recipe book.",
+  "options.languagereload.title": "Language Reload 选项",
+  "options.languagereload.multilingualItemSearch": "多语言搜索",
+  "options.languagereload.multilingualItemSearch.tooltip": "启用在创造物品栏和配方手册的所选语言搜索。",
 
   "debug.reload_languages.help": "F3 + J =重载语言（按住Shift以循环切换语言）",
   "debug.reload_languages.message": "语言已重载",
