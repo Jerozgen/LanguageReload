@@ -9,15 +9,16 @@
   ],
   "contributors": [
     {"name": "Benonardo", "contact": {"homepage": "https://github.com/Benonardo"}},
-    {"name": "IceAlin", "contact": {"homepage": "https://github.com/IceeAlin"}},
-    {"name": "wavgado", "contact": {"homepage": "https://github.com/wavgado"}},
-    {"name": "Altegar", "contact": {"homepage": "https://github.com/Altegar"}},
-    {"name": "FITFC", "contact": {"homepage": "https://github.com/FITFC"}},
-    {"name": "PRO100KatYT", "contact": {"homepage": "https://github.com/PRO100KatYT"}},
-    {"name": "GodGun968 (神枪968)", "contact": {"homepage": "https://github.com/GodGun968"}},
-    {"name": "xMikux", "contact": {"homepage": "https://github.com/xMikux"}},
-    {"name": "buiawpkgew1 (菾凴)", "contact": {"homepage": "https://github.com/buiawpkgew1"}},
-    {"name": "glaav", "contact": {"homepage": "https://github.com/glaav"}}
+    {"name": "glaav — Italian", "contact": {"homepage": "https://github.com/glaav"}},
+    {"name": "wavgado — Korean", "contact": {"homepage": "https://github.com/wavgado"}},
+    {"name": "PRO100KatYT — Polish", "contact": {"homepage": "https://github.com/PRO100KatYT"}},
+    {"name": "FITFC — Brazilian Portuguese", "contact": {"homepage": "https://github.com/FITFC"}},
+    {"name": "Altegar — Ukrainian", "contact": {"homepage": "https://github.com/Altegar"}},
+    {"name": "IceAlin — Chinese Simplified", "contact": {"homepage": "https://github.com/IceeAlin"}},
+    {"name": "GodGun968 (神枪968) — Chinese Simplified", "contact": {"homepage": "https://github.com/GodGun968"}},
+    {"name": "buiawpkgew1 (菾凴) — Chinese Simplified", "contact": {"homepage": "https://github.com/buiawpkgew1"}},
+    {"name": "Cccc_owo — Chinese Simplified", "contact": {"homepage": "https://github.com/Cccc-owo"}},
+    {"name": "xMikux — Chinese Traditional", "contact": {"homepage": "https://github.com/xMikux"}}
   ],
   "contact": {
     "homepage": "https://modrinth.com/mod/language-reload",
