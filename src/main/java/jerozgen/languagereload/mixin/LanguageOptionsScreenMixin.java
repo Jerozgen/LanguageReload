@@ -6,16 +6,19 @@ import jerozgen.languagereload.gui.LanguageListWidget;
 import jerozgen.languagereload.gui.LockedLanguageEntry;
 import jerozgen.languagereload.gui.MovableLanguageEntry;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ScreenTexts;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.screen.option.LanguageOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.option.GameOptions;
+import net.minecraft.client.option.Option;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.screen.ScreenTexts;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -64,21 +67,21 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen {
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
     void onInit(CallbackInfo ci) {
-        searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, searchBox, Text.empty());
+        searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, searchBox, LiteralText.EMPTY);
         searchBox.setChangedListener(__ -> refresh());
         addSelectableChild(searchBox);
         setInitialFocus(searchBox);
 
         var listWidth = Math.min(width / 2 - 4, 200);
-        availableLanguageList = new LanguageListWidget(client, listWidth, height, Text.translatable("pack.available.title"));
-        selectedLanguageList = new LanguageListWidget(client, listWidth, height, Text.translatable("pack.selected.title"));
+        availableLanguageList = new LanguageListWidget(client, listWidth, height, new TranslatableText("pack.available.title"));
+        selectedLanguageList = new LanguageListWidget(client, listWidth, height, new TranslatableText("pack.selected.title"));
         availableLanguageList.setLeftPos(width / 2 - 4 - listWidth);
         selectedLanguageList.setLeftPos(width / 2 + 4);
         addSelectableChild(availableLanguageList);
         addSelectableChild(selectedLanguageList);
         refresh();
 
-        addDrawableChild(gameOptions.getForceUnicodeFont().createButton(gameOptions, width / 2 - 155, height - 28, 150));
+        addDrawableChild(Option.FORCE_UNICODE_FONT.createButton(gameOptions, width / 2 - 155, height - 28, 150));
         addDrawableChild(new ButtonWidget(width / 2 - 155 + 160, height - 28, 150, 20, ScreenTexts.DONE, this::onDone));
 
         super.init();

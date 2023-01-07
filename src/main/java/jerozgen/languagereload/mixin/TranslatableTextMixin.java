@@ -5,10 +5,7 @@ import com.google.common.collect.Maps;
 import jerozgen.languagereload.access.ITranslationStorage;
 import jerozgen.languagereload.config.Config;
 import net.minecraft.client.resource.language.TranslationStorage;
-import net.minecraft.text.StringVisitable;
-import net.minecraft.text.TextContent;
-import net.minecraft.text.TranslatableTextContent;
-import net.minecraft.text.TranslationException;
+import net.minecraft.text.*;
 import net.minecraft.util.Language;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -23,8 +20,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-@Mixin(TranslatableTextContent.class)
-abstract class TranslatableTextContentMixin implements TextContent {
+@Mixin(TranslatableText.class)
+abstract class TranslatableTextMixin {
     private @Nullable String previousTargetLanguage;
     private final Map<String, List<StringVisitable>> separateTranslationsCache = Maps.newHashMap();
     private @Nullable List<StringVisitable> savedTranslations;

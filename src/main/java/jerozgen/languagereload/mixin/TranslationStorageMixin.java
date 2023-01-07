@@ -23,6 +23,7 @@ import java.util.function.BiConsumer;
 @Mixin(TranslationStorage.class)
 abstract class TranslationStorageMixin extends Language implements ITranslationStorage {
     private @Nullable String targetLanguage;
+    private static String languageOnLoad;
     private static Map<String, Map<String, String>> separateTranslationsOnLoad;
     private Map<String, Map<String, String>> separateTranslations;
 
@@ -32,18 +33,25 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
         separateTranslationsOnLoad = null;
     }
 
+    @Redirect(method = "load(Lnet/minecraft/resource/ResourceManager;Ljava/util/List;)Lnet/minecraft/client/resource/language/TranslationStorage;",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resource/language/LanguageDefinition;getCode()Ljava/lang/String;"))
+    private static String onLoad$language(LanguageDefinition instance) {
+        languageOnLoad = instance.getCode();
+        return languageOnLoad;
+    }
+
     @Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Ljava/util/List;)Lnet/minecraft/client/resource/language/TranslationStorage;",
             at = @At("HEAD"))
-    private static void onLoad(ResourceManager resourceManager, List<LanguageDefinition> definitions, CallbackInfoReturnable<TranslationStorage> cir) {
+    private static void onLoad$separateTranslations(ResourceManager resourceManager, List<LanguageDefinition> definitions, CallbackInfoReturnable<TranslationStorage> cir) {
         separateTranslationsOnLoad = Maps.newHashMap();
     }
 
-    @Redirect(method = "load(Ljava/lang/String;Ljava/util/List;Ljava/util/Map;)V", at = @At(value = "INVOKE",
+    @Redirect(method = "load(Ljava/util/List;Ljava/util/Map;)V", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/util/Language;load(Ljava/io/InputStream;Ljava/util/function/BiConsumer;)V"))
-    private static void onInternalLoad$saveSeparately(InputStream inputStream, BiConsumer<String, String> entryConsumer, String langCode) {
+    private static void onInternalLoad$saveSeparately(InputStream inputStream, BiConsumer<String, String> entryConsumer) {
         if (Config.getInstance().multilingualItemSearch) {
             Language.load(inputStream, entryConsumer.andThen((key, value) ->
-                    separateTranslationsOnLoad.computeIfAbsent(langCode, k -> Maps.newHashMap()).put(key, value)));
+                    separateTranslationsOnLoad.computeIfAbsent(languageOnLoad, k -> Maps.newHashMap()).put(key, value)));
         } else Language.load(inputStream, entryConsumer);
     }
 

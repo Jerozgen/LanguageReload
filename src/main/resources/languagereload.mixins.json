@@ -18,7 +18,7 @@
     "MinecraftClientMixin",
     "RecipeBookWidgetMixin",
     "SignBlockEntityAccessor",
-    "TranslatableTextContentMixin",
+    "TranslatableTextMixin",
     "TranslationStorageMixin"
   ],
   "injectors": {

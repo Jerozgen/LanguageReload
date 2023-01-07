@@ -12,7 +12,7 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public abstract class LanguageEntry extends ElementListWidget.Entry<LanguageEntr
 
     @Override
     public void render(MatrixStack matrices, int index, int top, int left, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        if (client.options.getTouchscreen().getValue() || hovered) {
+        if (client.options.touchscreen || hovered) {
             if (hovered) {
                 var right = left + entryWidth - SCROLLBAR_WIDTH - LEFT_MARGIN;
                 DrawableHelper.fill(matrices, left, top, right, top + ENTRY_HEIGHT, 0xA0909090);
@@ -75,7 +75,7 @@ public abstract class LanguageEntry extends ElementListWidget.Entry<LanguageEntr
     }
 
     public void appendNarrations(NarrationMessageBuilder builder) {
-        builder.put(NarrationPart.TITLE, Text.translatable("narrator.select", language));
+        builder.put(NarrationPart.TITLE, new TranslatableText("narrator.select", language));
     }
 
     @Override
