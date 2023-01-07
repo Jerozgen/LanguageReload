@@ -79,9 +79,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen {
         refresh();
 
         addDrawableChild(gameOptions.getForceUnicodeFont().createButton(gameOptions, width / 2 - 155, height - 28, 150));
-        addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, this::onDone)
-                .dimensions(width / 2 - 155 + 160, height - 28, 150, 20)
-                .build());
+        addDrawableChild(new ButtonWidget(width / 2 - 155 + 160, height - 28, 150, 20, ScreenTexts.DONE, this::onDone));
 
         super.init();
         ci.cancel();
