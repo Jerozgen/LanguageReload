@@ -43,5 +43,16 @@
     "fabricloader": ">=0.14.6",
     "minecraft": ">=1.19.3",
     "java": ">=17"
+  },
+  "suggests": {
+    "modmenu": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.modrinth": "https://modrinth.com/mod/language-reload",
+        "modmenu.curseforge": "https://www.curseforge.com/minecraft/mc-mods/language-reload"
+      }
+    }
   }
 }
