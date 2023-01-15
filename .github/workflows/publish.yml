@@ -44,11 +44,12 @@ jobs:
           version-resolver: exact
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-files-primary: build/libs/!(*-@(dev|sources|javadoc)).jar
-          github-files-secondary: build/libs/*-@(dev|sources|javadoc).jar
+          github-files-primary: build/libs/*-@(dev|sources|javadoc).jar
+          github-files-secondary: build/libs/!(*-@(dev|sources|javadoc)).jar
 
           modrinth-id: uLbm7CG6
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
 
           curseforge-id: 527334
           curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+          curseforge-files: build/libs/!(*-@(dev|sources|javadoc)).jar
