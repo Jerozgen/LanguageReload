@@ -63,8 +63,8 @@ public abstract class LanguageEntry extends ElementListWidget.Entry<LanguageEntr
             }
             buttons.forEach(button -> button.visible = false);
             ButtonRenderer buttonRenderer = (button, x, y) -> {
-                button.setX(x);
-                button.setY(y);
+                button.x = x;
+                button.y = y;
                 button.visible = true;
                 button.render(matrices, mouseX, mouseY, tickDelta);
             };
