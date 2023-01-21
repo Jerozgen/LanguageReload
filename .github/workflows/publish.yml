@@ -39,7 +39,9 @@ jobs:
           dependencies: |
             fabric-api | depends | *
             modmenu | suggests | *
-          version-resolver: latest
+          game-versions: |
+            1.19.3
+          version-resolver: exact
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
           github-files-primary: build/libs/*-@(dev|sources|javadoc).jar
