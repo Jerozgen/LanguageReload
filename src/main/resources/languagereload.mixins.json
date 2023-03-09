@@ -10,6 +10,7 @@
     "BookScreenAccessor",
     "ClientChunkManagerAccessor",
     "ClientChunkMapAccessor",
+    "EntryListWidgetAccessor",
     "GameOptionsMixin",
     "KeyboardMixin",
     "LanguageManagerMixin",

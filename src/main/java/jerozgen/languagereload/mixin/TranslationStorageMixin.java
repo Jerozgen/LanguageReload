@@ -3,7 +3,6 @@ package jerozgen.languagereload.mixin;
 import com.google.common.collect.Maps;
 import jerozgen.languagereload.access.ITranslationStorage;
 import jerozgen.languagereload.config.Config;
-import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Language;
@@ -32,9 +31,9 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
         separateTranslationsOnLoad = null;
     }
 
-    @Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Ljava/util/List;)Lnet/minecraft/client/resource/language/TranslationStorage;",
+    @Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Ljava/util/List;Z)Lnet/minecraft/client/resource/language/TranslationStorage;",
             at = @At("HEAD"))
-    private static void onLoad(ResourceManager resourceManager, List<LanguageDefinition> definitions, CallbackInfoReturnable<TranslationStorage> cir) {
+    private static void onLoad(ResourceManager resourceManager, List<String> definitions, boolean rightToLeft, CallbackInfoReturnable<TranslationStorage> cir) {
         separateTranslationsOnLoad = Maps.newHashMap();
     }
 
@@ -48,7 +47,7 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
     }
 
     @Inject(method = "get", at = @At(value = "HEAD"), cancellable = true)
-    void onGet(String key, CallbackInfoReturnable<String> cir) {
+    void onGet(String key, String fallback, CallbackInfoReturnable<String> cir) {
         if (!Config.getInstance().multilingualItemSearch) return;
         if (targetLanguage == null) return;
 
@@ -58,7 +57,7 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
         var targetTranslations = separateTranslations.get(targetLanguage);
         if (targetTranslations == null) targetTranslations = defaultTranslations;
 
-        cir.setReturnValue(targetTranslations.getOrDefault(key, defaultTranslations.getOrDefault(key, key)));
+        cir.setReturnValue(targetTranslations.getOrDefault(key, defaultTranslations.getOrDefault(key, fallback)));
     }
 
     @Override
