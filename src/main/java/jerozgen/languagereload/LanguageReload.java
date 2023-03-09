@@ -9,7 +9,6 @@ import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
-import net.minecraft.client.resource.language.LanguageDefinition;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -59,7 +58,7 @@ public class LanguageReload {
         ((MinecraftClientAccessor) client).getSearchManager().reload(client.getResourceManager());
     }
 
-    public static void setLanguage(LanguageDefinition language, LinkedList<String> fallbacks) {
+    public static void setLanguage(String language, LinkedList<String> fallbacks) {
         var client = MinecraftClient.getInstance();
         var languageManager = client.getLanguageManager();
         var config = Config.getInstance();
@@ -68,14 +67,14 @@ public class LanguageReload {
         var fallbacksAreSame = config.fallbacks.equals(fallbacks);
         if (languageIsSame && fallbacksAreSame) return;
 
-        config.previousLanguage = languageManager.getLanguage().getCode();
+        config.previousLanguage = languageManager.getLanguage();
         config.previousFallbacks = config.fallbacks;
-        config.language = language.getCode();
+        config.language = language;
         config.fallbacks = fallbacks;
         Config.save();
 
         languageManager.setLanguage(language);
-        client.options.language = language.getCode();
+        client.options.language = language;
         client.options.write();
 
         reloadLanguages();
