@@ -23,14 +23,15 @@ abstract class LanguageManagerMixin {
 
     @Inject(method = "reload", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", ordinal = 0,
             remap = false, target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
-    void onReload$addFallbacks(ResourceManager manager, CallbackInfo ci, List<String> list) {
+    void onReload$addFallbacks(ResourceManager manager, CallbackInfo ci, LanguageDefinition languageDefinition, List<LanguageDefinition> list) {
         Lists.reverse(Config.getInstance().fallbacks).stream()
-                .filter(code -> Objects.nonNull(getLanguage(code)))
+                .map(this::getLanguage)
+                .filter(Objects::nonNull)
                 .forEach(list::add);
     }
 
     @Inject(method = "reload", at = @At(value = "INVOKE", ordinal = 0, remap = false,
-            target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
+            target = "Ljava/util/Map;getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"))
     void onReload$setSystemLanguage(ResourceManager manager, CallbackInfo ci) {
         if (LanguageReload.shouldSetSystemLanguage) {
             LanguageReload.shouldSetSystemLanguage = false;

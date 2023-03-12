@@ -1,7 +1,6 @@
 package jerozgen.languagereload.gui;
 
 import jerozgen.languagereload.LanguageReload;
-import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
@@ -50,6 +49,10 @@ public abstract class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<
         return button;
     }
 
+    public boolean isFocused() {
+        return parentList.getSelectedOrNull() == this && parentList.isFocused();
+    }
+
     public void toggle() {}
 
     public void moveUp() {}
@@ -74,20 +77,19 @@ public abstract class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<
                 button.render(matrices, mouseX, mouseY, tickDelta);
             }, x, y);
         }
-        client.textRenderer.drawWithShadow(matrices, language.name(), x + 29, y + 3, 0xFFFFFF);
-        client.textRenderer.drawWithShadow(matrices, language.region(), x + 29, y + 14, 0x808080);
+        client.textRenderer.drawWithShadow(matrices, language.getName(), x + 29, y + 3, 0xFFFFFF);
+        client.textRenderer.drawWithShadow(matrices, language.getRegion(), x + 29, y + 14, 0x808080);
     }
 
     @Override
     public Text getNarration() {
-        return Text.translatable("narrator.select", language.getDisplayText());
+        return Text.translatable("narrator.select", language);
     }
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         for (var widget : buttons)
             if (widget.mouseClicked(mouseX, mouseY, button)) {
-                ((ILanguageOptionsScreen) parentList.getScreen()).focusList(parentList);
                 return true;
             }
         return false;

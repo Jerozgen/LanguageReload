@@ -8,6 +8,7 @@ import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.LanguageOptionsScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
+import net.minecraft.client.render.Tessellator;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -30,7 +31,7 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
     }
 
     @Override
-    protected void renderHeader(MatrixStack matrices, int x, int y) {
+    protected void renderHeader(MatrixStack matrices, int x, int y, Tessellator tessellator) {
         var headerText = title.copy().formatted(Formatting.UNDERLINE, Formatting.BOLD);
         int headerPosX = x + width / 2 - client.textRenderer.getWidth(headerText) / 2;
         int headerPosY = Math.min(top + 3, y);
@@ -117,5 +118,9 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
     @Override
     protected int getScrollbarPositionX() {
         return right - 6;
+    }
+
+    protected boolean isFocused() {
+        return screen.getFocused() == this;
     }
 }

@@ -12,7 +12,7 @@ import java.util.LinkedList;
 @Mixin(RecipeBookWidget.class)
 public class RecipeBookWidgetMixin {
     @Inject(method = "triggerPirateSpeakEasterEgg", cancellable = true, at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/resource/language/LanguageManager;setLanguage(Ljava/lang/String;)V"))
+            target = "Lnet/minecraft/client/resource/language/LanguageManager;setLanguage(Lnet/minecraft/client/resource/language/LanguageDefinition;)V"))
     void onLanguageSwitching$cancel(String search, CallbackInfo ci) {
         LanguageReload.setLanguage("en_pt", new LinkedList<>());
         ci.cancel();

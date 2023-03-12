@@ -43,11 +43,12 @@ public abstract class KeyboardMixin {
             } else {
                 LanguageReload.setLanguage(config.previousLanguage, config.previousFallbacks);
                 var languages = new ArrayList<Text>() {{
-                    add(language.getDisplayText());
-                    addAll(config.previousFallbacks.stream()
+                    add(Text.of(language.toString()));
+                    addAll(config.fallbacks.stream()
                             .map(languageManager::getLanguage)
                             .filter(Objects::nonNull)
-                            .map(LanguageDefinition::getDisplayText)
+                            .map(LanguageDefinition::toString)
+                            .map(Text::of)
                             .toList());
                 }};
                 debugLog("debug.reload_languages.switch.success", Texts.join(languages, Text.of(", ")));

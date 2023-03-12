@@ -4,7 +4,6 @@ import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.config.Config;
 import jerozgen.languagereload.gui.*;
-import net.minecraft.client.gui.navigation.GuiNavigationPath;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.screen.option.LanguageOptionsScreen;
@@ -42,15 +41,16 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
     @Inject(method = "<init>", at = @At("TAIL"))
     void onConstructed(Screen parent, GameOptions options, LanguageManager languageManager, CallbackInfo ci) {
-        var currentLangCode = languageManager.getLanguage();
+        var currentLangCode = languageManager.getLanguage().getCode();
         if (!currentLangCode.equals(LanguageManager.DEFAULT_LANGUAGE_CODE))
             selectedLanguages.add(currentLangCode);
         selectedLanguages.addAll(Config.getInstance().fallbacks);
-        languageManager.getAllLanguages().forEach((code, language) -> {
+        for (var language : languageManager.getAllLanguages()) {
+            var code = language.getCode();
             if (!code.equals(LanguageManager.DEFAULT_LANGUAGE_CODE))
                 languageEntries.put(code, new MovableLanguageEntry(this::refresh, code, language, selectedLanguages));
             else defaultLanguageEntry = new LockedLanguageEntry(this::refresh, code, language, selectedLanguages);
-        });
+        }
     }
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
@@ -79,7 +79,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         addSelectableChild(selectedLanguageList);
         refresh();
 
-        addDrawableChild(gameOptions.getForceUnicodeFont().createWidget(gameOptions, width / 2 - 155, height - 28, 150));
+        addDrawableChild(gameOptions.getForceUnicodeFont().createButton(gameOptions, width / 2 - 155, height - 28, 150));
         addDrawableChild(ButtonWidget.builder(ScreenTexts.DONE, this::onDone)
                 .dimensions(width / 2 - 155 + 160, height - 28, 150, 20)
                 .build());
@@ -103,17 +103,18 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     }
 
     @Override
-    public void focusList(LanguageListWidget list) {
-        switchFocus(GuiNavigationPath.of(list, this));
-    }
-
-    @Override
     public void focusEntry(LanguageEntry entry) {
-        switchFocus(GuiNavigationPath.of(entry, entry.getParent(), this));
+        ((AlwaysSelectedEntryListWidgetAccessor) availableLanguageList).setInFocus(false);
+        ((AlwaysSelectedEntryListWidgetAccessor) selectedLanguageList).setInFocus(false);
+        entry.getParent().setSelected(entry);
+        entry.getParent().changeFocus(true);
+        setFocused(entry.getParent());
     }
 
     public void focusSearch() {
-        switchFocus(GuiNavigationPath.of(searchBox, this));
+        ((AlwaysSelectedEntryListWidgetAccessor) availableLanguageList).setInFocus(false);
+        ((AlwaysSelectedEntryListWidgetAccessor) selectedLanguageList).setInFocus(false);
+        setFocused(searchBox);
     }
 
     private void refresh() {
@@ -125,7 +126,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
                     if (selectedLanguageList.children().contains(entry)) return false;
                     var query = searchBox.getText().toLowerCase(Locale.ROOT);
                     var langCode = entry.getCode().toLowerCase(Locale.ROOT);
-                    var langName = entry.getLanguage().getDisplayText().getString().toLowerCase(Locale.ROOT);
+                    var langName = entry.getLanguage().toString().toLowerCase(Locale.ROOT);
                     return langCode.contains(query) || langName.contains(query);
                 }));
     }
@@ -146,14 +147,14 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     void onRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        renderBackgroundTexture(matrices);
+        renderBackgroundTexture(0);
 
         availableLanguageList.render(matrices, mouseX, mouseY, delta);
         selectedLanguageList.render(matrices, mouseX, mouseY, delta);
         searchBox.render(matrices, mouseX, mouseY, delta);
 
-        drawCenteredTextWithShadow(matrices, textRenderer, title, width / 2, 8, 0xFFFFFF);
-        drawCenteredTextWithShadow(matrices, textRenderer, LANGUAGE_WARNING_TEXT, width / 2, height - 46, 0x808080);
+        drawCenteredText(matrices, textRenderer, title, width / 2, 8, 0xFFFFFF);
+        drawCenteredText(matrices, textRenderer, LANGUAGE_WARNING_TEXT, width / 2, height - 46, 0x808080);
 
         super.render(matrices, mouseX, mouseY, delta);
         ci.cancel();

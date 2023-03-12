@@ -28,15 +28,11 @@ public class MovableLanguageEntry extends LanguageEntry {
     }
 
     private void add() {
-        if (isFocused())
-            parentList.setFocused(null);
         selectedLanguages.add(code);
         refreshListsAction.run();
     }
 
     private void remove() {
-        if (isFocused())
-            parentList.setFocused(null);
         selectedLanguages.remove(code);
         refreshListsAction.run();
     }
