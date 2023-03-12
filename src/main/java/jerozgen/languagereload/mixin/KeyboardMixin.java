@@ -44,7 +44,7 @@ public abstract class KeyboardMixin {
                 LanguageReload.setLanguage(config.previousLanguage, config.previousFallbacks);
                 var languages = new ArrayList<Text>() {{
                     add(language.getDisplayText());
-                    addAll(config.previousFallbacks.stream()
+                    addAll(config.fallbacks.stream()
                             .map(languageManager::getLanguage)
                             .filter(Objects::nonNull)
                             .map(LanguageDefinition::getDisplayText)
