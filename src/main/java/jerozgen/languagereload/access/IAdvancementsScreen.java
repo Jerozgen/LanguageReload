@@ -5,5 +5,5 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public interface IAdvancementsScreen {
-    void recreateWidgets();
+    void languagereload_recreateWidgets();
 }

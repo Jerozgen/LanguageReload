@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(MinecraftClient.class)
 public interface MinecraftClientAccessor {
-    @Accessor
-    SearchManager getSearchManager();
+    @Accessor("searchManager")
+    SearchManager languagereload_getSearchManager();
 }

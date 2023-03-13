@@ -34,28 +34,29 @@ public class LanguageReload {
 
         // Update book and advancements screens
         if (client.currentScreen instanceof BookScreen bookScreen) {
-            ((BookScreenAccessor) bookScreen).setCachedPageIndex(-1);
+            ((BookScreenAccessor) bookScreen).languagereload_setCachedPageIndex(-1);
         } else if (client.currentScreen instanceof AdvancementsScreen advancementsScreen) {
-            ((IAdvancementsScreen) advancementsScreen).recreateWidgets();
+            ((IAdvancementsScreen) advancementsScreen).languagereload_recreateWidgets();
         }
 
         // Update signs
         if (client.world == null) return;
         var chunkManager = (ClientChunkManagerAccessor) client.world.getChunkManager();
-        var chunks = ((ClientChunkMapAccessor) chunkManager.getChunks()).getChunks();
+        var chunks = ((ClientChunkMapAccessor) chunkManager.languagereload_getChunks()).languagereload_getChunks();
         for (int i = 0; i < chunks.length(); i++) {
             var chunk = chunks.get(i);
             if (chunk == null) continue;
             for (var blockEntity : chunk.getBlockEntities().values()) {
                 if (!(blockEntity instanceof SignBlockEntity sign)) continue;
-                ((SignBlockEntityAccessor) sign).setTextsBeingEdited(null);
+                ((SignBlockEntityAccessor) sign).languagereload_setTextsBeingEdited(null);
             }
         }
     }
 
     public static void reloadSearch() {
         var client = MinecraftClient.getInstance();
-        ((MinecraftClientAccessor) client).getSearchManager().reload(client.getResourceManager());
+        var searchManager = ((MinecraftClientAccessor) client).languagereload_getSearchManager();
+        searchManager.reload(client.getResourceManager());
     }
 
     public static void setLanguage(String language, LinkedList<String> fallbacks) {

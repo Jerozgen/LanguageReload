@@ -7,6 +7,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(SignBlockEntity.class)
 public interface SignBlockEntityAccessor {
-    @Accessor
-    void setTextsBeingEdited(OrderedText[] textsBeingEdited);
+    @Accessor("textsBeingEdited")
+    void languagereload_setTextsBeingEdited(OrderedText[] textsBeingEdited);
 }

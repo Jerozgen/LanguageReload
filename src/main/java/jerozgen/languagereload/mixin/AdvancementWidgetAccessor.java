@@ -11,22 +11,22 @@ import java.util.List;
 
 @Mixin(AdvancementWidget.class)
 public interface AdvancementWidgetAccessor {
-    @Accessor
-    AdvancementTab getTab();
+    @Accessor("tab")
+    AdvancementTab languagereload_getTab();
 
-    @Accessor
-    AdvancementProgress getProgress();
+    @Accessor("progress")
+    AdvancementProgress languagereload_getProgress();
 
-    @Accessor
-    AdvancementWidget getParent();
+    @Accessor("parent")
+    AdvancementWidget languagereload_getParent();
 
-    @Accessor
-    void setParent(AdvancementWidget parent);
+    @Accessor("parent")
+    void languagereload_setParent(AdvancementWidget parent);
 
-    @Accessor
-    List<AdvancementWidget> getChildren();
+    @Accessor("children")
+    List<AdvancementWidget> languagereload_getChildren();
 
     @Mutable
-    @Accessor
-    void setChildren(List<AdvancementWidget> children);
+    @Accessor("children")
+    void languagereload_setChildren(List<AdvancementWidget> children);
 }

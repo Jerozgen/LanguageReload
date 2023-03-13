@@ -5,5 +5,5 @@ import net.fabricmc.api.Environment;
 
 @Environment(EnvType.CLIENT)
 public interface IAdvancementsTab {
-    void recreateWidgets();
+    void languagereload_recreateWidgets();
 }

@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
 public interface ITranslationStorage {
-    @Nullable String getTargetLanguage();
+    @Nullable String languagereload_getTargetLanguage();
 
-    void setTargetLanguage(@Nullable String value);
+    void languagereload_setTargetLanguage(@Nullable String value);
 }

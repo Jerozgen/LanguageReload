@@ -8,6 +8,7 @@ import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Language;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -21,9 +22,9 @@ import java.util.function.BiConsumer;
 
 @Mixin(TranslationStorage.class)
 abstract class TranslationStorageMixin extends Language implements ITranslationStorage {
-    private @Nullable String targetLanguage;
-    private static Map<String, Map<String, String>> separateTranslationsOnLoad;
-    private Map<String, Map<String, String>> separateTranslations;
+    @Unique private @Nullable String targetLanguage;
+    @Unique private static Map<String, Map<String, String>> separateTranslationsOnLoad;
+    @Unique private Map<String, Map<String, String>> separateTranslations;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     void onConstructed(Map<String, String> translations, boolean rightToLeft, CallbackInfo ci) {
@@ -61,12 +62,12 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
     }
 
     @Override
-    public @Nullable String getTargetLanguage() {
+    public @Nullable String languagereload_getTargetLanguage() {
         return targetLanguage;
     }
 
     @Override
-    public void setTargetLanguage(@Nullable String value) {
+    public void languagereload_setTargetLanguage(@Nullable String value) {
         targetLanguage = value;
     }
 }

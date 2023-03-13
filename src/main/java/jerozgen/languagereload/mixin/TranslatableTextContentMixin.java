@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -25,9 +26,9 @@ import java.util.function.Consumer;
 
 @Mixin(TranslatableTextContent.class)
 abstract class TranslatableTextContentMixin implements TextContent {
-    private @Nullable String previousTargetLanguage;
-    private final Map<String, List<StringVisitable>> separateTranslationsCache = Maps.newHashMap();
-    private @Nullable List<StringVisitable> savedTranslations;
+    @Unique private @Nullable String previousTargetLanguage;
+    @Unique private final Map<String, List<StringVisitable>> separateTranslationsCache = Maps.newHashMap();
+    @Unique private @Nullable List<StringVisitable> savedTranslations;
 
     @Shadow @Final private String key;
     @Shadow private @Nullable Language languageCache;
@@ -39,7 +40,7 @@ abstract class TranslatableTextContentMixin implements TextContent {
         if (!Config.getInstance().multilingualItemSearch) return;
         if (!(languageCache instanceof TranslationStorage)) return;
 
-        var targetLanguage = ((ITranslationStorage) languageCache).getTargetLanguage();
+        var targetLanguage = ((ITranslationStorage) languageCache).languagereload_getTargetLanguage();
         if (Objects.equals(previousTargetLanguage, targetLanguage)) return;
 
         if (targetLanguage == null) {

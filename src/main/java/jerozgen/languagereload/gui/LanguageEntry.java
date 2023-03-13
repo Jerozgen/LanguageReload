@@ -87,7 +87,7 @@ public abstract class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
         for (var widget : buttons)
             if (widget.mouseClicked(mouseX, mouseY, button)) {
-                ((ILanguageOptionsScreen) parentList.getScreen()).focusList(parentList);
+                ((ILanguageOptionsScreen) parentList.getScreen()).languagereload_focusList(parentList);
                 return true;
             }
         return false;

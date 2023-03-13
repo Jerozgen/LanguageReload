@@ -29,13 +29,13 @@ abstract class MinecraftClientMixin {
 
         var stringBuilder = new StringBuilder(text.getString());
         for (String fallbackCode : Config.getInstance().fallbacks) {
-            ((ITranslationStorage) translationStorage).setTargetLanguage(fallbackCode);
+            ((ITranslationStorage) translationStorage).languagereload_setTargetLanguage(fallbackCode);
             stringBuilder.append('\n').append(text.getString());
         }
-        ((ITranslationStorage) translationStorage).setTargetLanguage(Language.DEFAULT_LANGUAGE);
+        ((ITranslationStorage) translationStorage).languagereload_setTargetLanguage(Language.DEFAULT_LANGUAGE);
         stringBuilder.append('\n').append(text.getString());
 
-        ((ITranslationStorage) translationStorage).setTargetLanguage(null);
+        ((ITranslationStorage) translationStorage).languagereload_setTargetLanguage(null);
         return stringBuilder.toString();
     }
 }
