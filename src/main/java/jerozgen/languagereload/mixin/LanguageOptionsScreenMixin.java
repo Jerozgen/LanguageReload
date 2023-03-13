@@ -130,7 +130,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
                     if (selectedLanguageList.children().contains(entry)) return false;
                     var query = searchBox.getText().toLowerCase(Locale.ROOT);
                     var langCode = entry.getCode().toLowerCase(Locale.ROOT);
-                    var langName = entry.getLanguage().getDisplayText().getString().toLowerCase(Locale.ROOT);
+                    var langName = entry.getLanguage().toString().toLowerCase(Locale.ROOT);
                     return langCode.contains(query) || langName.contains(query);
                 }));
     }
