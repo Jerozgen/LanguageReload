@@ -8,6 +8,7 @@ import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
+import net.minecraft.text.Texts;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -35,34 +36,22 @@ public abstract class KeyboardMixin {
         if (Screen.hasShiftDown()) {
             var config = Config.getInstance();
             var languageManager = client.getLanguageManager();
-            var previousLangCode = config.previousLanguage;
-            var previousLanguage = languageManager.getLanguage(previousLangCode);
-            var previousFallbacks = config.previousFallbacks;
 
-            if (previousLanguage == null) {
+            var language = languageManager.getLanguage(config.previousLanguage);
+            if (language == null) {
                 debugError("debug.reload_languages.switch.failure");
             } else {
-                config.previousFallbacks = config.fallbacks;
-                config.fallbacks = previousFallbacks;
-
-                config.previousLanguage = languageManager.getLanguage().getCode();
-                config.language = previousLangCode;
-                client.options.language = previousLangCode;
-                languageManager.setLanguage(previousLanguage);
-
-                LanguageReload.reloadLanguages();
-
-                var languages = new ArrayList<String>();
-                languages.add(previousLanguage.toString());
-                languages.addAll(previousFallbacks.stream()
-                        .map(languageManager::getLanguage)
-                        .filter(Objects::nonNull)
-                        .map(LanguageDefinition::toString)
-                        .toList());
-                debugLog("debug.reload_languages.switch.success", String.join(", ", languages));
-
-                client.options.write();
-                Config.save();
+                LanguageReload.setLanguage(config.previousLanguage, config.previousFallbacks);
+                var languages = new ArrayList<Text>() {{
+                    add(Text.of(language.toString()));
+                    addAll(config.fallbacks.stream()
+                            .map(languageManager::getLanguage)
+                            .filter(Objects::nonNull)
+                            .map(LanguageDefinition::toString)
+                            .map(Text::of)
+                            .toList());
+                }};
+                debugLog("debug.reload_languages.switch.success", Texts.join(languages, Text.of(", ")));
             }
         } else {
             LanguageReload.reloadLanguages();

@@ -1,53 +1,72 @@
 package jerozgen.languagereload.gui;
 
 import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.resource.language.LanguageDefinition;
 
 import java.util.LinkedList;
 
 public class MovableLanguageEntry extends LanguageEntry {
-    private final ButtonWidget addButton = addChild(createButton(15, 24, 0, 0, __ -> {
-        selectedLanguages.add(language);
-    }));
+    private final ButtonWidget addButton = addButton(15, 24, 0, 0, __ -> add());
+    private final ButtonWidget removeButton = addButton(15, 24, 15, 0, __ -> remove());
+    private final ButtonWidget moveUpButton = addButton(11, 11, 31, 0, __ -> moveUp());
+    private final ButtonWidget moveDownButton = addButton(11, 11, 31, 13, __ -> moveDown());
 
-    private final ButtonWidget removeButton = addChild(createButton(15, 24, 15, 0, __ -> {
-        selectedLanguages.remove(language);
-    }));
-
-    private final ButtonWidget moveUpButton = addChild(createButton(11, 11, 31, 0, __ -> {
-        var index = selectedLanguages.indexOf(language);
-        selectedLanguages.add(index - 1, selectedLanguages.remove(index));
-    }));
-
-    private final ButtonWidget moveDownButton = addChild(createButton(11, 11, 31, 12, __ -> {
-        var index = selectedLanguages.indexOf(language);
-        selectedLanguages.add(index + 1, selectedLanguages.remove(index));
-    }));
-
-    public MovableLanguageEntry(Runnable refreshListsAction, LanguageDefinition language, LinkedList<LanguageDefinition> selectedLanguages) {
-        super(refreshListsAction, language, selectedLanguages);
+    public MovableLanguageEntry(Runnable refreshListsAction, String code, LanguageDefinition language, LinkedList<String> selectedLanguages) {
+        super(refreshListsAction, code, language, selectedLanguages);
     }
 
-    private ButtonWidget createButton(int width, int height, int u, int v, ButtonWidget.PressAction pressAction) {
-        return new TexturedButtonWidget(0, 0, width, height, u, v, HOVERED_V_OFFSET, TEXTURE, TEXTURE_WIDTH, TEXTURE_HEIGHT, button -> {
-            pressAction.onPress(button);
-            this.refreshListsAction.run();
-        });
+    private boolean isSelected() {
+        return selectedLanguages.contains(code);
+    }
+
+    private boolean isFirst() {
+        return code.equals(selectedLanguages.peekFirst());
+    }
+
+    private boolean isLast() {
+        return code.equals(selectedLanguages.peekLast());
+    }
+
+    private void add() {
+        selectedLanguages.add(code);
+        refreshListsAction.run();
+    }
+
+    private void remove() {
+        selectedLanguages.remove(code);
+        refreshListsAction.run();
     }
 
     @Override
-    protected void renderButtons(ButtonRenderer buttonRenderer, int top, int left) {
-        if (selectedLanguages.contains(language)) {
-            buttonRenderer.render(removeButton, left, top);
-            var mainLanguage = selectedLanguages.peekFirst();
-            if (!language.equals(mainLanguage)) {
-                buttonRenderer.render(moveUpButton, left + removeButton.getWidth() + 1, top);
-            }
-            var lastFallback = selectedLanguages.peekLast();
-            if (!language.equals(lastFallback)) {
-                buttonRenderer.render(moveDownButton, left + removeButton.getWidth() + 1, top + moveUpButton.getHeight() + 2);
-            }
-        } else buttonRenderer.render(addButton, left + 7, top);
+    public void toggle() {
+        if (!isSelected()) add();
+        else remove();
+    }
+
+    @Override
+    public void moveUp() {
+        if (!isSelected()) return;
+        if (isFirst()) return;
+        var index = selectedLanguages.indexOf(code);
+        selectedLanguages.add(index - 1, selectedLanguages.remove(index));
+        refreshListsAction.run();
+    }
+
+    @Override
+    public void moveDown() {
+        if (!isSelected()) return;
+        if (isLast()) return;
+        var index = selectedLanguages.indexOf(code);
+        selectedLanguages.add(index + 1, selectedLanguages.remove(index));
+        refreshListsAction.run();
+    }
+
+    @Override
+    protected void renderButtons(ButtonRenderer renderer, int x, int y) {
+        if (isSelected()) {
+            renderer.render(removeButton, x, y);
+            if (!isFirst()) renderer.render(moveUpButton, x + removeButton.getWidth() + 1, y);
+            if (!isLast()) renderer.render(moveDownButton, x + removeButton.getWidth() + 1, y + moveUpButton.getHeight() + 2);
+        } else renderer.render(addButton, x + 7, y);
     }
 }
