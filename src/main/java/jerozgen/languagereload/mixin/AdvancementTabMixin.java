@@ -19,17 +19,17 @@ public abstract class AdvancementTabMixin extends DrawableHelper implements IAdv
     @Shadow @Final private Map<Advancement, AdvancementWidget> widgets;
 
     @Override
-    public void recreateWidgets() {
+    public void languagereload_recreateWidgets() {
         widgets.replaceAll((advancement, widget) -> {
             var newWidget = new AdvancementWidget(
-                    ((AdvancementWidgetAccessor) widget).getTab(),
+                    ((AdvancementWidgetAccessor) widget).languagereload_getTab(),
                     client,
                     advancement,
                     Objects.requireNonNull(advancement.getDisplay())
             );
-            newWidget.setProgress(((AdvancementWidgetAccessor) widget).getProgress());
-            ((AdvancementWidgetAccessor) newWidget).setParent(((AdvancementWidgetAccessor) widget).getParent());
-            ((AdvancementWidgetAccessor) newWidget).setChildren(((AdvancementWidgetAccessor) widget).getChildren());
+            newWidget.setProgress(((AdvancementWidgetAccessor) widget).languagereload_getProgress());
+            ((AdvancementWidgetAccessor) newWidget).languagereload_setParent(((AdvancementWidgetAccessor) widget).languagereload_getParent());
+            ((AdvancementWidgetAccessor) newWidget).languagereload_setChildren(((AdvancementWidgetAccessor) widget).languagereload_getChildren());
             return newWidget;
         });
     }

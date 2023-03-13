@@ -6,6 +6,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(ClientChunkManager.class)
 public interface ClientChunkManagerAccessor {
-    @Accessor
-    ClientChunkManager.ClientChunkMap getChunks();
+    @Accessor("chunks")
+    ClientChunkManager.ClientChunkMap languagereload_getChunks();
 }

@@ -17,6 +17,7 @@ import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -28,12 +29,12 @@ import java.util.stream.Stream;
 public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen implements ILanguageOptionsScreen {
     @Shadow @Final private static Text LANGUAGE_WARNING_TEXT;
 
-    private LanguageListWidget availableLanguageList;
-    private LanguageListWidget selectedLanguageList;
-    private TextFieldWidget searchBox;
-    private final LinkedList<String> selectedLanguages = new LinkedList<>();
-    private final Map<String, MovableLanguageEntry> languageEntries = new LinkedHashMap<>();
-    private LockedLanguageEntry defaultLanguageEntry;
+    @Unique private LanguageListWidget availableLanguageList;
+    @Unique private LanguageListWidget selectedLanguageList;
+    @Unique private TextFieldWidget searchBox;
+    @Unique private final LinkedList<String> selectedLanguages = new LinkedList<>();
+    @Unique private final Map<String, MovableLanguageEntry> languageEntries = new LinkedHashMap<>();
+    @Unique private LockedLanguageEntry defaultLanguageEntry;
 
     LanguageOptionsScreenMixin(Screen parent, GameOptions options, Text title) {
         super(parent, options, title);
@@ -86,6 +87,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         ci.cancel();
     }
 
+    @Unique
     private void onDone(ButtonWidget button) {
         if (client == null) return;
         client.setScreen(parent);
@@ -101,7 +103,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     }
 
     @Override
-    public void focusEntry(LanguageEntry entry) {
+    public void languagereload_focusEntry(LanguageEntry entry) {
         ((AlwaysSelectedEntryListWidgetAccessor) availableLanguageList).setInFocus(false);
         ((AlwaysSelectedEntryListWidgetAccessor) selectedLanguageList).setInFocus(false);
         entry.getParent().setSelected(entry);
@@ -109,12 +111,14 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         setFocused(entry.getParent());
     }
 
-    public void focusSearch() {
+    @Unique
+    private void focusSearch() {
         ((AlwaysSelectedEntryListWidgetAccessor) availableLanguageList).setInFocus(false);
         ((AlwaysSelectedEntryListWidgetAccessor) selectedLanguageList).setInFocus(false);
         setFocused(searchBox);
     }
 
+    @Unique
     private void refresh() {
         refreshList(selectedLanguageList, Stream.concat(
                 selectedLanguages.stream().map(languageEntries::get).filter(Objects::nonNull),
@@ -129,6 +133,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
                 }));
     }
 
+    @Unique
     private void refreshList(LanguageListWidget list, Stream<? extends LanguageEntry> entries) {
         var selectedEntry = list.getSelectedOrNull();
         list.setSelected(null);
