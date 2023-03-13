@@ -6,6 +6,6 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(BookScreen.class)
 public interface BookScreenAccessor {
-    @Accessor
-    void setCachedPageIndex(int cachedPageIndex);
+    @Accessor("cachedPageIndex")
+    void languagereload_setCachedPageIndex(int cachedPageIndex);
 }

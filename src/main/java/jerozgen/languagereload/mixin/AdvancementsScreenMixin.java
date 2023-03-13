@@ -23,9 +23,9 @@ public abstract class AdvancementsScreenMixin extends Screen implements ClientAd
     }
 
     @Override
-    public void recreateWidgets() {
+    public void languagereload_recreateWidgets() {
         for (var advancementTab : tabs.values()) {
-            ((IAdvancementsTab) advancementTab).recreateWidgets();
+            ((IAdvancementsTab) advancementTab).languagereload_recreateWidgets();
         }
     }
 }

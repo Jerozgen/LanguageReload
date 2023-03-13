@@ -46,7 +46,7 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
         if (keyCode == GLFW_KEY_SPACE || keyCode == GLFW_KEY_ENTER) {
             selectedEntry.toggle();
             this.setFocused(null);
-            ((ILanguageOptionsScreen) screen).focusEntry(selectedEntry);
+            ((ILanguageOptionsScreen) screen).languagereload_focusEntry(selectedEntry);
             return true;
         }
 
@@ -81,7 +81,7 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
             return true;
         }
 
-        return ((EntryListWidgetAccessor) this).isScrolling();
+        return ((EntryListWidgetAccessor) this).languagereload_isScrolling();
     }
 
     @Override
