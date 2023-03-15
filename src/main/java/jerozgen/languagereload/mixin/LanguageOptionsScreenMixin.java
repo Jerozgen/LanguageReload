@@ -68,7 +68,6 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         };
         searchBox.setChangedListener(__ -> refresh());
         addSelectableChild(searchBox);
-        setInitialFocus(searchBox);
 
         var listWidth = Math.min(width / 2 - 4, 200);
         var it = (LanguageOptionsScreen) (Object) this;
@@ -82,6 +81,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
         addDrawableChild(gameOptions.getForceUnicodeFont().createButton(gameOptions, width / 2 - 155, height - 28, 150));
         addDrawableChild(new ButtonWidget(width / 2 - 155 + 160, height - 28, 150, 20, ScreenTexts.DONE, this::onDone));
+        setInitialFocus(searchBox);
 
         super.init();
         ci.cancel();
