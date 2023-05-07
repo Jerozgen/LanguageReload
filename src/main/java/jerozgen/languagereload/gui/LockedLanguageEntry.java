@@ -1,34 +1,35 @@
 package jerozgen.languagereload.gui;
 
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
-import net.minecraft.client.resource.language.LanguageDefinition;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
+
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.ImageButton;
+import net.minecraft.client.resources.language.LanguageInfo;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 
 import java.util.LinkedList;
 import java.util.function.Consumer;
 
 public class LockedLanguageEntry extends LanguageEntry {
-    private static final Text LOCK_BUTTON_TOOLTIP = Text.translatable("language.default.tooltip");
+    private static final Component LOCK_BUTTON_TOOLTIP = Component.translatable("language.default.tooltip");
 
-    private final ButtonWidget lockButton = addButton(new TexturedButtonWidget(0, 0, 16, 24, 43, 0, 0,
-            TEXTURE, TEXTURE_WIDTH, TEXTURE_HEIGHT, __ -> {}, new ButtonWidget.TooltipSupplier() {
+    private final Button lockButton = addButton(new ImageButton(0, 0, 16, 24, 43, 0, 0,
+            TEXTURE, TEXTURE_WIDTH, TEXTURE_HEIGHT, __ -> {}, new Button.OnTooltip() {
         @Override
-        public void onTooltip(ButtonWidget button, MatrixStack matrices, int mouseX, int mouseY) {
-            if (client.currentScreen != null) {
-                client.currentScreen.renderTooltip(matrices, LOCK_BUTTON_TOOLTIP, mouseX, mouseY);
+        public void onTooltip(Button button, PoseStack matrices, int mouseX, int mouseY) {
+            if (client.screen != null) {
+                client.screen.renderTooltip(matrices, LOCK_BUTTON_TOOLTIP, mouseX, mouseY);
             }
         }
 
         @Override
-        public void supply(Consumer<Text> consumer) {
+        public void narrateTooltip(Consumer<Component> consumer) {
             consumer.accept(LOCK_BUTTON_TOOLTIP);
         }
-    }, ScreenTexts.EMPTY));
+    }, CommonComponents.EMPTY));
 
-    public LockedLanguageEntry(Runnable refreshListsAction, String code, LanguageDefinition language, LinkedList<String> selectedLanguages) {
+    public LockedLanguageEntry(Runnable refreshListsAction, String code, LanguageInfo language, LinkedList<String> selectedLanguages) {
         super(refreshListsAction, code, language, selectedLanguages);
         lockButton.active = false;
     }

@@ -1,17 +1,17 @@
 package jerozgen.languagereload.gui;
 
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.resource.language.LanguageDefinition;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.resources.language.LanguageInfo;
 
 import java.util.LinkedList;
 
 public class MovableLanguageEntry extends LanguageEntry {
-    private final ButtonWidget addButton = addButton(15, 24, 0, 0, __ -> add());
-    private final ButtonWidget removeButton = addButton(15, 24, 15, 0, __ -> remove());
-    private final ButtonWidget moveUpButton = addButton(11, 11, 31, 0, __ -> moveUp());
-    private final ButtonWidget moveDownButton = addButton(11, 11, 31, 13, __ -> moveDown());
+    private final Button addButton = addButton(15, 24, 0, 0, __ -> add());
+    private final Button removeButton = addButton(15, 24, 15, 0, __ -> remove());
+    private final Button moveUpButton = addButton(11, 11, 31, 0, __ -> moveUp());
+    private final Button moveDownButton = addButton(11, 11, 31, 13, __ -> moveDown());
 
-    public MovableLanguageEntry(Runnable refreshListsAction, String code, LanguageDefinition language, LinkedList<String> selectedLanguages) {
+    public MovableLanguageEntry(Runnable refreshListsAction, String code, LanguageInfo language, LinkedList<String> selectedLanguages) {
         super(refreshListsAction, code, language, selectedLanguages);
     }
 

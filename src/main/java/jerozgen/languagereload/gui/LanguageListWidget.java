@@ -1,27 +1,27 @@
 package jerozgen.languagereload.gui;
 
 
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.Tesselator;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.mixin.EntryListWidgetAccessor;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.ParentElement;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.option.LanguageOptionsScreen;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.minecraft.client.render.Tessellator;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.ObjectSelectionList;
+import net.minecraft.client.gui.components.events.ContainerEventHandler;
+import net.minecraft.client.gui.screens.LanguageSelectScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.util.Mth;
 import org.jetbrains.annotations.Nullable;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEntry> {
-    private final Text title;
-    private final LanguageOptionsScreen screen;
+public class LanguageListWidget extends ObjectSelectionList<LanguageEntry> {
+    private final Component title;
+    private final LanguageSelectScreen screen;
 
-    public LanguageListWidget(MinecraftClient client, LanguageOptionsScreen screen, int width, int height, Text title) {
+    public LanguageListWidget(Minecraft client, LanguageSelectScreen screen, int width, int height, Component title) {
         super(client, width, height, 48, height - 55 + 4, 24);
         this.title = title;
         this.screen = screen;
@@ -31,16 +31,16 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
     }
 
     @Override
-    protected void renderHeader(MatrixStack matrices, int x, int y, Tessellator tessellator) {
-        var headerText = title.copy().formatted(Formatting.UNDERLINE, Formatting.BOLD);
-        int headerPosX = x + width / 2 - client.textRenderer.getWidth(headerText) / 2;
-        int headerPosY = Math.min(top + 3, y);
-        client.textRenderer.draw(matrices, headerText, headerPosX, headerPosY, 0xFFFFFF);
+    protected void renderHeader(PoseStack matrices, int x, int y, Tesselator tessellator) {
+        var headerText = title.copy().withStyle(ChatFormatting.UNDERLINE, ChatFormatting.BOLD);
+        int headerPosX = x + width / 2 - minecraft.font.width(headerText) / 2;
+        int headerPosY = Math.min(y0 + 3, y);
+        minecraft.font.draw(matrices, headerText, headerPosX, headerPosY, 0xFFFFFF);
     }
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        var selectedEntry = this.getSelectedOrNull();
+        var selectedEntry = this.getSelected();
         if (selectedEntry == null) return super.keyPressed(keyCode, scanCode, modifiers);
 
         if (keyCode == GLFW_KEY_SPACE || keyCode == GLFW_KEY_ENTER) {
@@ -75,7 +75,7 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
 
         if (entry != null && entry.mouseClicked(mouseX, mouseY, button)) {
             var focusedEntry = this.getFocused();
-            if (focusedEntry != entry && focusedEntry instanceof ParentElement parentElement)
+            if (focusedEntry != entry && focusedEntry instanceof ContainerEventHandler parentElement)
                 parentElement.setFocused(null);
             this.setDragging(true);
             return true;
@@ -88,17 +88,17 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
     @Nullable
     protected LanguageEntry getEntryAtPosition(double x, double y) {
         int halfRowWidth = this.getRowWidth() / 2;
-        int center = left + width / 2;
+        int center = x0 + width / 2;
         int minX = center - halfRowWidth;
         int maxX = center + halfRowWidth;
-        var scrollbarPositionX = this.getScrollbarPositionX();
-        int m = MathHelper.floor(y - top) - headerHeight + (int) this.getScrollAmount() - 4 + 2;
+        var scrollbarPositionX = this.getScrollbarPosition();
+        int m = Mth.floor(y - y0) - headerHeight + (int) this.getScrollAmount() - 4 + 2;
         int entryIndex = m / itemHeight;
         return (x < scrollbarPositionX && x >= minX && x <= maxX && entryIndex >= 0 && m >= 0
-                && entryIndex < this.getEntryCount() ? this.children().get(entryIndex) : null);
+                && entryIndex < this.getItemCount() ? this.children().get(entryIndex) : null);
     }
 
-    public LanguageOptionsScreen getScreen() {
+    public LanguageSelectScreen getScreen() {
         return screen;
     }
 
@@ -108,8 +108,8 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
     }
 
     @Override
-    protected int getScrollbarPositionX() {
-        return right - 6;
+    protected int getScrollbarPosition() {
+        return x1 - 6;
     }
 
     protected boolean isFocused() {

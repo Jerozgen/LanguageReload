@@ -1,12 +1,12 @@
 package jerozgen.languagereload.mixin;
 
-import net.minecraft.block.entity.SignBlockEntity;
-import net.minecraft.text.OrderedText;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(SignBlockEntity.class)
 public interface SignBlockEntityAccessor {
-    @Accessor("textsBeingEdited")
-    void languagereload_setTextsBeingEdited(OrderedText[] textsBeingEdited);
+    @Accessor("renderMessages")
+    void languagereload_setTextsBeingEdited(FormattedCharSequence[] textsBeingEdited);
 }
