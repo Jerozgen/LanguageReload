@@ -10,9 +10,12 @@ import net.minecraft.client.gui.components.ImageButton;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.resources.language.LanguageInfo;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class LanguageEntry extends ObjectSelectionList.Entry<LanguageEntry> {
     protected static final ResourceLocation TEXTURE = new ResourceLocation(LanguageReload.MOD_ID, "textures/gui/language_selection.png");
@@ -52,11 +55,14 @@ public abstract class LanguageEntry extends ObjectSelectionList.Entry<LanguageEn
         return parentList.getSelected() == this && parentList.isFocused();
     }
 
-    public void toggle() {}
+    public void toggle() {
+    }
 
-    public void moveUp() {}
+    public void moveUp() {
+    }
 
-    public void moveDown() {}
+    public void moveDown() {
+    }
 
     protected abstract void renderButtons(ButtonRenderer buttonRenderer, int x, int y);
 
@@ -64,10 +70,10 @@ public abstract class LanguageEntry extends ObjectSelectionList.Entry<LanguageEn
     public void render(PoseStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         x -= 2;
         y -= 2;
-        if (hovered || isFocused() || client.options.touchscreen().get()) {
+        if (hovered || isFocused() || client.options.touchscreen) {
             GuiComponent.fill(matrices,
-                    x + 1, y + 1, x + entryWidth - 1, y + entryHeight + 3,
-                    (hovered || isFocused()) ? 0xA0909090 : 0x50909090);
+                x + 1, y + 1, x + entryWidth - 1, y + entryHeight + 3,
+                (hovered || isFocused()) ? 0xA0909090 : 0x50909090);
             buttons.forEach(button -> button.visible = false);
             renderButtons((button, buttonX, buttonY) -> {
                 button.x = buttonX;
@@ -82,7 +88,7 @@ public abstract class LanguageEntry extends ObjectSelectionList.Entry<LanguageEn
 
     @Override
     public Component getNarration() {
-        return Component.translatable("narrator.select", language);
+        return new TranslatableComponent("narrator.select", language);
     }
 
     @Override

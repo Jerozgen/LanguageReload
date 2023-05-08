@@ -4,7 +4,11 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.config.Config;
-import jerozgen.languagereload.gui.*;
+import jerozgen.languagereload.gui.LanguageEntry;
+import jerozgen.languagereload.gui.LanguageListWidget;
+import jerozgen.languagereload.gui.LockedLanguageEntry;
+import jerozgen.languagereload.gui.MovableLanguageEntry;
+import net.minecraft.client.Option;
 import net.minecraft.client.Options;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
@@ -14,6 +18,8 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -27,14 +33,22 @@ import java.util.stream.Stream;
 
 @Mixin(LanguageSelectScreen.class)
 public abstract class LanguageOptionsScreenMixin extends OptionsSubScreen implements ILanguageOptionsScreen {
-    @Shadow @Final private static Component WARNING_LABEL;
+    @Shadow
+    @Final
+    private static Component WARNING_LABEL;
 
-    @Unique private LanguageListWidget availableLanguageList;
-    @Unique private LanguageListWidget selectedLanguageList;
-    @Unique private EditBox searchBox;
-    @Unique private final LinkedList<String> selectedLanguages = new LinkedList<>();
-    @Unique private final Map<String, MovableLanguageEntry> languageEntries = new LinkedHashMap<>();
-    @Unique private LockedLanguageEntry defaultLanguageEntry;
+    @Unique
+    private LanguageListWidget availableLanguageList;
+    @Unique
+    private LanguageListWidget selectedLanguageList;
+    @Unique
+    private EditBox searchBox;
+    @Unique
+    private final LinkedList<String> selectedLanguages = new LinkedList<>();
+    @Unique
+    private final Map<String, MovableLanguageEntry> languageEntries = new LinkedHashMap<>();
+    @Unique
+    private LockedLanguageEntry defaultLanguageEntry;
 
     LanguageOptionsScreenMixin(Screen parent, Options options, Component title) {
         super(parent, options, title);
@@ -56,14 +70,13 @@ public abstract class LanguageOptionsScreenMixin extends OptionsSubScreen implem
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
     void onInit(CallbackInfo ci) {
-        searchBox = new EditBox(font, width / 2 - 100, 22, 200, 20, searchBox, Component.empty()) {
+        searchBox = new EditBox(font, width / 2 - 100, 22, 200, 20, searchBox, TextComponent.EMPTY) {
             @Override
             public void setFocused(boolean focused) {
                 if (!isFocused() && focused) {
                     super.setFocused(true);
                     focusSearch();
-                }
-                else super.setFocused(focused);
+                } else super.setFocused(focused);
             }
         };
         searchBox.setResponder(__ -> refresh());
@@ -71,15 +84,15 @@ public abstract class LanguageOptionsScreenMixin extends OptionsSubScreen implem
 
         var listWidth = Math.min(width / 2 - 4, 200);
         var it = (LanguageSelectScreen) (Object) this;
-        availableLanguageList = new LanguageListWidget(minecraft, it, listWidth, height, Component.translatable("pack.available.title"));
-        selectedLanguageList = new LanguageListWidget(minecraft, it, listWidth, height, Component.translatable("pack.selected.title"));
+        availableLanguageList = new LanguageListWidget(minecraft, it, listWidth, height, new TranslatableComponent("pack.available.title"));
+        selectedLanguageList = new LanguageListWidget(minecraft, it, listWidth, height, new TranslatableComponent("pack.selected.title"));
         availableLanguageList.setLeftPos(width / 2 - 4 - listWidth);
         selectedLanguageList.setLeftPos(width / 2 + 4);
         addWidget(availableLanguageList);
         addWidget(selectedLanguageList);
         refresh();
 
-        addRenderableWidget(options.forceUnicodeFont().createButton(options, width / 2 - 155, height - 28, 150));
+        addRenderableWidget(Option.FORCE_UNICODE_FONT.createButton(options, width / 2 - 155, height - 28, 150));
         addRenderableWidget(new Button(width / 2 - 155 + 160, height - 28, 150, 20, CommonComponents.GUI_DONE, this::onDone));
         setInitialFocus(searchBox);
 
@@ -121,16 +134,16 @@ public abstract class LanguageOptionsScreenMixin extends OptionsSubScreen implem
     @Unique
     private void refresh() {
         refreshList(selectedLanguageList, Stream.concat(
-                selectedLanguages.stream().map(languageEntries::get).filter(Objects::nonNull),
-                Stream.of(defaultLanguageEntry)));
+            selectedLanguages.stream().map(languageEntries::get).filter(Objects::nonNull),
+            Stream.of(defaultLanguageEntry)));
         refreshList(availableLanguageList, languageEntries.values().stream()
-                .filter(entry -> {
-                    if (selectedLanguageList.children().contains(entry)) return false;
-                    var query = searchBox.getValue().toLowerCase(Locale.ROOT);
-                    var langCode = entry.getCode().toLowerCase(Locale.ROOT);
-                    var langName = entry.getLanguage().toString().toLowerCase(Locale.ROOT);
-                    return langCode.contains(query) || langName.contains(query);
-                }));
+            .filter(entry -> {
+                if (selectedLanguageList.children().contains(entry)) return false;
+                var query = searchBox.getValue().toLowerCase(Locale.ROOT);
+                var langCode = entry.getCode().toLowerCase(Locale.ROOT);
+                var langName = entry.getLanguage().toString().toLowerCase(Locale.ROOT);
+                return langCode.contains(query) || langName.contains(query);
+            }));
     }
 
     @Unique

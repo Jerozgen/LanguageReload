@@ -1,5 +1,5 @@
 modLoader = "javafml" #mandatory
-loaderVersion = "[43,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+loaderVersion = "[40,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
 license = "MIT"
 [[mods]] #mandatory
 modId = "languagereload" #mandatory
@@ -11,12 +11,12 @@ description = '''Reduces load times and adds fallbacks for languages.'''
 [[dependencies.languagereload]] #optional
 modId = "forge" #mandatory
 mandatory = true #mandatory
-versionRange = "[43,)" #mandatory
+versionRange = "[40.2.1,)" #mandatory
 ordering = "NONE"
 side = "CLIENT"
 [[dependencies.languagereload]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.2,1.20)"
+versionRange = "[1.18.2,1.19)"
 ordering = "NONE"
 side = "CLIENT"

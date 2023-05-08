@@ -6,10 +6,7 @@ import jerozgen.languagereload.access.ITranslationStorage;
 import jerozgen.languagereload.config.Config;
 import net.minecraft.client.resources.language.ClientLanguage;
 import net.minecraft.locale.Language;
-import net.minecraft.network.chat.ComponentContents;
-import net.minecraft.network.chat.FormattedText;
-import net.minecraft.network.chat.contents.TranslatableContents;
-import net.minecraft.network.chat.contents.TranslatableFormatException;
+import net.minecraft.network.chat.*;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -24,8 +21,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
-@Mixin(TranslatableContents.class)
-abstract class TranslatableTextContentMixin implements ComponentContents {
+@Mixin(TranslatableComponent.class)
+abstract class TranslatableTextContentMixin implements MutableComponent {
     @Unique private @Nullable String previousTargetLanguage;
     @Unique private final Map<String, List<FormattedText>> separateTranslationsCache = Maps.newHashMap();
     @Unique private @Nullable List<FormattedText> savedTranslations;

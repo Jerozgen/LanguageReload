@@ -10,13 +10,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.io.BufferedReader;
-import java.util.function.Consumer;
 
 @Mixin(Options.class)
 abstract class GameOptionsMixin {
-    @Inject(method = "load(Z)V", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE",
-        target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V"), remap = false)
-    void onLoad(boolean limited, CallbackInfo ci, CompoundTag compoundtag, BufferedReader bufferedreader, CompoundTag compoundtag1, Consumer processor) {
+    @Inject(method = "load", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE",
+        target = "Lnet/minecraft/client/Options;processOptions(Lnet/minecraft/client/Options$FieldAccess;)V"))
+    void onLoad(CallbackInfo ci, CompoundTag compoundtag, BufferedReader bufferedreader, CompoundTag compoundtag1) {
         LanguageReload.shouldSetSystemLanguage = !compoundtag1.contains("lang");
     }
 }

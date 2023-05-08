@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.language.LanguageInfo;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.ComponentUtils;
+import net.minecraft.network.chat.TranslatableComponent;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -68,7 +69,7 @@ public abstract class KeyboardMixin {
         target = "Lnet/minecraft/client/gui/components/ChatComponent;addMessage(Lnet/minecraft/network/chat/Component;)V",
         ordinal = 6, shift = At.Shift.AFTER))
     private void onProcessF3$addHelp(int key, CallbackInfoReturnable<Boolean> cir) {
-        minecraft.gui.getChat().addMessage(Component.translatable("debug.reload_languages.help"));
+        minecraft.gui.getChat().addMessage(new TranslatableComponent("debug.reload_languages.help"));
     }
 
     @Inject(method = "handleDebugKeys", at = @At("RETURN"), cancellable = true)

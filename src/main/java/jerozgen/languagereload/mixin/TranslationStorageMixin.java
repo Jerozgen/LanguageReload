@@ -24,6 +24,7 @@ import java.util.function.BiConsumer;
 @Mixin(ClientLanguage.class)
 abstract class TranslationStorageMixin extends Language implements ITranslationStorage {
     @Unique private @Nullable String targetLanguage;
+    private static String languageOnLoad;
     @Unique private static Map<String, Map<String, String>> separateTranslationsOnLoad;
     @Unique private Map<String, Map<String, String>> separateTranslations;
 
@@ -31,6 +32,13 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
     void onConstructed(Map<String, String> translations, boolean rightToLeft, CallbackInfo ci) {
         separateTranslations = separateTranslationsOnLoad;
         separateTranslationsOnLoad = null;
+    }
+
+    @Redirect(method = "loadFrom",
+        at = @At(value = "INVOKE", target = "Lnet/minecraft/client/resources/language/LanguageInfo;getCode()Ljava/lang/String;"))
+    private static String onLoad$language(LanguageInfo instance) {
+        languageOnLoad = instance.getCode();
+        return languageOnLoad;
     }
 
     @Inject(method = "loadFrom",
@@ -41,10 +49,10 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
 
     @Redirect(method = "appendFrom", at = @At(value = "INVOKE",
             target = "Lnet/minecraft/locale/Language;loadFromJson(Ljava/io/InputStream;Ljava/util/function/BiConsumer;)V"))
-    private static void onInternalLoad$saveSeparately(InputStream inputStream, BiConsumer<String, String> entryConsumer, String langCode) {
+    private static void onInternalLoad$saveSeparately(InputStream inputStream, BiConsumer<String, String> entryConsumer) {
         if (Config.getInstance().multilingualItemSearch) {
             Language.loadFromJson(inputStream, entryConsumer.andThen((key, value) ->
-                    separateTranslationsOnLoad.computeIfAbsent(langCode, k -> Maps.newHashMap()).put(key, value)));
+                    separateTranslationsOnLoad.computeIfAbsent(languageOnLoad, k -> Maps.newHashMap()).put(key, value)));
         } else Language.loadFromJson(inputStream, entryConsumer);
     }
 
