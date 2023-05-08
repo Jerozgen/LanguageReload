@@ -1,12 +1,12 @@
 package jerozgen.languagereload.mixin;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.search.SearchManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.searchtree.SearchRegistry;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Mixin(MinecraftClient.class)
+@Mixin(Minecraft.class)
 public interface MinecraftClientAccessor {
-    @Accessor("searchManager")
-    SearchManager languagereload_getSearchManager();
+    @Accessor("searchRegistry")
+    SearchRegistry languagereload_getSearchManager();
 }

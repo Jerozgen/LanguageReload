@@ -1,6 +1,0 @@
-accessWidener   v1  named
-
-accessible  class   net/minecraft/client/gui/screen/option/LanguageOptionsScreen$LanguageSelectionListWidget
-extendable  class   net/minecraft/client/world/ClientChunkManager$ClientChunkMap
-
-extendable  method  net/minecraft/client/gui/widget/EntryListWidget     getEntryAtPosition  (DD)Lnet/minecraft/client/gui/widget/EntryListWidget$Entry;
