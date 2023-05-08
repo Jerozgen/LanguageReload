@@ -20,10 +20,10 @@ abstract class MinecraftClientMixin {
         Config.load();
     }
 
-    // targeting lambdas directly does not work for production environment since no mappings are generated for them during the build process
+    // targeting lambdas for 43.2.x versions seems to be buggy for production environment
     // https://github.com/SpongePowered/Mixin/issues/355
     // That's why for dev environments m_210806_ must be replaced by lambda$createSearchTrees$6 and m_231454_ by lambda$createSearchTrees$14
-    // It's probably possible to fix this issue by using extraMappings but there seems to be no proper documentation or examples on this.
+    // However it works fine for Forge 40.2.x (1.18.2)
     @Redirect(method = {"m_210806_" /* Creative Inventory */, "m_231454_" /* Recipe Book */},
         at = @At(value = "INVOKE", target = "Lnet/minecraft/network/chat/Component;getString()Ljava/lang/String;"))
     private static String addFallbackTranslationsToSearchTooltips(Component text) {
