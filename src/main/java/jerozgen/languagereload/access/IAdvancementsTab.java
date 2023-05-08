@@ -1,9 +1,9 @@
 package jerozgen.languagereload.access;
 
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
-@Environment(EnvType.CLIENT)
+@OnlyIn(Dist.CLIENT)
 public interface IAdvancementsTab {
     void languagereload_recreateWidgets();
 }

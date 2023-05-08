@@ -2,6 +2,7 @@
   "required": true,
   "minVersion": "0.8",
   "package": "jerozgen.languagereload.mixin",
+  "refmap": "languagereload.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "client": [
     "AdvancementsScreenMixin",

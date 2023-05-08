@@ -1,19 +1,25 @@
 package jerozgen.languagereload.mixin;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.config.Config;
-import jerozgen.languagereload.gui.*;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.option.GameOptionsScreen;
-import net.minecraft.client.gui.screen.option.LanguageOptionsScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.client.resource.language.LanguageManager;
-import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.screen.ScreenTexts;
-import net.minecraft.text.Text;
+import jerozgen.languagereload.gui.LanguageEntry;
+import jerozgen.languagereload.gui.LanguageListWidget;
+import jerozgen.languagereload.gui.LockedLanguageEntry;
+import jerozgen.languagereload.gui.MovableLanguageEntry;
+import net.minecraft.client.Option;
+import net.minecraft.client.Options;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.LanguageSelectScreen;
+import net.minecraft.client.gui.screens.OptionsSubScreen;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.language.LanguageManager;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,28 +31,36 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.*;
 import java.util.stream.Stream;
 
-@Mixin(LanguageOptionsScreen.class)
-public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen implements ILanguageOptionsScreen {
-    @Shadow @Final private static Text LANGUAGE_WARNING_TEXT;
+@Mixin(LanguageSelectScreen.class)
+public abstract class LanguageOptionsScreenMixin extends OptionsSubScreen implements ILanguageOptionsScreen {
+    @Shadow
+    @Final
+    private static Component WARNING_LABEL;
 
-    @Unique private LanguageListWidget availableLanguageList;
-    @Unique private LanguageListWidget selectedLanguageList;
-    @Unique private TextFieldWidget searchBox;
-    @Unique private final LinkedList<String> selectedLanguages = new LinkedList<>();
-    @Unique private final Map<String, MovableLanguageEntry> languageEntries = new LinkedHashMap<>();
-    @Unique private LockedLanguageEntry defaultLanguageEntry;
+    @Unique
+    private LanguageListWidget availableLanguageList;
+    @Unique
+    private LanguageListWidget selectedLanguageList;
+    @Unique
+    private EditBox searchBox;
+    @Unique
+    private final LinkedList<String> selectedLanguages = new LinkedList<>();
+    @Unique
+    private final Map<String, MovableLanguageEntry> languageEntries = new LinkedHashMap<>();
+    @Unique
+    private LockedLanguageEntry defaultLanguageEntry;
 
-    LanguageOptionsScreenMixin(Screen parent, GameOptions options, Text title) {
+    LanguageOptionsScreenMixin(Screen parent, Options options, Component title) {
         super(parent, options, title);
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    void onConstructed(Screen parent, GameOptions options, LanguageManager languageManager, CallbackInfo ci) {
-        var currentLangCode = languageManager.getLanguage().getCode();
+    void onConstructed(Screen parent, Options options, LanguageManager languageManager, CallbackInfo ci) {
+        var currentLangCode = languageManager.getSelected().getCode();
         if (!currentLangCode.equals(LanguageManager.DEFAULT_LANGUAGE_CODE))
             selectedLanguages.add(currentLangCode);
         selectedLanguages.addAll(Config.getInstance().fallbacks);
-        for (var language : languageManager.getAllLanguages()) {
+        for (var language : languageManager.getLanguages()) {
             var code = language.getCode();
             if (!code.equals(LanguageManager.DEFAULT_LANGUAGE_CODE))
                 languageEntries.put(code, new MovableLanguageEntry(this::refresh, code, language, selectedLanguages));
@@ -56,31 +70,30 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
     void onInit(CallbackInfo ci) {
-        searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, searchBox, Text.empty()) {
+        searchBox = new EditBox(font, width / 2 - 100, 22, 200, 20, searchBox, TextComponent.EMPTY) {
             @Override
             public void setFocused(boolean focused) {
                 if (!isFocused() && focused) {
                     super.setFocused(true);
                     focusSearch();
-                }
-                else super.setFocused(focused);
+                } else super.setFocused(focused);
             }
         };
-        searchBox.setChangedListener(__ -> refresh());
-        addSelectableChild(searchBox);
+        searchBox.setResponder(__ -> refresh());
+        addWidget(searchBox);
 
         var listWidth = Math.min(width / 2 - 4, 200);
-        var it = (LanguageOptionsScreen) (Object) this;
-        availableLanguageList = new LanguageListWidget(client, it, listWidth, height, Text.translatable("pack.available.title"));
-        selectedLanguageList = new LanguageListWidget(client, it, listWidth, height, Text.translatable("pack.selected.title"));
+        var it = (LanguageSelectScreen) (Object) this;
+        availableLanguageList = new LanguageListWidget(minecraft, it, listWidth, height, new TranslatableComponent("pack.available.title"));
+        selectedLanguageList = new LanguageListWidget(minecraft, it, listWidth, height, new TranslatableComponent("pack.selected.title"));
         availableLanguageList.setLeftPos(width / 2 - 4 - listWidth);
         selectedLanguageList.setLeftPos(width / 2 + 4);
-        addSelectableChild(availableLanguageList);
-        addSelectableChild(selectedLanguageList);
+        addWidget(availableLanguageList);
+        addWidget(selectedLanguageList);
         refresh();
 
-        addDrawableChild(gameOptions.getForceUnicodeFont().createButton(gameOptions, width / 2 - 155, height - 28, 150));
-        addDrawableChild(new ButtonWidget(width / 2 - 155 + 160, height - 28, 150, 20, ScreenTexts.DONE, this::onDone));
+        addRenderableWidget(Option.FORCE_UNICODE_FONT.createButton(options, width / 2 - 155, height - 28, 150));
+        addRenderableWidget(new Button(width / 2 - 155 + 160, height - 28, 150, 20, CommonComponents.GUI_DONE, this::onDone));
         setInitialFocus(searchBox);
 
         super.init();
@@ -88,9 +101,9 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     }
 
     @Unique
-    private void onDone(ButtonWidget button) {
-        if (client == null) return;
-        client.setScreen(parent);
+    private void onDone(Button button) {
+        if (minecraft == null) return;
+        minecraft.setScreen(lastScreen);
 
         var language = selectedLanguages.peekFirst();
         if (language == null) {
@@ -121,21 +134,21 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     @Unique
     private void refresh() {
         refreshList(selectedLanguageList, Stream.concat(
-                selectedLanguages.stream().map(languageEntries::get).filter(Objects::nonNull),
-                Stream.of(defaultLanguageEntry)));
+            selectedLanguages.stream().map(languageEntries::get).filter(Objects::nonNull),
+            Stream.of(defaultLanguageEntry)));
         refreshList(availableLanguageList, languageEntries.values().stream()
-                .filter(entry -> {
-                    if (selectedLanguageList.children().contains(entry)) return false;
-                    var query = searchBox.getText().toLowerCase(Locale.ROOT);
-                    var langCode = entry.getCode().toLowerCase(Locale.ROOT);
-                    var langName = entry.getLanguage().toString().toLowerCase(Locale.ROOT);
-                    return langCode.contains(query) || langName.contains(query);
-                }));
+            .filter(entry -> {
+                if (selectedLanguageList.children().contains(entry)) return false;
+                var query = searchBox.getValue().toLowerCase(Locale.ROOT);
+                var langCode = entry.getCode().toLowerCase(Locale.ROOT);
+                var langName = entry.getLanguage().toString().toLowerCase(Locale.ROOT);
+                return langCode.contains(query) || langName.contains(query);
+            }));
     }
 
     @Unique
     private void refreshList(LanguageListWidget list, Stream<? extends LanguageEntry> entries) {
-        var selectedEntry = list.getSelectedOrNull();
+        var selectedEntry = list.getSelected();
         list.setSelected(null);
         list.children().clear();
         entries.forEach(entry -> {
@@ -149,15 +162,15 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     }
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    void onRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        renderBackgroundTexture(0);
+    void onRender(PoseStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        renderDirtBackground(0);
 
         availableLanguageList.render(matrices, mouseX, mouseY, delta);
         selectedLanguageList.render(matrices, mouseX, mouseY, delta);
         searchBox.render(matrices, mouseX, mouseY, delta);
 
-        drawCenteredText(matrices, textRenderer, title, width / 2, 8, 0xFFFFFF);
-        drawCenteredText(matrices, textRenderer, LANGUAGE_WARNING_TEXT, width / 2, height - 46, 0x808080);
+        drawCenteredString(matrices, font, title, width / 2, 8, 0xFFFFFF);
+        drawCenteredString(matrices, font, WARNING_LABEL, width / 2, height - 46, 0x808080);
 
         super.render(matrices, mouseX, mouseY, delta);
         ci.cancel();

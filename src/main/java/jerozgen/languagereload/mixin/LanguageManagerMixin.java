@@ -3,9 +3,9 @@ package jerozgen.languagereload.mixin;
 import com.google.common.collect.Lists;
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.config.Config;
-import net.minecraft.client.resource.language.LanguageDefinition;
-import net.minecraft.client.resource.language.LanguageManager;
-import net.minecraft.resource.ResourceManager;
+import net.minecraft.client.resources.language.LanguageInfo;
+import net.minecraft.client.resources.language.LanguageManager;
+import net.minecraft.server.packs.resources.ResourceManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -17,20 +17,20 @@ import java.util.*;
 
 @Mixin(LanguageManager.class)
 abstract class LanguageManagerMixin {
-    @Shadow private Map<String, LanguageDefinition> languageDefs;
+    @Shadow private Map<String, LanguageInfo> languages;
 
-    @Shadow public abstract LanguageDefinition getLanguage(String code);
+    @Shadow public abstract LanguageInfo getLanguage(String code);
 
-    @Inject(method = "reload", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", ordinal = 0,
+    @Inject(method = "onResourceManagerReload", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", ordinal = 0,
             remap = false, target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
-    void onReload$addFallbacks(ResourceManager manager, CallbackInfo ci, LanguageDefinition languageDefinition, List<LanguageDefinition> list) {
+    void onReload$addFallbacks(ResourceManager manager, CallbackInfo ci, LanguageInfo languageDefinition, List<LanguageInfo> list) {
         Lists.reverse(Config.getInstance().fallbacks).stream()
                 .map(this::getLanguage)
                 .filter(Objects::nonNull)
                 .forEach(list::add);
     }
 
-    @Inject(method = "reload", at = @At(value = "INVOKE", ordinal = 0, remap = false,
+    @Inject(method = "onResourceManagerReload", at = @At(value = "INVOKE", ordinal = 0, remap = false,
             target = "Ljava/util/Map;getOrDefault(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;"))
     void onReload$setSystemLanguage(ResourceManager manager, CallbackInfo ci) {
         if (LanguageReload.shouldSetSystemLanguage) {
@@ -38,7 +38,7 @@ abstract class LanguageManagerMixin {
             LanguageReload.LOGGER.info("Language is not set. Setting it to system language");
 
             var locale = Locale.getDefault();
-            var matchingLanguages = languageDefs.keySet().stream()
+            var matchingLanguages = languages.keySet().stream()
                     .filter(code -> code.split("_")[0].equalsIgnoreCase(locale.getLanguage()))
                     .toList();
             var count = matchingLanguages.size();
