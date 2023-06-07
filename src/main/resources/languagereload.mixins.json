@@ -19,6 +19,7 @@
     "MinecraftClientMixin",
     "RecipeBookWidgetMixin",
     "SignBlockEntityAccessor",
+    "TextDisplayEntityAccessor",
     "TranslatableTextContentMixin",
     "TranslationStorageMixin"
   ],

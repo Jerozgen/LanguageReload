@@ -9,6 +9,7 @@ import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
+import net.minecraft.entity.decoration.DisplayEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,16 +40,24 @@ public class LanguageReload {
             ((IAdvancementsScreen) advancementsScreen).languagereload_recreateWidgets();
         }
 
-        // Update signs
-        if (client.world == null) return;
-        var chunkManager = (ClientChunkManagerAccessor) client.world.getChunkManager();
-        var chunks = ((ClientChunkMapAccessor) chunkManager.languagereload_getChunks()).languagereload_getChunks();
-        for (int i = 0; i < chunks.length(); i++) {
-            var chunk = chunks.get(i);
-            if (chunk == null) continue;
-            for (var blockEntity : chunk.getBlockEntities().values()) {
-                if (!(blockEntity instanceof SignBlockEntity sign)) continue;
-                ((SignBlockEntityAccessor) sign).languagereload_setTextsBeingEdited(null);
+        if (client.world != null) {
+            // Update signs
+            var chunkManager = (ClientChunkManagerAccessor) client.world.getChunkManager();
+            var chunks = ((ClientChunkMapAccessor) chunkManager.languagereload_getChunks()).languagereload_getChunks();
+            for (int i = 0; i < chunks.length(); i++) {
+                var chunk = chunks.get(i);
+                if (chunk == null) continue;
+                for (var blockEntity : chunk.getBlockEntities().values()) {
+                    if (!(blockEntity instanceof SignBlockEntity sign)) continue;
+                    ((SignBlockEntityAccessor) sign).languagereload_setTextsBeingEdited(null);
+                }
+            }
+
+            // Update text displays
+            for (var entity : client.world.getEntities()) {
+                if (entity instanceof DisplayEntity.TextDisplayEntity textDisplay) {
+                    ((TextDisplayEntityAccessor) textDisplay).languagereload_setTextLines(null);
+                }
             }
         }
     }
