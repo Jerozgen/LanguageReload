@@ -4,11 +4,11 @@ package jerozgen.languagereload.gui;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.mixin.EntryListWidgetAccessor;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.ParentElement;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.LanguageOptionsScreen;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
@@ -30,11 +30,11 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
     }
 
     @Override
-    protected void renderHeader(MatrixStack matrices, int x, int y) {
+    protected void renderHeader(DrawContext context, int x, int y) {
         var headerText = title.copy().formatted(Formatting.UNDERLINE, Formatting.BOLD);
         int headerPosX = x + width / 2 - client.textRenderer.getWidth(headerText) / 2;
         int headerPosY = Math.min(top + 3, y);
-        client.textRenderer.draw(matrices, headerText, headerPosX, headerPosY, 0xFFFFFF);
+        context.drawText(client.textRenderer, headerText, headerPosX, headerPosY, 0xFFFFFF, false);
     }
 
     @Override

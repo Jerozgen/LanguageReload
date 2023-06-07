@@ -24,9 +24,9 @@ public class LockedLanguageEntry extends LanguageEntry {
         renderer.render(lockButton, x + 6, y);
         if (this.isFocused()) {
             var tooltip = client.textRenderer.wrapLines(LOCK_BUTTON_TOOLTIP, parentList.getRowWidth() - 6);
-            parentList.getScreen().setTooltip(tooltip, (screen, mouseX, mouseY, width, height) -> {
+            parentList.getScreen().setTooltip(tooltip, (screenWidth, screenHeight, mouseX, mouseY, width, height) -> {
                 var pos = new Vector2i(x + 3, y + parentList.getRowHeight() + 4);
-                if (pos.y > parentList.getBottom() + 2 || pos.y + height + 5 > screen.height) {
+                if (pos.y > parentList.getBottom() + 2 || pos.y + height + 5 > screenHeight) {
                     pos.y = y - height - 6;
                 }
                 return pos;

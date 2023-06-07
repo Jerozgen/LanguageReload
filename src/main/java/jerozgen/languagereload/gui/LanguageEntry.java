@@ -3,13 +3,12 @@ package jerozgen.languagereload.gui;
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.resource.language.LanguageDefinition;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -59,23 +58,22 @@ public abstract class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<
     protected abstract void renderButtons(ButtonRenderer buttonRenderer, int x, int y);
 
     @Override
-    public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
         x -= 2;
         y -= 2;
         if (hovered || isFocused() || client.options.getTouchscreen().getValue()) {
-            DrawableHelper.fill(matrices,
-                    x + 1, y + 1, x + entryWidth - 1, y + entryHeight + 3,
+            context.fill(x + 1, y + 1, x + entryWidth - 1, y + entryHeight + 3,
                     (hovered || isFocused()) ? 0xA0909090 : 0x50909090);
             buttons.forEach(button -> button.visible = false);
             renderButtons((button, buttonX, buttonY) -> {
                 button.setX(buttonX);
                 button.setY(buttonY);
                 button.visible = true;
-                button.render(matrices, mouseX, mouseY, tickDelta);
+                button.render(context, mouseX, mouseY, tickDelta);
             }, x, y);
         }
-        client.textRenderer.drawWithShadow(matrices, language.name(), x + 29, y + 3, 0xFFFFFF);
-        client.textRenderer.drawWithShadow(matrices, language.region(), x + 29, y + 14, 0x808080);
+        context.drawTextWithShadow(client.textRenderer, language.name(), x + 29, y + 3, 0xFFFFFF);
+        context.drawTextWithShadow(client.textRenderer, language.region(), x + 29, y + 14, 0x808080);
     }
 
     @Override

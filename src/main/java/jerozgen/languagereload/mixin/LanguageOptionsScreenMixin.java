@@ -3,7 +3,11 @@ package jerozgen.languagereload.mixin;
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.config.Config;
-import jerozgen.languagereload.gui.*;
+import jerozgen.languagereload.gui.LanguageEntry;
+import jerozgen.languagereload.gui.LanguageListWidget;
+import jerozgen.languagereload.gui.LockedLanguageEntry;
+import jerozgen.languagereload.gui.MovableLanguageEntry;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.navigation.GuiNavigationPath;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
@@ -12,7 +16,6 @@ import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.resource.language.LanguageManager;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
@@ -62,8 +65,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
                 if (!isFocused() && focused) {
                     super.setFocused(true);
                     focusSearch();
-                }
-                else super.setFocused(focused);
+                } else super.setFocused(focused);
             }
         };
         searchBox.setChangedListener(__ -> refresh());
@@ -150,17 +152,17 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     }
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
-    void onRender(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        renderBackgroundTexture(matrices);
+    void onRender(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        renderBackgroundTexture(context);
 
-        availableLanguageList.render(matrices, mouseX, mouseY, delta);
-        selectedLanguageList.render(matrices, mouseX, mouseY, delta);
-        searchBox.render(matrices, mouseX, mouseY, delta);
+        availableLanguageList.render(context, mouseX, mouseY, delta);
+        selectedLanguageList.render(context, mouseX, mouseY, delta);
+        searchBox.render(context, mouseX, mouseY, delta);
 
-        drawCenteredTextWithShadow(matrices, textRenderer, title, width / 2, 8, 0xFFFFFF);
-        drawCenteredTextWithShadow(matrices, textRenderer, LANGUAGE_WARNING_TEXT, width / 2, height - 46, 0x808080);
+        context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 8, 0xFFFFFF);
+        context.drawCenteredTextWithShadow(textRenderer, LANGUAGE_WARNING_TEXT, width / 2, height - 46, 0x808080);
 
-        super.render(matrices, mouseX, mouseY, delta);
+        super.render(context, mouseX, mouseY, delta);
         ci.cancel();
     }
 

@@ -25,7 +25,6 @@ import java.util.Objects;
 @Mixin(Keyboard.class)
 public abstract class KeyboardMixin {
     @Shadow @Final private MinecraftClient client;
-    @Shadow private boolean switchF3State;
 
     @Shadow
     protected abstract void debugLog(String key, Object... args);
@@ -80,12 +79,8 @@ public abstract class KeyboardMixin {
             cancellable = true)
     private void onOnKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         if (InputUtil.isKeyPressed(window, GLFW.GLFW_KEY_F3) && key == GLFW.GLFW_KEY_J) {
-            if (action != 0) {
-                if (Objects.requireNonNull(client.currentScreen).passEvents) {
-                    switchF3State = true;
-                }
+            if (action != 0)
                 processLanguageReloadKeys();
-            }
             ci.cancel();
         }
     }

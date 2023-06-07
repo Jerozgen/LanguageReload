@@ -48,7 +48,8 @@ public class LanguageReload {
             if (chunk == null) continue;
             for (var blockEntity : chunk.getBlockEntities().values()) {
                 if (!(blockEntity instanceof SignBlockEntity sign)) continue;
-                ((SignBlockEntityAccessor) sign).languagereload_setTextsBeingEdited(null);
+                ((SignTextAccessor) sign.getFrontText()).languagereload_setOrderedMessages(null);
+                ((SignTextAccessor) sign.getBackText()).languagereload_setOrderedMessages(null);
             }
         }
     }
