@@ -6,14 +6,12 @@ import net.minecraft.nbt.NbtCompound;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(GameOptions.class)
 abstract class GameOptionsMixin {
-    @Inject(method = "load", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/option/GameOptions;accept(Lnet/minecraft/client/option/GameOptions$Visitor;)V"))
-    void onLoad(CallbackInfo ci, NbtCompound nbtCompound, NbtCompound nbtCompound2) {
-        LanguageReload.shouldSetSystemLanguage = !nbtCompound2.contains("lang");
+    @Inject(method = "update", at = @At("RETURN"))
+    void checkMissingLang(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
+        LanguageReload.shouldSetSystemLanguage = !cir.getReturnValue().contains("lang");
     }
 }

@@ -5,7 +5,7 @@
   "name": "Language Reload",
   "description": "Reduces load times and adds fallbacks for languages.",
   "authors": [
-    {"name": "Jerozgen", "contact": {"homepage": "https://github.com/Jerozgen", "discord": "Jerozgen#5500"}}
+    {"name": "Jerozgen", "contact": {"homepage": "https://github.com/Jerozgen", "discord": "jerozgen"}}
   ],
   "contributors": [
     {"name": "Benonardo", "contact": {"homepage": "https://github.com/Benonardo"}},
@@ -41,7 +41,7 @@
   "depends": {
     "fabric-resource-loader-v0": "*",
     "fabricloader": ">=0.14.14",
-    "minecraft": ">=1.19.4-"
+    "minecraft": ">=1.19.4- <1.20"
   },
   "suggests": {
     "modmenu": "*"
