@@ -22,7 +22,7 @@ abstract class LanguageManagerMixin {
     @Shadow public abstract LanguageDefinition getLanguage(String code);
 
     @Inject(method = "reload", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", ordinal = 0,
-            remap = false, target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
+            remap = false, target = "Ljava/util/List;add(Ljava/lang/Object;)Z", shift = At.Shift.AFTER))
     void onReload$addFallbacks(ResourceManager manager, CallbackInfo ci, List<String> list) {
         Lists.reverse(Config.getInstance().fallbacks).stream()
                 .filter(code -> Objects.nonNull(getLanguage(code)))
