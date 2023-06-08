@@ -33,19 +33,14 @@ jobs:
           path: build/libs
 
       - name: Publish
-        uses: Kir-Antipov/mc-publish@v3.1
+        uses: Kir-Antipov/mc-publish@v3.3
         with:
           name: ""
           dependencies: |
-            fabric-api | depends | *
-            modmenu | suggests | *
-          game-versions: |
-            1.19.3
-          version-resolver: exact
+            fabric-api(required)
+            modmenu(optional)
 
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          github-files-primary: build/libs/*-@(dev|sources|javadoc).jar
-          github-files-secondary: build/libs/!(*-@(dev|sources|javadoc)).jar
 
           modrinth-id: uLbm7CG6
           modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
