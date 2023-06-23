@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(MinecraftClient.class)
+@Mixin(value = MinecraftClient.class, priority = 990)
 abstract class MinecraftClientMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
     void onConstructed(RunArgs args, CallbackInfo ci) {
