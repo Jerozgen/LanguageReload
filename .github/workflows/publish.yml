@@ -36,6 +36,9 @@ jobs:
         uses: Kir-Antipov/mc-publish@v3.3
         with:
           name: ""
+          loaders: |
+            fabric
+            quilt
           dependencies: |
             fabric-api(required)
             modmenu(optional)
