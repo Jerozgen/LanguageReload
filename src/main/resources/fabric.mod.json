@@ -9,6 +9,7 @@
   ],
   "contributors": [
     {"name": "Benonardo", "contact": {"homepage": "https://github.com/Benonardo"}},
+    {"name": "Alex Gazmanovich — Belarusian", "contact": {"homepage": "https://github.com/Gazmanovich"}},
     {"name": "Calvineries — French", "contact": {"homepage": "https://github.com/Calvineries"}},
     {"name": "glaav — Italian", "contact": {"homepage": "https://github.com/glaav"}},
     {"name": "wavgado — Korean", "contact": {"homepage": "https://github.com/wavgado"}},
@@ -16,6 +17,7 @@
     {"name": "FITFC — Brazilian Portuguese", "contact": {"homepage": "https://github.com/FITFC"}},
     {"name": "Amirhan-Taipovjan-Greatest-I — Tatar", "contact": {"homepage": "https://github.com/Amirhan-Taipovjan-Greatest-I"}},
     {"name": "Altegar — Ukrainian", "contact": {"homepage": "https://github.com/Altegar"}},
+    {"name": "ImVietnam — Vietnamese", "contact": {"homepage": "https://github.com/ImVietnam"}},
     {"name": "IceAlin — Chinese Simplified", "contact": {"homepage": "https://github.com/IceeAlin"}},
     {"name": "GodGun968 (神枪968) — Chinese Simplified", "contact": {"homepage": "https://github.com/GodGun968"}},
     {"name": "buiawpkgew1 (菾凴) — Chinese Simplified", "contact": {"homepage": "https://github.com/buiawpkgew1"}},
@@ -42,7 +44,7 @@
   "depends": {
     "fabric-resource-loader-v0": "*",
     "fabricloader": ">=0.14.21",
-    "minecraft": ">=1.20"
+    "minecraft": ">=1.20 <1.20.2"
   },
   "suggests": {
     "modmenu": "*"
