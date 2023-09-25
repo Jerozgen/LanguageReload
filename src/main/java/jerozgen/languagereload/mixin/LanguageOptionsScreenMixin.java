@@ -1,5 +1,6 @@
 package jerozgen.languagereload.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.config.Config;
@@ -166,13 +167,8 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         ci.cancel();
     }
 
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        return super.keyPressed(keyCode, scanCode, modifiers) || searchBox.keyPressed(keyCode, scanCode, modifiers);
-    }
-
-    @Override
-    public boolean charTyped(char chr, int modifiers) {
-        return searchBox.charTyped(chr, modifiers);
+    @ModifyExpressionValue(method = "keyPressed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/input/KeyCodes;isToggle(I)Z"))
+    boolean disableVanillaSelectWithToggleKeys(boolean ignoredOriginal) {
+        return false;
     }
 }

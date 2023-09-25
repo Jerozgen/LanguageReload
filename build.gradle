@@ -21,6 +21,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation fabricApi.module("fabric-resource-loader-v0", project.fabric_version)
     modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+    include implementation(annotationProcessor("io.github.llamalad7:mixinextras-fabric:0.2.0-rc.5"))
 }
 
 processResources {
