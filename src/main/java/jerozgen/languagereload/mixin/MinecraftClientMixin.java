@@ -20,7 +20,7 @@ abstract class MinecraftClientMixin {
         Config.load();
     }
 
-    @Redirect(method = {"method_1581" /* Creative Inventory */, "method_43765" /* Recipe Book */},
+    @Redirect(method = {"method_1581" /* Creative Inventory */, "method_53866" /* Recipe Book */},
             at = @At(value = "INVOKE", target = "Lnet/minecraft/text/Text;getString()Ljava/lang/String;"))
     private static String addFallbackTranslationsToSearchTooltips(Text text) {
         if (Config.getInstance() == null) return text.getString();

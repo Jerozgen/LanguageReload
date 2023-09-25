@@ -18,6 +18,7 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
+import net.minecraft.util.Language;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -47,11 +48,11 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     @Inject(method = "<init>", at = @At("TAIL"))
     void onConstructed(Screen parent, GameOptions options, LanguageManager languageManager, CallbackInfo ci) {
         var currentLangCode = languageManager.getLanguage();
-        if (!currentLangCode.equals(LanguageManager.DEFAULT_LANGUAGE_CODE))
+        if (!currentLangCode.equals(Language.DEFAULT_LANGUAGE))
             selectedLanguages.add(currentLangCode);
         selectedLanguages.addAll(Config.getInstance().fallbacks);
         languageManager.getAllLanguages().forEach((code, language) -> {
-            if (!code.equals(LanguageManager.DEFAULT_LANGUAGE_CODE))
+            if (!code.equals(Language.DEFAULT_LANGUAGE))
                 languageEntries.put(code, new MovableLanguageEntry(this::refresh, code, language, selectedLanguages));
             else defaultLanguageEntry = new LockedLanguageEntry(this::refresh, code, language, selectedLanguages);
         });
@@ -98,7 +99,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
         var language = selectedLanguages.peekFirst();
         if (language == null) {
-            LanguageReload.setLanguage(LanguageManager.DEFAULT_LANGUAGE_CODE, new LinkedList<>());
+            LanguageReload.setLanguage(Language.DEFAULT_LANGUAGE, new LinkedList<>());
         } else {
             var fallbacks = new LinkedList<>(selectedLanguages);
             fallbacks.remove(0);
@@ -153,7 +154,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     void onRender(DrawContext context, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        renderBackgroundTexture(context);
+        super.render(context, mouseX, mouseY, delta);
 
         availableLanguageList.render(context, mouseX, mouseY, delta);
         selectedLanguageList.render(context, mouseX, mouseY, delta);
@@ -162,13 +163,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 8, 0xFFFFFF);
         context.drawCenteredTextWithShadow(textRenderer, LANGUAGE_WARNING_TEXT, width / 2, height - 46, 0x808080);
 
-        super.render(context, mouseX, mouseY, delta);
         ci.cancel();
-    }
-
-    @Override
-    public void tick() {
-        searchBox.tick();
     }
 
     @Override

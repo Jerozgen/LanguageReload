@@ -1,15 +1,31 @@
 package jerozgen.languagereload.gui;
 
+import jerozgen.languagereload.LanguageReload;
+import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.resource.language.LanguageDefinition;
+import net.minecraft.util.Identifier;
 
 import java.util.LinkedList;
 
 public class MovableLanguageEntry extends LanguageEntry {
-    private final ButtonWidget addButton = addButton(15, 24, 0, 0, __ -> add());
-    private final ButtonWidget removeButton = addButton(15, 24, 15, 0, __ -> remove());
-    private final ButtonWidget moveUpButton = addButton(11, 11, 31, 0, __ -> moveUp());
-    private final ButtonWidget moveDownButton = addButton(11, 11, 31, 13, __ -> moveDown());
+    private static final ButtonTextures ADD_TEXTURES = new ButtonTextures(
+            new Identifier(LanguageReload.MOD_ID, "language_selection/add"),
+            new Identifier(LanguageReload.MOD_ID, "language_selection/add_highlighted"));
+    private static final ButtonTextures REMOVE_TEXTURES = new ButtonTextures(
+            new Identifier(LanguageReload.MOD_ID, "language_selection/remove"),
+            new Identifier(LanguageReload.MOD_ID, "language_selection/remove_highlighted"));
+    private static final ButtonTextures MOVE_UP_TEXTURES = new ButtonTextures(
+            new Identifier(LanguageReload.MOD_ID, "language_selection/move_up"),
+            new Identifier(LanguageReload.MOD_ID, "language_selection/move_up_highlighted"));
+    private static final ButtonTextures MOVE_DOWN_TEXTURES = new ButtonTextures(
+            new Identifier(LanguageReload.MOD_ID, "language_selection/move_down"),
+            new Identifier(LanguageReload.MOD_ID, "language_selection/move_down_highlighted"));
+
+    private final ButtonWidget addButton = addButton(15, 24, ADD_TEXTURES, __ -> add());
+    private final ButtonWidget removeButton = addButton(15, 24, REMOVE_TEXTURES, __ -> remove());
+    private final ButtonWidget moveUpButton = addButton(11, 11, MOVE_UP_TEXTURES, __ -> moveUp());
+    private final ButtonWidget moveDownButton = addButton(11, 11, MOVE_DOWN_TEXTURES, __ -> moveDown());
 
     public MovableLanguageEntry(Runnable refreshListsAction, String code, LanguageDefinition language, LinkedList<String> selectedLanguages) {
         super(refreshListsAction, code, language, selectedLanguages);

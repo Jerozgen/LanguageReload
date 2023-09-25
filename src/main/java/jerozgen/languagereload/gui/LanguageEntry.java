@@ -1,25 +1,21 @@
 package jerozgen.languagereload.gui;
 
-import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public abstract class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageEntry> {
-    protected static final Identifier TEXTURE = new Identifier(LanguageReload.MOD_ID, "textures/gui/language_selection.png");
-    protected static final int TEXTURE_WIDTH = 64;
-    protected static final int TEXTURE_HEIGHT = 64;
-    protected static final int HOVERED_V_OFFSET = 24;
-
     protected final MinecraftClient client = MinecraftClient.getInstance();
 
     protected final String code;
@@ -38,12 +34,8 @@ public abstract class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<
         this.refreshListsAction = refreshListsAction;
     }
 
-    protected ButtonWidget addButton(int width, int height, int u, int v, ButtonWidget.PressAction action) {
-        return addButton(width, height, u, v, HOVERED_V_OFFSET, action);
-    }
-
-    protected ButtonWidget addButton(int width, int height, int u, int v, int hoveredVOffset, ButtonWidget.PressAction action) {
-        var button = new TexturedButtonWidget(0, 0, width, height, u, v, hoveredVOffset, TEXTURE, TEXTURE_WIDTH, TEXTURE_HEIGHT, action);
+    protected ButtonWidget addButton(int width, int height, ButtonTextures textures, ButtonWidget.PressAction action) {
+        var button = new TexturedButtonWidget(0, 0, width, height, textures, action);
         button.visible = false;
         buttons.add(button);
         return button;

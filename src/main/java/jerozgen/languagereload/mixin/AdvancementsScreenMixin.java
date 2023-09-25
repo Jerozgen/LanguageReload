@@ -2,7 +2,7 @@ package jerozgen.languagereload.mixin;
 
 import jerozgen.languagereload.access.IAdvancementsScreen;
 import jerozgen.languagereload.access.IAdvancementsTab;
-import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.advancement.AdvancementTab;
 import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Mixin(AdvancementsScreen.class)
 public abstract class AdvancementsScreenMixin extends Screen implements ClientAdvancementManager.Listener, IAdvancementsScreen {
-    @Shadow @Final private Map<Advancement, AdvancementTab> tabs;
+    @Shadow @Final private Map<AdvancementEntry, AdvancementTab> tabs;
 
     protected AdvancementsScreenMixin(Text title) {
         super(title);

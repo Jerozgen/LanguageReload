@@ -1,6 +1,8 @@
 package jerozgen.languagereload.mixin;
 
+import net.minecraft.advancement.AdvancementDisplay;
 import net.minecraft.advancement.AdvancementProgress;
+import net.minecraft.advancement.PlacedAdvancement;
 import net.minecraft.client.gui.screen.advancement.AdvancementTab;
 import net.minecraft.client.gui.screen.advancement.AdvancementWidget;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,6 +15,12 @@ import java.util.List;
 public interface AdvancementWidgetAccessor {
     @Accessor("tab")
     AdvancementTab languagereload_getTab();
+
+    @Accessor("advancement")
+    PlacedAdvancement languagereload_getAdvancement();
+
+    @Accessor("display")
+    AdvancementDisplay languagereload_getDisplay();
 
     @Accessor("progress")
     AdvancementProgress languagereload_getProgress();
