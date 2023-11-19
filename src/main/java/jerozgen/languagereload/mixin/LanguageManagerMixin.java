@@ -8,6 +8,7 @@ import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.resource.ResourceManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -49,8 +50,14 @@ abstract class LanguageManagerMixin {
                         return split[1].equalsIgnoreCase(locale.getCountry());
                     })
                     .findFirst()
-                    .ifPresent(lang -> LanguageReload.setLanguage(lang, new LinkedList<>()));
-            else if (count == 1) LanguageReload.setLanguage(matchingLanguages.get(0), new LinkedList<>());
+                    .ifPresent(lang -> setSystemLanguage(lang, locale));
+            else if (count == 1) setSystemLanguage(matchingLanguages.get(0), locale);
         }
+    }
+
+    @Unique
+    private static void setSystemLanguage(String lang, Locale locale) {
+        LanguageReload.LOGGER.info("Set language to {} (mapped from {})", lang, locale.toLanguageTag());
+        LanguageReload.setLanguage(lang, new LinkedList<>());
     }
 }
