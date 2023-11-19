@@ -6,7 +6,6 @@ import jerozgen.languagereload.LanguageReload;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.client.MinecraftClient;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -38,12 +37,6 @@ public class Config {
             INSTANCE = new Config();
             LanguageReload.LOGGER.error("Couldn't load config file: ", e);
         }
-
-        var currentLang = MinecraftClient.getInstance().options.language;
-        if (!currentLang.equals(INSTANCE.language)) {
-            INSTANCE.language = currentLang;
-            INSTANCE.fallbacks.clear();
-        }
     }
 
     public static void save() {
@@ -56,6 +49,7 @@ public class Config {
     }
 
     public static Config getInstance() {
+        if (INSTANCE == null) load();
         return INSTANCE;
     }
 }
