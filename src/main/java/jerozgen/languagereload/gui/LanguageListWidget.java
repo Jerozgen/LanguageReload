@@ -1,6 +1,5 @@
 package jerozgen.languagereload.gui;
 
-
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.mixin.EntryListWidgetAccessor;
 import net.minecraft.client.MinecraftClient;
@@ -21,7 +20,7 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
     private final LanguageOptionsScreen screen;
 
     public LanguageListWidget(MinecraftClient client, LanguageOptionsScreen screen, int width, int height, Text title) {
-        super(client, width, height, 48, height - 55 + 4, 24);
+        super(client, width, height - 83 - 16, 32 + 16, 24);
         this.title = title;
         this.screen = screen;
 
@@ -33,7 +32,7 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
     protected void renderHeader(DrawContext context, int x, int y) {
         var headerText = title.copy().formatted(Formatting.UNDERLINE, Formatting.BOLD);
         int headerPosX = x + width / 2 - client.textRenderer.getWidth(headerText) / 2;
-        int headerPosY = Math.min(top + 3, y);
+        int headerPosY = Math.min(this.getY() + 3, y);
         context.drawText(client.textRenderer, headerText, headerPosX, headerPosY, 0xFFFFFF, false);
     }
 
@@ -87,11 +86,11 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
     @Nullable
     protected LanguageEntry getEntryAtPosition(double x, double y) {
         int halfRowWidth = this.getRowWidth() / 2;
-        int center = left + width / 2;
+        int center = this.getX() + width / 2;
         int minX = center - halfRowWidth;
         int maxX = center + halfRowWidth;
         var scrollbarPositionX = this.getScrollbarPositionX();
-        int m = MathHelper.floor(y - top) - headerHeight + (int) this.getScrollAmount() - 4 + 2;
+        int m = MathHelper.floor(y - this.getY()) - headerHeight + (int) this.getScrollAmount() - 4 + 2;
         int entryIndex = m / itemHeight;
         return (x < scrollbarPositionX && x >= minX && x <= maxX && entryIndex >= 0 && m >= 0
                 && entryIndex < this.getEntryCount() ? this.children().get(entryIndex) : null);
@@ -99,10 +98,6 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
 
     public LanguageOptionsScreen getScreen() {
         return screen;
-    }
-
-    public int getBottom() {
-        return bottom;
     }
 
     public int getRowHeight() {
@@ -116,6 +111,6 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
 
     @Override
     protected int getScrollbarPositionX() {
-        return right - 6;
+        return this.getRight() - 6;
     }
 }

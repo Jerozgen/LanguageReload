@@ -78,8 +78,8 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         var it = (LanguageOptionsScreen) (Object) this;
         availableLanguageList = new LanguageListWidget(client, it, listWidth, height, Text.translatable("pack.available.title"));
         selectedLanguageList = new LanguageListWidget(client, it, listWidth, height, Text.translatable("pack.selected.title"));
-        availableLanguageList.setLeftPos(width / 2 - 4 - listWidth);
-        selectedLanguageList.setLeftPos(width / 2 + 4);
+        availableLanguageList.setX(width / 2 - 4 - listWidth);
+        selectedLanguageList.setX(width / 2 + 4);
         addSelectableChild(availableLanguageList);
         addSelectableChild(selectedLanguageList);
         refresh();
