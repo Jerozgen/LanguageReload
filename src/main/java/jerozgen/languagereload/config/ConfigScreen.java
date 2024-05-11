@@ -18,7 +18,7 @@ public class ConfigScreen extends SimpleOptionsScreen {
             value -> {
                 Config.getInstance().multilingualItemSearch = value;
                 Config.save();
-                LanguageReload.reloadSearch();
+                LanguageReload.reloadLanguages();
             });
 
     public ConfigScreen(Screen parent) {
