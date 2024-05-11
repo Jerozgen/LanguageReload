@@ -103,7 +103,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
             LanguageReload.setLanguage(Language.DEFAULT_LANGUAGE, new LinkedList<>());
         } else {
             var fallbacks = new LinkedList<>(selectedLanguages);
-            fallbacks.remove(0);
+            fallbacks.removeFirst();
             LanguageReload.setLanguage(language, fallbacks);
         }
     }
