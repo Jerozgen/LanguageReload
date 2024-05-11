@@ -89,11 +89,14 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
         int center = this.getX() + width / 2;
         int minX = center - halfRowWidth;
         int maxX = center + halfRowWidth;
-        var scrollbarPositionX = this.getScrollbarPositionX();
         int m = MathHelper.floor(y - this.getY()) - headerHeight + (int) this.getScrollAmount() - 4 + 2;
         int entryIndex = m / itemHeight;
-        return (x < scrollbarPositionX && x >= minX && x <= maxX && entryIndex >= 0 && m >= 0
-                && entryIndex < this.getEntryCount() ? this.children().get(entryIndex) : null);
+        var hasScrollbar = this.isScrollbarVisible();
+        var scrollbarX = this.getScrollbarX();
+        var entryCount = this.getEntryCount();
+        return x >= minX && x <= maxX && (!hasScrollbar || x < scrollbarX) && entryIndex >= 0 && m >= 0 && entryIndex < entryCount
+                ? this.children().get(entryIndex)
+                : null;
     }
 
     public LanguageOptionsScreen getScreen() {
@@ -110,7 +113,11 @@ public class LanguageListWidget extends AlwaysSelectedEntryListWidget<LanguageEn
     }
 
     @Override
-    protected int getScrollbarPositionX() {
+    protected int getScrollbarX() {
         return this.getRight() - 6;
+    }
+
+    public void updateScroll() {
+        this.setScrollAmount(this.getScrollAmount());
     }
 }
