@@ -2,9 +2,9 @@ package jerozgen.languagereload.mixin;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
+import jerozgen.languagereload.access.ILanguage;
 import jerozgen.languagereload.access.ITranslationStorage;
 import jerozgen.languagereload.config.Config;
-import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.text.StringVisitable;
 import net.minecraft.text.TextContent;
 import net.minecraft.text.TranslatableTextContent;
@@ -38,9 +38,12 @@ abstract class TranslatableTextContentMixin implements TextContent {
     void onUpdateTranslations(CallbackInfo ci) {
         if (Config.getInstance() == null) return;
         if (!Config.getInstance().multilingualItemSearch) return;
-        if (!(languageCache instanceof TranslationStorage)) return;
+        if (languageCache == null) return;
 
-        var targetLanguage = ((ITranslationStorage) languageCache).languagereload_getTargetLanguage();
+        var translationStorage = ((ILanguage) languageCache).languagereload_getTranslationStorage();
+        if (translationStorage == null) return;
+
+        var targetLanguage = ((ITranslationStorage) translationStorage).languagereload_getTargetLanguage();
         if (Objects.equals(previousTargetLanguage, targetLanguage)) return;
 
         if (targetLanguage == null) {

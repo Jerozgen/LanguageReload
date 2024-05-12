@@ -15,6 +15,7 @@
     "GameOptionsMixin",
     "KeyboardMixin",
     "LanguageManagerMixin",
+    "LanguageMixin",
     "LanguageOptionsScreenMixin",
     "MinecraftClientAccessor",
     "MinecraftClientMixin",
