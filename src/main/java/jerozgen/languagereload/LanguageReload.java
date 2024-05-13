@@ -9,6 +9,7 @@ import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
+import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.resource.language.LanguageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +20,14 @@ import java.util.LinkedList;
 public class LanguageReload {
     public static final Logger LOGGER = LogManager.getLogger("Language Reload");
     public static final String MOD_ID = "languagereload";
+
+    public static final String NO_LANGUAGE_CODE = "*";
+    public static final LanguageDefinition NO_LANGUAGE = new LanguageDefinition(NO_LANGUAGE_CODE, "*", "*", false) {
+        @Override
+        public String toString() {
+            return "*";
+        }
+    };
 
     public static boolean shouldSetSystemLanguage = false;
 
@@ -69,7 +78,8 @@ public class LanguageReload {
         var fallbacksAreSame = config.fallbacks.equals(fallbacks);
         if (languageIsSame && fallbacksAreSame) return;
 
-        if (languageManager.getLanguage(language) == null)
+        var noLanguage = NO_LANGUAGE_CODE.equals(language);
+        if (!noLanguage && languageManager.getLanguage(language) == null)
             language = LanguageManager.DEFAULT_LANGUAGE_CODE;
 
         config.previousLanguage = languageManager.getLanguage().getCode();
@@ -78,7 +88,7 @@ public class LanguageReload {
         config.fallbacks = fallbacks;
         Config.save();
 
-        languageManager.setLanguage(languageManager.getLanguage(language));
+        languageManager.setLanguage(noLanguage ? NO_LANGUAGE : languageManager.getLanguage(language));
         client.options.language = language;
         client.options.write();
 

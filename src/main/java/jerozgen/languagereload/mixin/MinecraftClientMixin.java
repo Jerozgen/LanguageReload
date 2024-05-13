@@ -26,8 +26,6 @@ abstract class MinecraftClientMixin {
             ((ITranslationStorage) translationStorage).languagereload_setTargetLanguage(fallbackCode);
             stringBuilder.append('\n').append(text.getString());
         }
-        ((ITranslationStorage) translationStorage).languagereload_setTargetLanguage(Language.DEFAULT_LANGUAGE);
-        stringBuilder.append('\n').append(text.getString());
 
         ((ITranslationStorage) translationStorage).languagereload_setTargetLanguage(null);
         return stringBuilder.toString();
