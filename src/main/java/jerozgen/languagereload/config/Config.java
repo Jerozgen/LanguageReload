@@ -37,6 +37,13 @@ public class Config {
             INSTANCE = new Config();
             LanguageReload.LOGGER.error("Couldn't load config file: ", e);
         }
+
+        if (INSTANCE.language.equals(LanguageReload.NO_LANGUAGE) && !INSTANCE.fallbacks.isEmpty()) {
+            INSTANCE.language = INSTANCE.fallbacks.pollFirst();
+        }
+        if (INSTANCE.previousLanguage.equals(LanguageReload.NO_LANGUAGE) && !INSTANCE.previousFallbacks.isEmpty()) {
+            INSTANCE.previousLanguage = INSTANCE.previousFallbacks.pollFirst();
+        }
     }
 
     public static void save() {

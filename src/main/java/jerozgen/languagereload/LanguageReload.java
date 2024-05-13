@@ -20,6 +20,8 @@ public class LanguageReload {
     public static final Logger LOGGER = LogManager.getLogger("Language Reload");
     public static final String MOD_ID = "languagereload";
 
+    public static final String NO_LANGUAGE = "*";
+
     public static boolean shouldSetSystemLanguage = false;
 
     public static void reloadLanguages() {
