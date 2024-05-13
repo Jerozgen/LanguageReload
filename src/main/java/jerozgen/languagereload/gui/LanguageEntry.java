@@ -121,7 +121,7 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
                 button.visible = true;
                 button.render(matrices, mouseX, mouseY, tickDelta);
             }, x, y);
-            if (isDefault())
+            if ((hovered || isFocused()) && isDefault())
                 renderDefaultLanguageTooltip(x, y);
         }
         client.textRenderer.drawWithShadow(matrices, language.getName(), x + 29, y + 3, 0xFFFFFF);
@@ -142,9 +142,8 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
             var pos = new Vector2i(
                     x + 3 + (parentList.getRowWidth() - width - 6) / 2,
                     y + parentList.getRowHeight() + 4);
-            if (pos.y > parentList.getBottom() + 2 || pos.y + height + 5 > screen.height) {
+            if (pos.y > parentList.getBottom() + 2 || pos.y + height + 5 > screen.height)
                 pos.y = y - height - 6;
-            }
             return pos;
         }, true);
     }
