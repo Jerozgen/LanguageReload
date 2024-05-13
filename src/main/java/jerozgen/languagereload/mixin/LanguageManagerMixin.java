@@ -6,29 +6,49 @@ import jerozgen.languagereload.config.Config;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.Language;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Mixin(LanguageManager.class)
 abstract class LanguageManagerMixin {
     @Shadow private Map<String, LanguageDefinition> languageDefs;
+    @Shadow private LanguageDefinition language;
+    @Shadow private String currentLanguageCode;
 
     @Shadow public abstract LanguageDefinition getLanguage(String code);
 
-    @Inject(method = "reload", locals = LocalCapture.CAPTURE_FAILHARD, at = @At(value = "INVOKE", ordinal = 0,
-            remap = false, target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
-    void onReload$addFallbacks(ResourceManager manager, CallbackInfo ci, LanguageDefinition languageDefinition, List<LanguageDefinition> list) {
-        Lists.reverse(Config.getInstance().fallbacks).stream()
+    @Redirect(method = "reload", at = @At(value = "INVOKE", remap = false,
+            target = "Lcom/google/common/collect/Lists;newArrayList([Ljava/lang/Object;)Ljava/util/ArrayList;"))
+    ArrayList<LanguageDefinition> onReload$onCreateList(Object[] elements) {
+        var noLanguage = currentLanguageCode.equals(LanguageReload.NO_LANGUAGE_CODE);
+        if (noLanguage)
+            language = LanguageReload.NO_LANGUAGE;
+
+        var list = Lists.reverse(Config.getInstance().fallbacks).stream()
                 .map(this::getLanguage)
                 .filter(Objects::nonNull)
-                .forEach(list::add);
+                .collect(Collectors.toCollection(Lists::newArrayList));
+
+        var currentLanguage = this.getLanguage(currentLanguageCode);
+        if (!noLanguage && currentLanguage != null)
+            list.add(currentLanguage);
+
+        return list;
+    }
+
+    @Redirect(method = "reload", at = @At(value = "INVOKE", remap = false,
+            target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
+    boolean onReload$onAddToList(List<Object> list, Object language) {
+        return true;
     }
 
     @Inject(method = "reload", at = @At(value = "INVOKE", ordinal = 0, remap = false,
@@ -51,13 +71,16 @@ abstract class LanguageManagerMixin {
                     })
                     .findFirst()
                     .ifPresent(lang -> setSystemLanguage(lang, locale));
-            else if (count == 1) setSystemLanguage(matchingLanguages.get(0), locale);
+            else if (count == 1) setSystemLanguage(matchingLanguages.getFirst(), locale);
         }
     }
 
     @Unique
     private static void setSystemLanguage(String lang, Locale locale) {
         LanguageReload.LOGGER.info("Set language to {} (mapped from {})", lang, locale.toLanguageTag());
-        LanguageReload.setLanguage(lang, new LinkedList<>());
+        LanguageReload.setLanguage(lang, new LinkedList<>() {{
+            if (!lang.equals(Language.DEFAULT_LANGUAGE))
+                add(Language.DEFAULT_LANGUAGE);
+        }});
     }
 }
