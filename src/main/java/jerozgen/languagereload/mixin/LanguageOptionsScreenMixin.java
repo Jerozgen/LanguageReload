@@ -3,7 +3,8 @@ package jerozgen.languagereload.mixin;
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.config.Config;
-import jerozgen.languagereload.gui.*;
+import jerozgen.languagereload.gui.LanguageEntry;
+import jerozgen.languagereload.gui.LanguageListWidget;
 import net.minecraft.client.gui.navigation.GuiNavigationPath;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
@@ -34,24 +35,25 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     @Unique private LanguageListWidget selectedLanguageList;
     @Unique private TextFieldWidget searchBox;
     @Unique private final LinkedList<String> selectedLanguages = new LinkedList<>();
-    @Unique private final Map<String, MovableLanguageEntry> languageEntries = new LinkedHashMap<>();
-    @Unique private LockedLanguageEntry defaultLanguageEntry;
+    @Unique private final Map<String, LanguageEntry> languageEntries = new LinkedHashMap<>();
 
     LanguageOptionsScreenMixin(Screen parent, GameOptions options, Text title) {
         super(parent, options, title);
     }
 
+    @Unique
+    private LanguageOptionsScreen it() {
+        return (LanguageOptionsScreen) (Object) this;
+    }
+
     @Inject(method = "<init>", at = @At("TAIL"))
     void onConstructed(Screen parent, GameOptions options, LanguageManager languageManager, CallbackInfo ci) {
         var currentLangCode = languageManager.getLanguage();
-        if (!currentLangCode.equals(LanguageManager.DEFAULT_LANGUAGE_CODE))
+        if (!currentLangCode.equals(LanguageReload.NO_LANGUAGE))
             selectedLanguages.add(currentLangCode);
         selectedLanguages.addAll(Config.getInstance().fallbacks);
-        languageManager.getAllLanguages().forEach((code, language) -> {
-            if (!code.equals(LanguageManager.DEFAULT_LANGUAGE_CODE))
-                languageEntries.put(code, new MovableLanguageEntry(this::refresh, code, language, selectedLanguages));
-            else defaultLanguageEntry = new LockedLanguageEntry(this::refresh, code, language, selectedLanguages);
-        });
+        languageManager.getAllLanguages().forEach((code, language) ->
+                languageEntries.put(code, new LanguageEntry(this::refresh, code, language, selectedLanguages)));
     }
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
@@ -71,9 +73,8 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         setInitialFocus(searchBox);
 
         var listWidth = Math.min(width / 2 - 4, 200);
-        var it = (LanguageOptionsScreen) (Object) this;
-        availableLanguageList = new LanguageListWidget(client, it, listWidth, height, Text.translatable("pack.available.title"));
-        selectedLanguageList = new LanguageListWidget(client, it, listWidth, height, Text.translatable("pack.selected.title"));
+        availableLanguageList = new LanguageListWidget(client, it(), listWidth, height, Text.translatable("pack.available.title"));
+        selectedLanguageList = new LanguageListWidget(client, it(), listWidth, height, Text.translatable("pack.selected.title"));
         availableLanguageList.setLeftPos(width / 2 - 4 - listWidth);
         selectedLanguageList.setLeftPos(width / 2 + 4);
         addSelectableChild(availableLanguageList);
@@ -96,10 +97,10 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
         var language = selectedLanguages.peekFirst();
         if (language == null) {
-            LanguageReload.setLanguage(LanguageManager.DEFAULT_LANGUAGE_CODE, new LinkedList<>());
+            LanguageReload.setLanguage(LanguageReload.NO_LANGUAGE, new LinkedList<>());
         } else {
             var fallbacks = new LinkedList<>(selectedLanguages);
-            fallbacks.remove(0);
+            fallbacks.removeFirst();
             LanguageReload.setLanguage(language, fallbacks);
         }
     }
@@ -121,9 +122,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
     @Unique
     private void refresh() {
-        refreshList(selectedLanguageList, Stream.concat(
-                selectedLanguages.stream().map(languageEntries::get).filter(Objects::nonNull),
-                Stream.of(defaultLanguageEntry)));
+        refreshList(selectedLanguageList, selectedLanguages.stream().map(languageEntries::get).filter(Objects::nonNull));
         refreshList(availableLanguageList, languageEntries.values().stream()
                 .filter(entry -> {
                     if (selectedLanguageList.children().contains(entry)) return false;

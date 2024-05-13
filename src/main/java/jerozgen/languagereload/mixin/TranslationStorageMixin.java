@@ -49,16 +49,10 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
 
     @Inject(method = "get", at = @At(value = "HEAD"), cancellable = true)
     void onGet(String key, String fallback, CallbackInfoReturnable<String> cir) {
-        if (!Config.getInstance().multilingualItemSearch) return;
-        if (targetLanguage == null) return;
-
-        var defaultTranslations = separateTranslations.get(Language.DEFAULT_LANGUAGE);
-        if (defaultTranslations == null) return;
-
-        var targetTranslations = separateTranslations.get(targetLanguage);
-        if (targetTranslations == null) targetTranslations = defaultTranslations;
-
-        cir.setReturnValue(targetTranslations.getOrDefault(key, defaultTranslations.getOrDefault(key, fallback)));
+        if (targetLanguage != null) {
+            var targetTranslations = separateTranslations.get(targetLanguage);
+            cir.setReturnValue(targetTranslations == null ? "" : targetTranslations.getOrDefault(key, ""));
+        }
     }
 
     @Override

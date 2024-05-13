@@ -40,12 +40,16 @@ public abstract class KeyboardMixin {
             var languageManager = client.getLanguageManager();
 
             var language = languageManager.getLanguage(config.previousLanguage);
-            if (language == null) {
+            var noLanguage = config.previousLanguage.equals(LanguageReload.NO_LANGUAGE);
+            if (language == null && !noLanguage) {
                 debugError("debug.reload_languages.switch.failure");
             } else {
                 LanguageReload.setLanguage(config.previousLanguage, config.previousFallbacks);
                 var languages = new ArrayList<Text>() {{
-                    add(language.getDisplayText());
+                    if (noLanguage)
+                        add(Text.of("∅"));
+                    if (language != null)
+                        add(language.getDisplayText());
                     addAll(config.fallbacks.stream()
                             .map(languageManager::getLanguage)
                             .filter(Objects::nonNull)

@@ -12,25 +12,34 @@ import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.Language;
+import org.joml.Vector2i;
 
 import java.util.*;
 
-public abstract class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageEntry> {
-    protected static final Identifier TEXTURE = new Identifier(LanguageReload.MOD_ID, "textures/gui/language_selection.png");
-    protected static final int TEXTURE_WIDTH = 64;
-    protected static final int TEXTURE_HEIGHT = 64;
-    protected static final int HOVERED_V_OFFSET = 24;
+public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageEntry> {
+    private static final Text DEFAULT_LANGUAGE_TOOLTIP = Text.translatable("language.default.tooltip");
 
-    protected final MinecraftClient client = MinecraftClient.getInstance();
+    private static final Identifier TEXTURE = new Identifier(LanguageReload.MOD_ID, "textures/gui/language_selection.png");
+    private static final int TEXTURE_WIDTH = 64;
+    private static final int TEXTURE_HEIGHT = 64;
+    private static final int HOVERED_V_OFFSET = 24;
 
-    protected final String code;
-    protected final LanguageDefinition language;
-    protected final LinkedList<String> selectedLanguages;
-    protected final Runnable refreshListsAction;
+    private final MinecraftClient client = MinecraftClient.getInstance();
+
+    private final String code;
+    private final LanguageDefinition language;
+    private final LinkedList<String> selectedLanguages;
+    private final Runnable refreshListsAction;
 
     private final List<ClickableWidget> buttons = new ArrayList<>();
+    private final ButtonWidget addButton = addButton(15, 24, 0, 0, __ -> add());
+    private final ButtonWidget removeButton = addButton(15, 24, 15, 0, __ -> remove());
+    private final ButtonWidget moveUpButton = addButton(11, 11, 31, 0, __ -> moveUp());
+    private final ButtonWidget moveDownButton = addButton(11, 11, 31, 13, __ -> moveDown());
 
-    protected LanguageListWidget parentList;
+    private LanguageListWidget parentList;
 
     public LanguageEntry(Runnable refreshListsAction, String code, LanguageDefinition language, LinkedList<String> selectedLanguages) {
         this.code = code;
@@ -39,24 +48,63 @@ public abstract class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<
         this.refreshListsAction = refreshListsAction;
     }
 
-    protected ButtonWidget addButton(int width, int height, int u, int v, ButtonWidget.PressAction action) {
-        return addButton(width, height, u, v, HOVERED_V_OFFSET, action);
-    }
-
-    protected ButtonWidget addButton(int width, int height, int u, int v, int hoveredVOffset, ButtonWidget.PressAction action) {
-        var button = new TexturedButtonWidget(0, 0, width, height, u, v, hoveredVOffset, TEXTURE, TEXTURE_WIDTH, TEXTURE_HEIGHT, action);
+    private ButtonWidget addButton(int width, int height, int u, int v, ButtonWidget.PressAction action) {
+        var button = new TexturedButtonWidget(0, 0, width, height, u, v, HOVERED_V_OFFSET, TEXTURE, TEXTURE_WIDTH, TEXTURE_HEIGHT, action);
         button.visible = false;
         buttons.add(button);
         return button;
     }
 
-    public void toggle() {}
+    private boolean isDefault() {
+        return code.equals(Language.DEFAULT_LANGUAGE);
+    }
 
-    public void moveUp() {}
+    private boolean isSelected() {
+        return selectedLanguages.contains(code);
+    }
 
-    public void moveDown() {}
+    private boolean isFirst() {
+        return code.equals(selectedLanguages.peekFirst());
+    }
 
-    protected abstract void renderButtons(ButtonRenderer buttonRenderer, int x, int y);
+    private boolean isLast() {
+        return code.equals(selectedLanguages.peekLast());
+    }
+
+    private void add() {
+        if (isFocused())
+            parentList.setFocused(null);
+        selectedLanguages.addFirst(code);
+        refreshListsAction.run();
+    }
+
+    private void remove() {
+        if (isFocused())
+            parentList.setFocused(null);
+        selectedLanguages.remove(code);
+        refreshListsAction.run();
+    }
+
+    public void toggle() {
+        if (!isSelected()) add();
+        else remove();
+    }
+
+    public void moveUp() {
+        if (!isSelected()) return;
+        if (isFirst()) return;
+        var index = selectedLanguages.indexOf(code);
+        selectedLanguages.add(index - 1, selectedLanguages.remove(index));
+        refreshListsAction.run();
+    }
+
+    public void moveDown() {
+        if (!isSelected()) return;
+        if (isLast()) return;
+        var index = selectedLanguages.indexOf(code);
+        selectedLanguages.add(index + 1, selectedLanguages.remove(index));
+        refreshListsAction.run();
+    }
 
     @Override
     public void render(MatrixStack matrices, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
@@ -73,9 +121,32 @@ public abstract class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<
                 button.visible = true;
                 button.render(matrices, mouseX, mouseY, tickDelta);
             }, x, y);
+            if (isDefault())
+                renderDefaultLanguageTooltip(x, y);
         }
         client.textRenderer.drawWithShadow(matrices, language.name(), x + 29, y + 3, 0xFFFFFF);
         client.textRenderer.drawWithShadow(matrices, language.region(), x + 29, y + 14, 0x808080);
+    }
+
+    private void renderButtons(ButtonRenderer renderer, int x, int y) {
+        if (isSelected()) {
+            renderer.render(removeButton, x, y);
+            if (!isFirst()) renderer.render(moveUpButton, x + removeButton.getWidth() + 1, y);
+            if (!isLast()) renderer.render(moveDownButton, x + removeButton.getWidth() + 1, y + moveUpButton.getHeight() + 2);
+        } else renderer.render(addButton, x + 7, y);
+    }
+
+    private void renderDefaultLanguageTooltip(int x, int y) {
+        var tooltip = client.textRenderer.wrapLines(DEFAULT_LANGUAGE_TOOLTIP, parentList.getRowWidth() - 6);
+        parentList.getScreen().setTooltip(tooltip, (screen, mouseX, mouseY, width, height) -> {
+            var pos = new Vector2i(
+                    x + 3 + (parentList.getRowWidth() - width - 6) / 2,
+                    y + parentList.getRowHeight() + 4);
+            if (pos.y > parentList.getBottom() + 2 || pos.y + height + 5 > screen.height) {
+                pos.y = y - height - 6;
+            }
+            return pos;
+        }, true);
     }
 
     @Override
@@ -110,7 +181,7 @@ public abstract class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<
     }
 
     @FunctionalInterface
-    protected interface ButtonRenderer {
+    private interface ButtonRenderer {
         void render(ButtonWidget button, int x, int y);
     }
 }
