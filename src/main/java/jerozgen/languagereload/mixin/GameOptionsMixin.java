@@ -5,6 +5,7 @@ import jerozgen.languagereload.config.Config;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.util.Language;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -56,6 +57,8 @@ abstract class GameOptionsMixin {
             config.previousFallbacks = config.fallbacks;
             config.language = language;
             config.fallbacks.clear();
+            if (!language.equals(Language.DEFAULT_LANGUAGE))
+                config.fallbacks.add(Language.DEFAULT_LANGUAGE);
             Config.save();
         }
     }
