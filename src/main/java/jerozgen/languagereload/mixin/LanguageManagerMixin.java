@@ -59,7 +59,7 @@ abstract class LanguageManagerMixin {
                     })
                     .findFirst()
                     .ifPresent(lang -> setSystemLanguage(lang, locale));
-            else if (count == 1) setSystemLanguage(matchingLanguages.getFirst(), locale);
+            else if (count == 1) setSystemLanguage(matchingLanguages.get(0), locale);
         }
     }
 
