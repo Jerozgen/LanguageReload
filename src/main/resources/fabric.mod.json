@@ -46,7 +46,7 @@
   "depends": {
     "fabric-resource-loader-v0": "*",
     "fabricloader": ">=0.15.10",
-    "minecraft": ">=1.20.5"
+    "minecraft": ">=1.20.5 <1.21"
   },
   "suggests": {
     "modmenu": "*"
