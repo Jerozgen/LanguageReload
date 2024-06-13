@@ -40,10 +40,13 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         selectedLanguages.addAll(Config.getInstance().fallbacks);
         languageManager.getAllLanguages().forEach((code, language) ->
                 languageEntries.put(code, new LanguageEntry(this::refresh, code, language, selectedLanguages)));
+
+        layout.setHeaderHeight(48);
+        layout.setFooterHeight(53);
     }
 
-    @Inject(method = "init", at = @At("HEAD"), cancellable = true)
-    void onInit(CallbackInfo ci) {
+    @Inject(method = "initBody", at = @At("HEAD"), cancellable = true)
+    void onInitBody(CallbackInfo ci) {
         var listWidth = Math.min(width / 2 - 4, 200);
         availableLanguageList = new LanguageListWidget(client, it(), listWidth, height, Text.translatable("pack.available.title"));
         selectedLanguageList = new LanguageListWidget(client, it(), listWidth, height, Text.translatable("pack.selected.title"));
@@ -51,11 +54,8 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         selectedLanguageList.setX(width / 2 + 4);
         layout.addBody(availableLanguageList);
         layout.addBody(selectedLanguageList);
+        refresh();
 
-        layout.setHeaderHeight(48);
-        layout.setFooterHeight(53);
-
-        super.init();
         ci.cancel();
     }
 
@@ -71,8 +71,6 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
             }
         };
         searchBox.setChangedListener(__ -> refresh());
-
-        refresh();
 
         var header = layout.addHeader(DirectionalLayoutWidget.vertical().spacing(5));
         header.getMainPositioner().alignHorizontalCenter();

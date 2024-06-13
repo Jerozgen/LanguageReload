@@ -27,9 +27,8 @@ public class LanguageReload {
     public static void reloadLanguages() {
         var client = MinecraftClient.getInstance();
 
-        // Reload language and search managers
+        // Reload language manager
         client.getLanguageManager().reload(client.getResourceManager());
-        reloadSearch();
 
         // Update window title and chat
         client.updateWindowTitle();
@@ -63,12 +62,6 @@ public class LanguageReload {
                 }
             }
         }
-    }
-
-    public static void reloadSearch() {
-        var client = MinecraftClient.getInstance();
-        var searchManager = ((MinecraftClientAccessor) client).languagereload_getSearchManager();
-        searchManager.reload(client.getResourceManager());
     }
 
     public static void setLanguage(String language, LinkedList<String> fallbacks) {

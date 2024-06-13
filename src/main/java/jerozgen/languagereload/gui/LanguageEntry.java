@@ -23,17 +23,17 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
     private static final Text DEFAULT_LANGUAGE_TOOLTIP = Text.translatable("language.default.tooltip");
 
     private static final ButtonTextures ADD_TEXTURES = new ButtonTextures(
-            new Identifier(LanguageReload.MOD_ID, "language_selection/add"),
-            new Identifier(LanguageReload.MOD_ID, "language_selection/add_highlighted"));
+            Identifier.of(LanguageReload.MOD_ID, "language_selection/add"),
+            Identifier.of(LanguageReload.MOD_ID, "language_selection/add_highlighted"));
     private static final ButtonTextures REMOVE_TEXTURES = new ButtonTextures(
-            new Identifier(LanguageReload.MOD_ID, "language_selection/remove"),
-            new Identifier(LanguageReload.MOD_ID, "language_selection/remove_highlighted"));
+            Identifier.of(LanguageReload.MOD_ID, "language_selection/remove"),
+            Identifier.of(LanguageReload.MOD_ID, "language_selection/remove_highlighted"));
     private static final ButtonTextures MOVE_UP_TEXTURES = new ButtonTextures(
-            new Identifier(LanguageReload.MOD_ID, "language_selection/move_up"),
-            new Identifier(LanguageReload.MOD_ID, "language_selection/move_up_highlighted"));
+            Identifier.of(LanguageReload.MOD_ID, "language_selection/move_up"),
+            Identifier.of(LanguageReload.MOD_ID, "language_selection/move_up_highlighted"));
     private static final ButtonTextures MOVE_DOWN_TEXTURES = new ButtonTextures(
-            new Identifier(LanguageReload.MOD_ID, "language_selection/move_down"),
-            new Identifier(LanguageReload.MOD_ID, "language_selection/move_down_highlighted"));
+            Identifier.of(LanguageReload.MOD_ID, "language_selection/move_down"),
+            Identifier.of(LanguageReload.MOD_ID, "language_selection/move_down_highlighted"));
 
     private final MinecraftClient client = MinecraftClient.getInstance();
 
