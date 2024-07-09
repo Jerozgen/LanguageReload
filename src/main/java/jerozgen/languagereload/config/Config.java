@@ -23,6 +23,7 @@ public class Config {
     public int version = 0;
 
     public boolean multilingualItemSearch = true;
+    public boolean removableDefaultLanguage = false;
     public LinkedList<String> fallbacks = new LinkedList<>();
     public LinkedList<String> previousFallbacks = new LinkedList<>();
     public String language = "";
