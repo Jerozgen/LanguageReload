@@ -46,8 +46,7 @@ public class ConfigScreen extends GameOptionsScreen {
     @Override
     protected void addOptions() {
         if (body != null) {
-            body.addAll(MULTILINGUAL_SEARCH);
-            body.addAll(REMOVABLE_DEFAULT_LANGUAGE);
+            body.addAll(MULTILINGUAL_SEARCH, REMOVABLE_DEFAULT_LANGUAGE);
         }
     }
 }
