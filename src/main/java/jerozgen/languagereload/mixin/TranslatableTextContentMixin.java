@@ -19,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -26,9 +27,8 @@ import java.util.function.Consumer;
 
 @Mixin(TranslatableTextContent.class)
 abstract class TranslatableTextContentMixin implements TextContent {
-    @Unique private @Nullable String previousTargetLanguage;
+    @Unique private final Map<Long, String> previousTargetLanguageByThread = new HashMap<>();
     @Unique private final Map<String, List<StringVisitable>> separateTranslationsCache = Maps.newHashMap();
-    @Unique private @Nullable List<StringVisitable> savedTranslations;
 
     @Shadow @Final private String key;
     @Shadow private @Nullable Language languageCache;
@@ -44,19 +44,16 @@ abstract class TranslatableTextContentMixin implements TextContent {
         if (translationStorage == null) return;
 
         var targetLanguage = ((ITranslationStorage) translationStorage).languagereload_getTargetLanguage();
-        if (Objects.equals(previousTargetLanguage, targetLanguage)) return;
+        if (Objects.equals(getPreviousTargetLanguage(), targetLanguage)) return;
+        setPreviousTargetLanguage(targetLanguage);
 
         if (targetLanguage == null) {
-            previousTargetLanguage = null;
-            translations = savedTranslations;
-            savedTranslations = null;
+            separateTranslationsCache.clear();
+            translations = ImmutableList.of();
+            languageCache = null;
             return;
         }
 
-        if (previousTargetLanguage == null) {
-            savedTranslations = translations;
-        }
-        previousTargetLanguage = targetLanguage;
         translations = separateTranslationsCache.computeIfAbsent(targetLanguage, k -> {
             var string = languageCache.get(key);
             try {
@@ -69,12 +66,14 @@ abstract class TranslatableTextContentMixin implements TextContent {
         });
     }
 
-    @Inject(method = "updateTranslations", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/util/Language;get(Ljava/lang/String;)Ljava/lang/String;"))
-    void onUpdateTranslations$clearCache(CallbackInfo ci) {
-        previousTargetLanguage = null;
-        separateTranslationsCache.clear();
-        savedTranslations = null;
+    @Unique
+    public @Nullable String getPreviousTargetLanguage() {
+        return previousTargetLanguageByThread.get(Thread.currentThread().threadId());
+    }
+
+    @Unique
+    public void setPreviousTargetLanguage(@Nullable String value) {
+        previousTargetLanguageByThread.put(Thread.currentThread().threadId(), value);
     }
 
     @Shadow protected abstract void forEachPart(String translation, Consumer<StringVisitable> partsConsumer);
