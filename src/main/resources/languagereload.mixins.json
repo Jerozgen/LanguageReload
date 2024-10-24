@@ -16,6 +16,7 @@
     "LanguageManagerMixin",
     "LanguageMixin",
     "LanguageOptionsScreenMixin",
+    "LanguageSelectionListWidgetAccessor",
     "RecipeBookWidgetMixin",
     "SearchManagerMixin",
     "SignTextAccessor",

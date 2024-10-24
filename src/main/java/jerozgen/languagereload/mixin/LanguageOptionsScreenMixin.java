@@ -16,6 +16,7 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -32,6 +33,8 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     @Unique private final LinkedList<String> selectedLanguages = new LinkedList<>();
     @Unique private final Map<String, LanguageEntry> languageEntries = new LinkedHashMap<>();
 
+    @Shadow private LanguageOptionsScreen.LanguageSelectionListWidget languageSelectionList;
+
     @Inject(method = "<init>", at = @At("TAIL"))
     void onConstructed(Screen parent, GameOptions options, LanguageManager languageManager, CallbackInfo ci) {
         var currentLangCode = languageManager.getLanguage();
@@ -47,6 +50,8 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
     @Inject(method = "initBody", at = @At("HEAD"), cancellable = true)
     void onInitBody(CallbackInfo ci) {
+        languageSelectionList = LanguageSelectionListWidgetAccessor.languagereload_init(it(), client);
+
         var listWidth = Math.min(width / 2 - 4, 200);
         availableLanguageList = new LanguageListWidget(client, it(), listWidth, height, Text.translatable("pack.available.title"));
         selectedLanguageList = new LanguageListWidget(client, it(), listWidth, height, Text.translatable("pack.selected.title"));
