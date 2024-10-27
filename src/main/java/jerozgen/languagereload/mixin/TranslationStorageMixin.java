@@ -16,14 +16,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
 @Mixin(TranslationStorage.class)
 abstract class TranslationStorageMixin extends Language implements ITranslationStorage {
-    @Unique private final Map<Long, String> targetLanguageByThread = new HashMap<>();
+    @Unique private final Map<Long, String> targetLanguageByThread = Maps.newConcurrentMap();
     @Unique private static Map<String, Map<String, String>> separateTranslationsOnLoad;
     @Unique private Map<String, Map<String, String>> separateTranslations;
 
@@ -48,13 +47,14 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
         } else Language.load(inputStream, entryConsumer);
     }
 
-    @Inject(method = "get", at = @At(value = "HEAD"), cancellable = true)
-    void onGet(String key, String fallback, CallbackInfoReturnable<String> cir) {
+    @Override
+    public String languagereload_get(String key) {
         var targetLanguage = languagereload_getTargetLanguage();
         if (targetLanguage != null) {
             var targetTranslations = separateTranslations.get(targetLanguage);
-            cir.setReturnValue(targetTranslations == null ? "" : targetTranslations.getOrDefault(key, ""));
+            return targetTranslations == null ? "" : targetTranslations.getOrDefault(key, "");
         }
+        return this.get(key);
     }
 
     @Override
