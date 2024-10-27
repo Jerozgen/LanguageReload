@@ -2,6 +2,7 @@ package jerozgen.languagereload.gui;
 
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
+import jerozgen.languagereload.config.Config;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ButtonTextures;
@@ -138,7 +139,7 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
 
     private void renderButtons(ButtonRenderer renderer, int x, int y) {
         if (isSelected()) {
-            renderer.render(removeButton, x, y);
+            if (!isDefault() || Config.getInstance().removableDefaultLanguage) renderer.render(removeButton, x, y);
             if (!isFirst()) renderer.render(moveUpButton, x + removeButton.getWidth() + 1, y);
             if (!isLast()) renderer.render(moveDownButton, x + removeButton.getWidth() + 1, y + moveUpButton.getHeight() + 2);
         } else renderer.render(addButton, x + 7, y);
