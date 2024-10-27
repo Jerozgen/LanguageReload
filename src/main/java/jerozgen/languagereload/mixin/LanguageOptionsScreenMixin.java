@@ -83,9 +83,9 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         header.add(searchBox);
     }
 
-    @Inject(method = "initTabNavigation", at = @At("HEAD"), cancellable = true)
-    protected void onInitTabNavigation(CallbackInfo ci) {
-        super.initTabNavigation();
+    @Inject(method = "refreshWidgetPositions", at = @At("HEAD"), cancellable = true)
+    protected void onRefreshWidgetPositions(CallbackInfo ci) {
+        super.refreshWidgetPositions();
 
         var listWidth = Math.min(width / 2 - 4, 200);
         availableLanguageList.position(listWidth, layout);

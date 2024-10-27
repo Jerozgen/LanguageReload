@@ -1,10 +1,13 @@
 package jerozgen.languagereload.mixin;
 
 import com.google.common.collect.Maps;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import jerozgen.languagereload.access.ITranslationStorage;
 import jerozgen.languagereload.config.Config;
 import net.minecraft.client.resource.language.TranslationStorage;
 import net.minecraft.resource.ResourceManager;
+import net.minecraft.util.DeprecatedLanguageData;
 import net.minecraft.util.Language;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,6 +33,15 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
     void onConstructed(Map<String, String> translations, boolean rightToLeft, CallbackInfo ci) {
         separateTranslations = separateTranslationsOnLoad;
         separateTranslationsOnLoad = null;
+    }
+
+    @WrapOperation(method = "load(Lnet/minecraft/resource/ResourceManager;Ljava/util/List;Z)Lnet/minecraft/client/resource/language/TranslationStorage;",
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/util/DeprecatedLanguageData;apply(Ljava/util/Map;)V"))
+    private static void onLoad$applyDeprecatedLanguageData(DeprecatedLanguageData data, Map<String, String> translations, Operation<Void> applier) {
+        applier.call(data, translations);
+        for (Map<String, String> map : separateTranslationsOnLoad.values()) {
+            applier.call(data, map);
+        }
     }
 
     @Inject(method = "load(Lnet/minecraft/resource/ResourceManager;Ljava/util/List;Z)Lnet/minecraft/client/resource/language/TranslationStorage;",
