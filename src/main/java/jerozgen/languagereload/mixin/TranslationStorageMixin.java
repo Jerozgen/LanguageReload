@@ -22,7 +22,7 @@ import java.util.function.BiConsumer;
 
 @Mixin(TranslationStorage.class)
 abstract class TranslationStorageMixin extends Language implements ITranslationStorage {
-    @Unique private @Nullable String targetLanguage;
+    @Unique private final Map<Long, String> targetLanguageByThread = Maps.newConcurrentMap();
     @Unique private static Map<String, Map<String, String>> separateTranslationsOnLoad;
     @Unique private Map<String, Map<String, String>> separateTranslations;
 
@@ -47,21 +47,25 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
         } else Language.load(inputStream, entryConsumer);
     }
 
-    @Inject(method = "get", at = @At(value = "HEAD"), cancellable = true)
-    void onGet(String key, String fallback, CallbackInfoReturnable<String> cir) {
+    @Override
+    public String languagereload_get(String key) {
+        var targetLanguage = languagereload_getTargetLanguage();
         if (targetLanguage != null) {
             var targetTranslations = separateTranslations.get(targetLanguage);
-            cir.setReturnValue(targetTranslations == null ? "" : targetTranslations.getOrDefault(key, ""));
+            return targetTranslations == null ? "" : targetTranslations.getOrDefault(key, "");
         }
+        return this.get(key);
     }
 
     @Override
     public @Nullable String languagereload_getTargetLanguage() {
-        return targetLanguage;
+        return targetLanguageByThread.get(Thread.currentThread().threadId());
     }
 
     @Override
     public void languagereload_setTargetLanguage(@Nullable String value) {
-        targetLanguage = value;
+        var threadId = Thread.currentThread().threadId();
+        if (value == null) targetLanguageByThread.remove(threadId);
+        else targetLanguageByThread.put(threadId, value);
     }
 }
