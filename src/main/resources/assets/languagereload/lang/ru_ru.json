@@ -4,6 +4,11 @@
   "options.languagereload.title": "Настройки Language Reload",
   "options.languagereload.multilingualItemSearch": "Многоязычный поиск",
   "options.languagereload.multilingualItemSearch.tooltip": "Позволяет искать на любом из выбранных языков в творческом инвентаре и книге рецептов.",
+  "options.languagereload.removableDefaultLanguage": "English (US)",
+  "options.languagereload.removableDefaultLanguage.removable": "Убираемый",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "Позволяет убрать стандартный язык из списка выбранных. Может быть полезно для отладки.",
+  "options.languagereload.removableDefaultLanguage.fixed": "Фиксирован",
+  "options.languagereload.removableDefaultLanguage.fixed.tooltip": "Не позволяет убрать стандартный язык из списка выбранных.",
 
   "debug.reload_languages.help": "F3 + J = Перезагрузить языки (Shift — сменить на прошлый)",
   "debug.reload_languages.message": "Языки перезагружены",

@@ -6,6 +6,7 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.SimpleOptionsScreen;
+import net.minecraft.client.gui.tooltip.Tooltip;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.Text;
 
@@ -21,12 +22,28 @@ public class ConfigScreen extends SimpleOptionsScreen {
                 LanguageReload.reloadLanguages();
             });
 
+    private static final SimpleOption<Boolean> REMOVABLE_DEFAULT_LANGUAGE = SimpleOption.ofBoolean(
+            "options.languagereload.removableDefaultLanguage",
+            (value) -> value
+                    ? Tooltip.of(Text.translatable("options.languagereload.removableDefaultLanguage.removable.tooltip"))
+                    : Tooltip.of(Text.translatable("options.languagereload.removableDefaultLanguage.fixed.tooltip")),
+            (__, value) -> value
+                    ? Text.translatable("options.languagereload.removableDefaultLanguage.removable")
+                    : Text.translatable("options.languagereload.removableDefaultLanguage.fixed"),
+            false,
+            value -> {
+                Config.getInstance().removableDefaultLanguage = value;
+                Config.save();
+            }
+    );
+
     public ConfigScreen(Screen parent) {
         super(
                 parent,
                 MinecraftClient.getInstance().options,
                 Text.translatable("options.languagereload.title"),
-                new SimpleOption[]{MULTILINGUAL_SEARCH});
+                new SimpleOption[]{MULTILINGUAL_SEARCH, REMOVABLE_DEFAULT_LANGUAGE});
         MULTILINGUAL_SEARCH.setValue(Config.getInstance().multilingualItemSearch);
+        REMOVABLE_DEFAULT_LANGUAGE.setValue(Config.getInstance().removableDefaultLanguage);
     }
 }
