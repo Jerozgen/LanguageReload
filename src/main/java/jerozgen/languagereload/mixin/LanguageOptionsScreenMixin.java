@@ -31,6 +31,7 @@ import java.util.stream.Stream;
 @Mixin(LanguageOptionsScreen.class)
 public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen implements ILanguageOptionsScreen {
     @Shadow @Final private static Text LANGUAGE_WARNING_TEXT;
+    @Shadow private LanguageOptionsScreen.LanguageSelectionListWidget languageSelectionList;
 
     @Unique private LanguageListWidget availableLanguageList;
     @Unique private LanguageListWidget selectedLanguageList;
@@ -59,6 +60,8 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
     void onInit(CallbackInfo ci) {
+        languageSelectionList = LanguageSelectionListWidgetAccessor.languagereload_init(it(), client);
+
         searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, searchBox, Text.empty()) {
             @Override
             public void setFocused(boolean focused) {
