@@ -59,12 +59,12 @@ abstract class TranslationStorageMixin extends Language implements ITranslationS
 
     @Override
     public @Nullable String languagereload_getTargetLanguage() {
-        return targetLanguageByThread.get(Thread.currentThread().threadId());
+        return targetLanguageByThread.get(Thread.currentThread().getId());
     }
 
     @Override
     public void languagereload_setTargetLanguage(@Nullable String value) {
-        var threadId = Thread.currentThread().threadId();
+        var threadId = Thread.currentThread().getId();
         if (value == null) targetLanguageByThread.remove(threadId);
         else targetLanguageByThread.put(threadId, value);
     }
