@@ -45,6 +45,8 @@ abstract class TranslatableTextContentMixin implements TextContent {
         if (!Config.getInstance().multilingualItemSearch) return null;
 
         var language = Language.getInstance();
+        if (language == null) return null;
+
         var translationStorage = ((ILanguage) language).languagereload_getTranslationStorage();
         if (translationStorage == null) return null;
 

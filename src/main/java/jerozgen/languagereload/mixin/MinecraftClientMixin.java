@@ -29,7 +29,10 @@ abstract class MinecraftClientMixin {
         if (Config.getInstance() == null) return original;
         if (!Config.getInstance().multilingualItemSearch) return original;
 
-        var translationStorage = ((ILanguage) Language.getInstance()).languagereload_getTranslationStorage();
+        var language = Language.getInstance();
+        if (language == null) return original;
+
+        var translationStorage = ((ILanguage) language).languagereload_getTranslationStorage();
         if (translationStorage == null) return original;
 
         var result = new ArrayList<>(original);
