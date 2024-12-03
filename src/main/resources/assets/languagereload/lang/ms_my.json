@@ -1,0 +1,17 @@
+{
+  "language.default.tooltip": "Bahasa lalai Minecraft",
+  "options.languagereload.title": "Pilihan Language Reload",
+  "options.languagereload.multilingualItemSearch": "Carian Multibahasa",
+  "options.languagereload.multilingualItemSearch.tooltip": "Membolehkan carian dalam mana-mana bahasa terpilih di dalam inventori kreatif dan buku resipi.",
+  "options.languagereload.removableDefaultLanguage": "Bahasa Lalai",
+  "options.languagereload.removableDefaultLanguage.removable": "Boleh Dialih Keluar",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "Membenarkan English (US) untuk dinyahpilih. Mungkin berguna untuk nyahpepijat.",
+  "options.languagereload.removableDefaultLanguage.fixed": "Dibaiki",
+  "options.languagereload.removableDefaultLanguage.fixed.tooltip": "Menghalang English (US) daripada dinyahpilih.",
+  "debug.reload_languages.help": "F3 + J = Muat semula bahasa (shift untuk mengitar bahasa)",
+  "debug.reload_languages.message": "Bahasa telah dimuatkan semula",
+  "debug.reload_languages.switch.success": "Bahasa telah ditetapkan kepada %s",
+  "debug.reload_languages.switch.failure": "Tidak dapat mengitar bahasa. Tukar kepada bahasa lain dalam tetapan dan cuba lagi",
+  "modmenu.summaryTranslation.languagereload": "Mengurangkan masa muat dan menambah sandaran untuk bahasa.",
+  "modmenu.descriptionTranslation.languagereload": "Mempercepatkan penukaran bahasa, memperkenalkan kotak carian dan multipilihan dalam menu bahasa, menjadikan carian item multibahasa, menambah ciri nyahpepijat untuk mengitar bahasa dengan Shift + F3 + J dan memuatkan semula bahasa dengan F3 + J."
+}
