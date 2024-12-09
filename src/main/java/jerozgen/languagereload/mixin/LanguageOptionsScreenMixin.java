@@ -92,8 +92,8 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
         selectedLanguageList.position(listWidth, layout);
         availableLanguageList.setX(width / 2 - 4 - listWidth);
         selectedLanguageList.setX(width / 2 + 4);
-        availableLanguageList.updateScroll();
-        selectedLanguageList.updateScroll();
+        availableLanguageList.refreshScroll();
+        selectedLanguageList.refreshScroll();
 
         ci.cancel();
     }
@@ -140,7 +140,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
                 list.setSelected(entry);
             }
         });
-        list.updateScroll();
+        list.refreshScroll();
     }
 
     @Override

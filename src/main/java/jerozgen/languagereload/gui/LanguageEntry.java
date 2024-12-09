@@ -121,7 +121,7 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
         x -= 2;
         y -= 2;
         if (hovered || isFocused() || client.options.getTouchscreen().getValue()) {
-            context.fill(x + 1, y + 1, x + entryWidth - 1, y + entryHeight + 3,
+            context.fill(x + 1, y + 1, parentList.getHoveredSelectionRight() - 1, y + entryHeight + 3,
                     (hovered || isFocused()) ? 0xA0909090 : 0x50909090);
             buttons.forEach(button -> button.visible = false);
             renderButtons((button, buttonX, buttonY) -> {
