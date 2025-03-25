@@ -38,7 +38,7 @@ abstract class GameOptionsMixin {
 
     @Inject(method = "update", at = @At("RETURN"))
     void onUpdate(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
-        var lang = cir.getReturnValue().getString("lang");
+        var lang = cir.getReturnValue().getString("lang", "");
         if (lang.isEmpty()) {
             LanguageReload.shouldSetSystemLanguage = true;
         } else checkConfigLanguage(lang);
