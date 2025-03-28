@@ -16,5 +16,5 @@
   "debug.reload_languages.switch.failure": "无法循环切换语言，请在设置中切换至其他语言后重试。",
 
   "modmenu.summaryTranslation.languagereload": "缩短加载时间并添加语言回退功能。",
-  "modmenu.descriptionTranslation.languagereload": "加快语言切换速度，在语言菜单中引入了搜索框和多选，使物品搜索支持多语言，添加了调试功能，用Shift + F3 + J来循环切换语言，用F3 + J来重新加载。"
+  "modmenu.descriptionTranslation.languagereload": "加快语言切换速度，在语言菜单中引入搜索框和多选，使物品搜索支持多语言，添加调试功能，用Shift + F3 + J来循环切换语言，用F3 + J来重新加载。"
 }
