@@ -1,7 +1,7 @@
 {
   "language.default.tooltip": "마인크래프트 기본 언어",
 
-  "options.languagereload.title": "언어 새로 고침 설정",
+  "options.languagereload.title": "Language Reload 설정",
   "options.languagereload.multilingualItemSearch": "다국어 검색",
   "options.languagereload.multilingualItemSearch.tooltip": "크리에이티브 인벤토리와 제작법 책에서 선택한 모든 언어로 검색할 수 있도록 합니다.",
 
