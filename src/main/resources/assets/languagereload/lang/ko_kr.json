@@ -4,6 +4,11 @@
   "options.languagereload.title": "Language Reload 설정",
   "options.languagereload.multilingualItemSearch": "다국어 검색",
   "options.languagereload.multilingualItemSearch.tooltip": "크리에이티브 인벤토리와 제작법 책에서 선택한 모든 언어로 검색할 수 있도록 합니다.",
+  "options.languagereload.removableDefaultLanguage": "기본 언어",
+  "options.languagereload.removableDefaultLanguage.removable": "해제 가능",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "English (US)를 선택 해제할 수 있습니다. 디버깅에 유용할 수 있습니다.",
+  "options.languagereload.removableDefaultLanguage.fixed": "고정됨",
+  "options.languagereload.removableDefaultLanguage.fixed.tooltip": "English (US)를 선택 해제할 수 없도록 합니다."
 
   "debug.reload_languages.help": "F3 + J = 언어 새로 고침 (Shift로 언어 번경)",
   "debug.reload_languages.message": "언어를 새로 고쳤습니다",
