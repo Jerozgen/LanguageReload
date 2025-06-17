@@ -6,12 +6,14 @@ import jerozgen.languagereload.config.Config;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ButtonTextures;
+import net.minecraft.client.gui.tooltip.TooltipPositioner;
 import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.TexturedButtonWidget;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.text.Text;
+import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Language;
 import org.joml.Vector2i;
@@ -121,8 +123,11 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
         x -= 2;
         y -= 2;
         if (hovered || isFocused() || client.options.getTouchscreen().getValue()) {
-            context.fill(x + 1, y + 1, parentList.getHoveredSelectionRight() - 1, y + entryHeight + 3,
-                    (hovered || isFocused()) ? 0xA0909090 : 0x50909090);
+            var x1 = x + 1;
+            var y1 = y + 1;
+            var x2 = parentList.getHoveredSelectionRight() - 1;
+            var y2 = y + entryHeight + 3;
+            context.fill(x1, y1, x2, y2, (hovered || isFocused()) ? 0xA0909090 : 0x50909090);
             buttons.forEach(button -> button.visible = false);
             renderButtons((button, buttonX, buttonY) -> {
                 button.setX(buttonX);
@@ -130,11 +135,12 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
                 button.visible = true;
                 button.render(context, mouseX, mouseY, tickDelta);
             }, x, y);
-            if ((hovered || isFocused()) && isDefault())
-                renderDefaultLanguageTooltip(x, y);
+            if ((hovered || isFocused()) && isDefault()) {
+                renderDefaultLanguageTooltip(context, x, y);
+            }
         }
-        context.drawTextWithShadow(client.textRenderer, language.name(), x + 29, y + 3, 0xFFFFFF);
-        context.drawTextWithShadow(client.textRenderer, language.region(), x + 29, y + 14, 0x808080);
+        context.drawTextWithShadow(client.textRenderer, language.name(), x + 29, y + 3, Colors.WHITE);
+        context.drawTextWithShadow(client.textRenderer, language.region(), x + 29, y + 14, Colors.GRAY);
     }
 
     private void renderButtons(ButtonRenderer renderer, int x, int y) {
@@ -145,16 +151,17 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
         } else renderer.render(addButton, x + 7, y);
     }
 
-    private void renderDefaultLanguageTooltip(int x, int y) {
+    private void renderDefaultLanguageTooltip(DrawContext context, int x, int y) {
         var tooltip = client.textRenderer.wrapLines(DEFAULT_LANGUAGE_TOOLTIP, parentList.getRowWidth() - 6);
-        parentList.getScreen().setTooltip(tooltip, (screenWidth, screenHeight, mouseX, mouseY, width, height) -> {
+        TooltipPositioner positioner = (screenWidth, screenHeight, mouseX, mouseY, width, height) -> {
             var pos = new Vector2i(
                     x + 3 + (parentList.getRowWidth() - width - 6) / 2,
                     y + parentList.getRowHeight() + 4);
             if (pos.y > parentList.getBottom() + 2 || pos.y + height + 5 > screenHeight)
                 pos.y = y - height - 6;
             return pos;
-        }, true);
+        };
+        context.drawTooltip(client.textRenderer, tooltip, positioner, 0, 0, true);
     }
 
     @Override

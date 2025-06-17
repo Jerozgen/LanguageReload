@@ -26,11 +26,10 @@ import java.util.Objects;
 public abstract class KeyboardMixin {
     @Shadow @Final private MinecraftClient client;
 
-    @Shadow
-    protected abstract void debugLog(String key, Object... args);
-
-    @Shadow
-    protected abstract void debugError(String key, Object... args);
+    @Shadow protected abstract void sendMessage(Text message);
+    @Shadow protected abstract void debugError(Text message);
+    @Shadow protected abstract void debugLog(Text text);
+    @Shadow protected abstract void debugLog(String key);
 
     @Unique
     private void processLanguageReloadKeys() {
@@ -41,7 +40,7 @@ public abstract class KeyboardMixin {
             var language = languageManager.getLanguage(config.previousLanguage);
             var noLanguage = config.previousLanguage.equals(LanguageReload.NO_LANGUAGE);
             if (language == null && !noLanguage) {
-                debugError("debug.reload_languages.switch.failure");
+                this.debugError(Text.translatable("debug.reload_languages.switch.failure"));
             } else {
                 LanguageReload.setLanguage(config.previousLanguage, config.previousFallbacks);
                 var languages = new ArrayList<Text>() {{
@@ -55,19 +54,19 @@ public abstract class KeyboardMixin {
                             .map(LanguageDefinition::getDisplayText)
                             .toList());
                 }};
-                debugLog("debug.reload_languages.switch.success", Texts.join(languages, Text.of(", ")));
+                this.debugLog(Text.translatable("debug.reload_languages.switch.success", Texts.join(languages, Text.of(", "))));
             }
         } else {
             LanguageReload.reloadLanguages();
-            debugLog("debug.reload_languages.message");
+            this.debugLog("debug.reload_languages.message");
         }
     }
 
     @Inject(method = "processF3", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V",
+            target = "Lnet/minecraft/client/Keyboard;sendMessage(Lnet/minecraft/text/Text;)V",
             ordinal = 6, shift = At.Shift.AFTER))
     private void onProcessF3$addHelp(int key, CallbackInfoReturnable<Boolean> cir) {
-        client.inGameHud.getChatHud().addMessage(Text.translatable("debug.reload_languages.help"));
+        this.sendMessage(Text.translatable("debug.reload_languages.help"));
     }
 
     @Inject(method = "processF3", at = @At("RETURN"), cancellable = true)
@@ -81,8 +80,9 @@ public abstract class KeyboardMixin {
     @Inject(method = "onKey", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Keyboard;debugCrashStartTime:J", ordinal = 0), cancellable = true)
     private void onOnKey(long window, int key, int scancode, int action, int modifiers, CallbackInfo ci) {
         if (client.currentScreen != null && InputUtil.isKeyPressed(window, GLFW.GLFW_KEY_F3) && key == GLFW.GLFW_KEY_J) {
-            if (action != 0)
+            if (action != 0) {
                 processLanguageReloadKeys();
+            }
             ci.cancel();
         }
     }
