@@ -1,0 +1,131 @@
+# Auto detect text files and perform LF normalization
+*               text=auto
+
+# Text files where line endings should be preserved
+*.patch        -text
+
+# Enable syntax highlighting for files with `.gitattributes` extensions.
+*.gitattributes linguist-language=gitattributes
+*.gitattributes linguist-detectable=true
+*.gitattributes linguist-documentation=false
+
+# Exclude files from exporting
+.gitattributes  export-ignore
+.gitignore      export-ignore
+.gitkeep        export-ignore
+
+# Documents
+*.md            text diff=markdown linguist-detectable
+*.mdx           text diff=markdown
+*.markdown      text diff=markdown
+*.mdtxt         text
+*.mdtext        text
+*.txt           text
+*.adoc          text
+*.csv           text eol=crlf
+*.tab           text
+*.tsv           text
+
+# Documentation
+AUTHORS         text
+CHANGELOG       text
+CHANGES         text
+CONTRIBUTING    text
+COPYING         text
+*COPYRIGHT*     text
+INSTALL         text
+LICENSE         text
+NEWS            text
+*README*        text
+TODO            text
+
+# Graphics
+*.png           binary
+*.jpg           binary
+*.jpeg          binary
+*.gif           binary
+*.svg           binary
+*.eps           binary
+
+# Scripts
+*.bash          text eol=lf
+*.fish          text eol=lf
+*.ksh           text eol=lf
+*.sh            text eol=lf
+*.zsh           text eol=lf
+*.bat           text eol=crlf
+*.cmd           text eol=crlf
+*.ps1           text eol=crlf
+
+# Serialisation
+*.json          text
+*.toml          text
+*.xml           text
+*.yaml          text
+*.yml           text
+
+# Archives
+*.7z            binary
+*.gz            binary
+*.rar           binary
+*.tar           binary
+*.xz            binary
+*.zip           binary
+
+# Binary files
+*.exe           binary
+*.dll           binary
+*.so            binary
+*.jar           binary
+*.class         binary
+*.ear           binary
+*.war           binary
+*.jks           binary
+
+# Text files normalization (Convert CRLF => LF)
+*.gitattributes text
+.gitignore      text
+*.css           text diff=css
+*.scss          text diff=css
+*.htm           text diff=html
+*.html          text diff=html
+*.js            text
+*.properties    text
+
+# Configs
+*.cnf           text
+*.conf          text
+*.config        text
+*.cfg           text eol=lf
+.editorconfig   text
+.env            text
+.gitattributes  text
+.gitconfig      text
+*.lock          text -diff
+makefile        text
+
+# Audio
+*.ogg           binary
+
+# Java sources
+*.java          text diff=java
+*.kt            text diff=kotlin
+*.kts           text diff=kotlin
+*.groovy        text diff=java
+*.scala         text diff=java
+
+# Gradle
+*.gradle        text diff=java
+*.gradle.kts    text diff=kotlin
+gradlew         text eol=lf
+
+# Minecraft modding
+*.mixins.json   text
+*.accesswidener text
+*.mcmeta        text
+
+# Disable autocrlf on generated files, they always generate with LF
+# Add any extra files or paths here to make git stop saying they
+# are changed when only line endings change.
+src/generated/**/.cache/cache text eol=lf
+src/generated/**/*.json       text eol=lf

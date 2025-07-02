@@ -1,0 +1,77 @@
+[versions]
+java = "21"
+
+# Plugins
+typesafe-conventions = "0.7.3"
+
+# ModDevGradle
+# See https://projects.neoforged.net/neoforged/moddevgradle for new versions
+moddev = "2.0.95"
+
+# Fabric Loom
+# See https://fabricmc.net/develop/ for new versions
+loom = "1.10-SNAPSHOT"
+
+# Minecraft version must agree with the Neo version to get a valid artifact
+# Minecraft version range can use any release version of Minecraft as bounds.
+# Snapshots, pre-releases, and release candidates are not guaranteed to sort properly
+# as they do not follow standard versioning conventions.
+minecraft = "1.21.6"
+minecraft-range = "[1.21.6,)"
+
+# The version of ParchmentMC that is used
+# See https://parchmentmc.org/docs/getting-started#choose-a-version for new versions
+parchment = "2025.06.29"
+parchmentmc = "1.21.6"
+
+# NeoForge
+# See https://projects.neoforged.net/neoforged/neoforge for new versions
+# NeoForge version must agree with the Minecraft version to get a valid artifact
+# NeoForge version range can use any version of Neo as bound
+# Loader version range can only use the major version of FML as bounds
+neoforge = "21.6.19-beta"
+neoforge-range = "[21.6.0,)"
+neoforge-loader-range = "[4,)"
+# This is the version of minecraft that the 'common' project uses.
+# You can find a list of all versions here https://projects.neoforged.net/neoforged/neoform
+neoform = "1.21.6-20250617.151856"
+
+# Fabric
+# See https://fabricmc.net/develop/ for new versions
+fabric-loader = "0.16.14"
+fabric-api = "0.128.0+1.21.6"
+
+# Mixins
+# https://github.com/SpongePowered/Mixin
+mixin = "0.8.5"
+# https://github.com/LlamaLad7/MixinExtras
+# NeoForge 20.2.84+ includes MixinExtras already.
+mixinextras = "0.4.1"
+
+# ModMenu
+# https://maven.terraformersmc.com/releases/com/terraformersmc/modmenu
+# https://modrinth.com/mod/modmenu/versions
+modmenu = "15.0.0-beta.3"
+
+[libraries]
+# Common
+minecraft = { group = "com.mojang", name = "minecraft", version.ref = "minecraft" }
+
+# NeoForge
+neoforge = { group = "net.neoforged", name = "neoforge", version.ref = "neoforge" }
+
+# Fabric
+fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabric-loader" }
+fabric-api = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.ref = "fabric-api" }
+
+# Mixin
+mixin = { group = "org.spongepowered", name = "mixin", version.ref = "mixin" }
+mixinextras-common = { group = "io.github.llamalad7", name = "mixinextras-common", version.ref = "mixinextras" }
+
+# ModMenu
+modmenu = { group = "com.terraformersmc", name = "modmenu", version.ref = "modmenu" }
+
+[plugins]
+moddev = { id = "net.neoforged.moddev", version.ref = "moddev" }
+loom = { id = "fabric-loom", version.ref = "loom" }
+typesafe-conventions = { id = "dev.panuszewski.typesafe-conventions", version.ref = "typesafe-conventions" }
