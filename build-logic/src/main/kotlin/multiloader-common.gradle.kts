@@ -4,6 +4,9 @@ plugins {
     `maven-publish`
 }
 
+version = "${mod.version}+${libs.versions.minecraft.asProvider().get()}-${project.name}"
+group = mod.group
+
 base {
     archivesName.set(mod.archivesBaseName)
 }
@@ -56,23 +59,26 @@ listOf("apiElements", "runtimeElements", "sourcesElements", "javadocElements").f
 }
 
 tasks {
+    val modId = mod.id
     named<Jar>("sourcesJar") {
         from(rootProject.file("LICENSE")) {
-            rename { "${it}_${mod.id}" }
+            rename { "${it}_${modId}" }
         }
     }
 
     named<Jar>("jar") {
         from(rootProject.file("LICENSE")) {
-            rename { "${it}_${mod.id}" }
+            rename { "${it}_${modId}" }
         }
 
         manifest.attributes(
             mapOf(
-                "Specification-Title" to mod.name, "Specification-Vendor" to mod.author,
-                "Specification-Version"  to common.mod.version, // project.jar.archiveVersion,
-                "Implementation-Title" to project.name, "Implementation-Vendor" to mod.author,
-                "Implementation-Version" to common.mod.version, // project.jar.archiveVersion,
+                "Specification-Title" to mod.name,
+                "Specification-Vendor" to mod.author,
+                "Specification-Version"  to version,
+                "Implementation-Title" to project.name,
+                "Implementation-Vendor" to mod.author,
+                "Implementation-Version" to version,
                 "Built-On-Minecraft" to libs.versions.minecraft.asProvider().get()
             )
         )
