@@ -60,6 +60,8 @@ listOf("apiElements", "runtimeElements", "sourcesElements", "javadocElements").f
 
 tasks {
     val modId = mod.id
+    val modLogo = "assets/${mod.id}/logo.png"
+
     named<Jar>("sourcesJar") {
         from(rootProject.file("LICENSE")) {
             rename { "${it}_${modId}" }
@@ -97,6 +99,7 @@ tasks {
             "modHomepage" to mod.homepage,
             "modSources" to mod.sources,
             "modIssues" to mod.issues,
+            "modLogo" to modLogo,
             "modLinksModrinth" to mod.links.modrinth,
             "modLinksCurseforge" to mod.links.curseforge,
             "javaVersion" to libs.versions.java.get(),

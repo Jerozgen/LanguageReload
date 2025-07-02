@@ -38,7 +38,7 @@
     "issues": "${modIssues}"
   },
   "license": "${modLicense}",
-  "icon": "assets/${modId}/icon.png",
+  "icon": "${modLogo}",
   "environment": "client",
   "mixins": [
     "${modId}.mixins.json"
