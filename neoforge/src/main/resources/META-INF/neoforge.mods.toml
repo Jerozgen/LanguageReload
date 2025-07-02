@@ -65,6 +65,10 @@ displayURL="${modHomepage}"
 # Requirement: Optional
 logoFile="${modLogo}"
 
+# A boolean indicating whether the logo should be blurred or not when trying to scale the logo.
+# Requirement: Optional
+logoBlur = false
+
 # A free-form string where you can list the authors of the mod.
 # Requirement: Optional
 authors="${modAuthor}"
