@@ -1,0 +1,134 @@
+# This file is the mod metadata manifest for the NeoForge Mod Loader.
+# It tells the loader how to handle the mod(s) inside this JAR file.
+# The format is TOML (Tom's Obvious, Minimal Language).
+# Placeholders like ${modId} are typically replaced by your build script (e.g., Gradle)
+# using values from a properties file (e.g., gradle.properties).
+
+# The name of the mod loader type to load.
+# For standard mods written in Java using the @Mod annotation, this must be "javafml".
+# Requirement: Mandatory
+modLoader = "javafml"
+
+# A version range for the specified mod loader.
+# For "javafml", this corresponds to the NeoForge version.
+# The build script usually provides this value to ensure compatibility.
+# Requirement: Mandatory
+loaderVersion = "${neoforgeLoaderVersionRange}"
+
+# The license under which your mod is distributed.
+# This is a mandatory field that helps users and pack creators understand what they are allowed to do with your mod.
+# It is highly recommended to use a standard SPDX identifier (e.g., "MIT", "GPL-3.0-only").
+# You can review common open-source licenses at https://choosealicense.com/
+# Requirement: Mandatory
+license = "${modLicense}"
+
+# A URL pointing to your project's issue tracker (e.g., GitHub Issues).
+# This gives users a direct link to report bugs.
+# Requirement: Optional
+issueTrackerURL="${modIssues}"
+
+# This marks the beginning of the list of mods contained in this file.
+# A single JAR can contain multiple mods by having multiple [[mods]] blocks.
+# This entire block is considered mandatory for a mod to be loaded.
+# Requirement: Mandatory
+[[mods]]
+# The unique identifier for your mod.
+# This ID is used for resource locations (textures, models), registry names (items, blocks), commands, and dependency resolution.
+# It must be 2-64 characters, start with a lowercase letter, and contain only lowercase letters (a-z), numbers (0-9), and underscores (_).
+# Requirement: Mandatory
+modId = "${modId}"
+
+# The version number of your mod.
+# It is strongly recommended to use Semantic Versioning (SemVer).
+# The placeholder ${modVersion} is typically configured to pull the version from your build script, which ensures it is consistent across your project.
+# Requirement: Mandatory
+version = "${modVersion}"
+
+# The human-readable name of your mod that is displayed in the in-game mod list.
+# Requirement: Mandatory
+displayName = "${modName}"
+
+# A URL that the game can query to check for updates to your mod.
+# For this to work, the URL must point to a JSON file that follows the NeoForge update checker specification.
+# See the specification at: https://docs.neoforged.net/docs/misc/updatechecker/
+# Requirement: Optional
+# updateJSONURL="https://your-domain.com/updates.json"
+
+# A URL for your mod's homepage, which is linked in the in-game mod list UI.
+# This could be a link to a Modrinth page, CurseForge page, your website, or a GitHub repository.
+# Requirement: Optional
+displayURL="${modHomepage}"
+
+# A path to a logo image file within your JAR's resources.
+# This logo is displayed in the mod list next to your mod's name.
+# The path is relative to the root of your resources directory (e.g., src/main/resources).
+# Requirement: Optional
+logoFile="${modId}/icon.png"
+
+# A free-form string where you can list the authors of the mod.
+# Requirement: Optional
+authors="${modAuthor}"
+
+# A detailed description of your mod.
+# For longer text, use TOML's multiline string syntax to keep it readable.
+# This text appears in the mod's information screen in the game.
+# Requirement: Optional
+description = '''${modDescription}'''
+
+# Credits and acknowledges for the mod shown on the mod list screen.
+# Requirement: Optional
+credits = '''${modCredits}'''
+
+# This block defines the dependencies for the mod specified in the header.
+# The syntax [[dependencies."${modId}"]] links this dependency block to a specific mod defined in a [[mods]] block above.
+[[dependencies."${modId}"]]
+# The modId of the dependency.
+# Requirement: Mandatory (within a dependency block)
+modId = "neoforge"
+
+# The type of dependency. This is case-insensitive.
+# "required": The game will not start if the dependency is missing or the version doesn't match.
+# "optional": The game will start, but if the dependency is present, its version must match.
+# "incompatible": The game will not start if this mod is present.
+# "discouraged": The game will start, but will show a warning screen.
+# Requirement: Mandatory (within a dependency block)
+type = "required"
+
+# The compatible version range for the dependency, using Maven version range syntax.
+# e.g., "[1.20.4,)" means version 1.20.4 or newer.
+# Requirement: Mandatory (within a dependency block)
+versionRange = "${neoforgeVersionRange}"
+
+# The order in which this mod should be loaded relative to the dependency.
+# "NONE": No specific loading order is enforced.
+# "BEFORE": This mod must be loaded *before* the dependency.
+# "AFTER": This mod must be loaded *after* the dependency.
+# Requirement: Optional
+ordering = "NONE"
+
+# The physical side where this dependency is required.
+# "BOTH": Required on the client and server.
+# "CLIENT": Required only on the client.
+# "SERVER": Required only on the server.
+# Requirement: Optional
+side = "BOTH"
+
+# The location of the mixin configuration file.
+[[mixins]]
+config="${modId}.mixins.json"
+
+[[dependencies."${modId}"]]
+modId = "minecraft"
+type = "required"
+# This version range declares a minimum of the current Minecraft version up to, but not including, the next major version.
+versionRange = "${minecraftVersionRange}"
+ordering = "NONE"
+side = "BOTH"
+
+# The features section allows you to declare requirements for the game environment itself.
+# These are side-aware, so a client-side requirement won't prevent a server from starting.
+# Requirement: Optional
+# [features."${modId}"]
+# This example declares that the mod requires OpenGL version 3.2 or higher to run on the client.
+# This is side-aware and will not prevent a dedicated server from loading the mod.
+# openGLVersion="[3.2,)"

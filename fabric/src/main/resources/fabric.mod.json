@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "id": "${modId}",
+  "version": "${modVersion}",
+  "name": "${modName}",
+  "description": "${modDescription}",
+  "authors": [
+    {"name": "${modAuthor}", "contact": {"homepage": "https://github.com/Jerozgen", "discord": "jerozgen"}}
+  ],
+  "contributors": [
+    {"name": "Benonardo", "contact": {"homepage": "https://github.com/Benonardo"}},
+    {"name": "Alex Gazmanovich — Belarusian", "contact": {"homepage": "https://github.com/Gazmanovich"}},
+    {"name": "Madis0 — Estonian", "contact": {"homepage": "https://github.com/Madis0"}},
+    {"name": "Texaliuz — Argentinian Spanish", "contact": {"homepage": "https://github.com/Texaliuz"}},
+    {"name": "BroxyZF — Spanish", "contact": {"homepage": "https://github.com/BroxyZF"}},
+    {"name": "Calvineries — French", "contact": {"homepage": "https://github.com/Calvineries"}},
+    {"name": "glaav — Italian", "contact": {"homepage": "https://github.com/glaav"}},
+    {"name": "ookkoouu — Japanese", "contact": {"homepage": "https://github.com/ookkoouu"}},
+    {"name": "wavgado — Korean", "contact": {"homepage": "https://github.com/wavgado"}},
+    {"name": "DominoKorean — Korean", "contact": {"homepage": "https://github.com/DominoKorean"}},
+    {"name": "NuruddinPlays — Malay, Malay (Jawi)", "contact": {"homepage": "https://github.com/NuruddinPlays"}},
+    {"name": "PRO100KatYT — Polish", "contact": {"homepage": "https://github.com/PRO100KatYT"}},
+    {"name": "FITFC — Brazilian Portuguese", "contact": {"homepage": "https://github.com/FITFC"}},
+    {"name": "Amirhan-Taipovjan-Greatest-I — Tatar", "contact": {"homepage": "https://github.com/Amirhan-Taipovjan-Greatest-I"}},
+    {"name": "Altegar — Ukrainian", "contact": {"homepage": "https://github.com/Altegar"}},
+    {"name": "ImVietnam — Vietnamese", "contact": {"homepage": "https://github.com/ImVietnam"}},
+    {"name": "IceAlin — Chinese Simplified", "contact": {"homepage": "https://github.com/IceeAlin"}},
+    {"name": "GodGun968 (神枪968) — Chinese Simplified", "contact": {"homepage": "https://github.com/GodGun968"}},
+    {"name": "buiawpkgew1 (菾凴) — Chinese Simplified", "contact": {"homepage": "https://github.com/buiawpkgew1"}},
+    {"name": "Cccc_owo — Chinese Simplified", "contact": {"homepage": "https://github.com/Cccc-owo"}},
+    {"name": "Andypsl8 — Chinese Simplified", "contact": {"homepage": "https://github.com/Andypsl8"}},
+    {"name": "xMikux — Chinese Traditional", "contact": {"homepage": "https://github.com/xMikux"}},
+    {"name": "dirtTW — Chinese Traditional", "contact": {"homepage": "https://github.com/yichifauzi"}}
+  ],
+  "contact": {
+    "homepage": "${modHomepage}",
+    "sources": "${modSources}",
+    "issues": "${modIssues}"
+  },
+  "license": "${modLicense}",
+  "icon": "assets/${modId}/icon.png",
+  "environment": "client",
+  "mixins": [
+    "${modId}.mixins.json"
+  ],
+  "accessWidener": "${modId}.accesswidener",
+  "entrypoints": {
+    "modmenu": [
+      "jerozgen.languagereload.config.ModMenuEntrypoint"
+    ]
+  },
+  "depends": {
+    "fabric-resource-loader-v0": "*",
+    "fabricloader": ">=${fabricLoaderVersion}",
+    "minecraft": "~${minecraftVersion}",
+    "java": ">=${javaVersion}"
+  },
+  "suggests": {
+    "modmenu": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.modrinth": "${modLinksModrinth}",
+        "modmenu.curseforge": "${modLinksCurseforge}"
+      }
+    }
+  }
+}
