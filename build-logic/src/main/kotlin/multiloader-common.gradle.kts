@@ -60,7 +60,7 @@ listOf("apiElements", "runtimeElements", "sourcesElements", "javadocElements").f
 
 tasks {
     val modId = mod.id
-    val modLogo = "assets/${mod.id}/logo.png"
+    val modLogo = "assets/${mod.id}/icon.png"
 
     named<Jar>("sourcesJar") {
         from(rootProject.file("LICENSE")) {

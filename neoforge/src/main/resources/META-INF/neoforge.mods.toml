@@ -115,7 +115,7 @@ ordering = "NONE"
 # "CLIENT": Required only on the client.
 # "SERVER": Required only on the server.
 # Requirement: Optional
-side = "BOTH"
+side = "CLIENT"
 
 # The location of the mixin configuration file.
 [[mixins]]
