@@ -1,29 +1,30 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "jerozgen.languagereload.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "client": [
-    "AdvancementsScreenMixin",
-    "AdvancementTabMixin",
-    "AdvancementWidgetAccessor",
-    "BookScreenAccessor",
-    "ClientChunkManagerAccessor",
-    "ClientChunkMapAccessor",
-    "GameOptionsMixin",
-    "KeyboardMixin",
-    "LanguageManagerMixin",
-    "LanguageMixin",
-    "LanguageOptionsScreenMixin",
-    "LanguageSelectionListWidgetAccessor",
-    "RecipeBookWidgetMixin",
-    "SearchManagerMixin",
-    "SignTextAccessor",
-    "TextDisplayEntityAccessor",
-    "TranslatableTextContentMixin",
-    "TranslationStorageMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+    "required": true,
+    "minVersion": "0.8",
+    "package": "jerozgen.languagereload.mixin",
+    "compatibilityLevel": "JAVA_21",
+    "client": [
+        "AdvancementsScreenMixin",
+        "AdvancementTabMixin",
+        "AdvancementWidgetAccessor",
+        "BookScreenAccessor",
+        "ClientChunkManagerAccessor",
+        "ClientChunkMapAccessor",
+        "EntryListWidgetMixin",
+        "GameOptionsMixin",
+        "KeyboardMixin",
+        "LanguageManagerMixin",
+        "LanguageMixin",
+        "LanguageOptionsScreenMixin",
+        "LanguageSelectionListWidgetAccessor",
+        "RecipeBookWidgetMixin",
+        "SearchManagerMixin",
+        "SignTextAccessor",
+        "TextDisplayEntityAccessor",
+        "TranslatableTextContentMixin",
+        "TranslationStorageMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
 }

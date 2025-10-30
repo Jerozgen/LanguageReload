@@ -4,6 +4,7 @@ import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.config.Config;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.tooltip.TooltipPositioner;
@@ -119,7 +120,13 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
     }
 
     @Override
-    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
+    public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        int index = parentList.children().indexOf(this);
+        int y = parentList.getRowTop(index);
+        int x = parentList.getRowLeft();
+        int entryWidth = parentList.getRowWidth();
+        int entryHeight = parentList.getRowHeight();
+        
         x -= 2;
         y -= 2;
         if (hovered || isFocused() || client.options.getTouchscreen().getValue()) {
@@ -133,7 +140,7 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
                 button.setX(buttonX);
                 button.setY(buttonY);
                 button.visible = true;
-                button.render(context, mouseX, mouseY, tickDelta);
+                button.render(context, mouseX, mouseY, deltaTicks);
             }, x, y);
             if ((hovered || isFocused()) && isDefault()) {
                 renderDefaultLanguageTooltip(context, x, y);
@@ -170,9 +177,9 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         for (var widget : buttons)
-            if (widget.mouseClicked(mouseX, mouseY, button)) {
+            if (widget.mouseClicked(click, doubled)) {
                 ((ILanguageOptionsScreen) parentList.getScreen()).languagereload_focusList(parentList);
                 return true;
             }

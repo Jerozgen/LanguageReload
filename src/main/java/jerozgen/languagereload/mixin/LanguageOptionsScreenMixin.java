@@ -132,9 +132,9 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     private void refreshList(LanguageListWidget list, Stream<? extends LanguageEntry> entries) {
         var selectedEntry = list.getSelectedOrNull();
         list.setSelected(null);
-        list.children().clear();
+        list.clearEntries();
         entries.forEach(entry -> {
-            list.children().add(entry);
+            list.addEntry(entry);
             entry.setParent(list);
             if (entry == selectedEntry) {
                 list.setSelected(entry);
