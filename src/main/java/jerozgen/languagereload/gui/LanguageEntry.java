@@ -4,13 +4,13 @@ import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
 import jerozgen.languagereload.config.Config;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ButtonTextures;
 import net.minecraft.client.gui.tooltip.TooltipPositioner;
-import net.minecraft.client.gui.widget.AlwaysSelectedEntryListWidget;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.gui.widget.TexturedButtonWidget;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageEntry> {
+public class LanguageEntry extends LanguageListWidget.Entry {
     private static final Text DEFAULT_LANGUAGE_TOOLTIP = Text.translatable("language.default.tooltip");
 
     private static final ButtonTextures ADD_TEXTURES = new ButtonTextures(
@@ -46,12 +46,10 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
     private final Runnable refreshListsAction;
 
     private final List<ClickableWidget> buttons = new ArrayList<>();
-    private final ButtonWidget addButton = addButton(15, 24, ADD_TEXTURES, __ -> add());
-    private final ButtonWidget removeButton = addButton(15, 24, REMOVE_TEXTURES, __ -> remove());
+    private final ButtonWidget addButton = addButton(15, 24, ADD_TEXTURES, __ -> toggle());
+    private final ButtonWidget removeButton = addButton(15, 24, REMOVE_TEXTURES, __ -> toggle());
     private final ButtonWidget moveUpButton = addButton(11, 11, MOVE_UP_TEXTURES, __ -> moveUp());
     private final ButtonWidget moveDownButton = addButton(11, 11, MOVE_DOWN_TEXTURES, __ -> moveDown());
-
-    private LanguageListWidget parentList;
 
     public LanguageEntry(Runnable refreshListsAction, String code, LanguageDefinition language, LinkedList<String> selectedLanguages) {
         this.code = code;
@@ -61,7 +59,7 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
     }
 
     protected ButtonWidget addButton(int width, int height, ButtonTextures textures, ButtonWidget.PressAction action) {
-        var button = new TexturedButtonWidget(0, 0, width, height, textures, action);
+        var button = new LanguageEntryButtonWidget(width, height, textures, action);
         button.visible = false;
         buttons.add(button);
         return button;
@@ -83,23 +81,17 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
         return code.equals(selectedLanguages.peekLast());
     }
 
-    private void add() {
-        if (isFocused())
-            parentList.setFocused(null);
-        selectedLanguages.addFirst(code);
-        refreshListsAction.run();
-    }
-
-    private void remove() {
-        if (isFocused())
-            parentList.setFocused(null);
-        selectedLanguages.remove(code);
-        refreshListsAction.run();
-    }
-
     public void toggle() {
-        if (!isSelected()) add();
-        else remove();
+        if (isFocused()) {
+            parentList.setFocused(null);
+        }
+        if (isSelected()) {
+            selectedLanguages.remove(code);
+        } else {
+            selectedLanguages.addFirst(code);
+        }
+        refreshListsAction.run();
+        ((ILanguageOptionsScreen) parentList.getScreen()).languagereload_focusEntry(this);
     }
 
     public void moveUp() {
@@ -119,21 +111,21 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
     }
 
     @Override
-    public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-        x -= 2;
-        y -= 2;
+    public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+        var x = this.getX();
+        var y = this.getY();
         if (hovered || isFocused() || client.options.getTouchscreen().getValue()) {
             var x1 = x + 1;
             var y1 = y + 1;
             var x2 = parentList.getHoveredSelectionRight() - 1;
-            var y2 = y + entryHeight + 3;
+            var y2 = y + this.getHeight() - 1;
             context.fill(x1, y1, x2, y2, (hovered || isFocused()) ? 0xA0909090 : 0x50909090);
             buttons.forEach(button -> button.visible = false);
             renderButtons((button, buttonX, buttonY) -> {
                 button.setX(buttonX);
                 button.setY(buttonY);
                 button.visible = true;
-                button.render(context, mouseX, mouseY, tickDelta);
+                button.render(context, mouseX, mouseY, deltaTicks);
             }, x, y);
             if ((hovered || isFocused()) && isDefault()) {
                 renderDefaultLanguageTooltip(context, x, y);
@@ -165,28 +157,39 @@ public class LanguageEntry extends AlwaysSelectedEntryListWidget.Entry<LanguageE
     }
 
     @Override
+    public boolean keyPressed(KeyInput input) {
+        if (input.isEnter() && (!isDefault() || Config.getInstance().removableDefaultLanguage)) {
+            this.toggle();
+            return true;
+        }
+        if (input.hasShift()) {
+            if (input.isUp()) {
+                this.moveUp();
+                return true;
+            }
+            if (input.isDown()) {
+                this.moveDown();
+                return true;
+            }
+        }
+        return super.keyPressed(input);
+    }
+
+    @Override
     public Text getNarration() {
         return Text.translatable("narrator.select", language.getDisplayText());
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         for (var widget : buttons)
-            if (widget.mouseClicked(mouseX, mouseY, button)) {
-                ((ILanguageOptionsScreen) parentList.getScreen()).languagereload_focusList(parentList);
+            if (widget.mouseClicked(click, doubled)) {
                 return true;
             }
         return false;
     }
 
-    public void setParent(LanguageListWidget list) {
-        this.parentList = list;
-    }
-
-    public LanguageListWidget getParent() {
-        return parentList;
-    }
-
+    @Override
     public String getCode() {
         return code;
     }

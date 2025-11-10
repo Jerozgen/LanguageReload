@@ -22,8 +22,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 @Mixin(LanguageOptionsScreen.class)
 public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen implements ILanguageOptionsScreen {
@@ -117,8 +120,8 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
     @Unique
     private void refresh() {
-        refreshList(selectedLanguageList, selectedLanguages.stream().map(languageEntries::get).filter(Objects::nonNull));
-        refreshList(availableLanguageList, languageEntries.values().stream()
+        selectedLanguageList.set(selectedLanguages.stream().map(languageEntries::get).filter(Objects::nonNull));
+        availableLanguageList.set(languageEntries.values().stream()
                 .filter(entry -> {
                     if (selectedLanguageList.children().contains(entry)) return false;
                     var query = searchBox.getText().toLowerCase(Locale.ROOT);
@@ -126,21 +129,6 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
                     var langName = entry.getLanguage().getDisplayText().getString().toLowerCase(Locale.ROOT);
                     return langCode.contains(query) || langName.contains(query);
                 }));
-    }
-
-    @Unique
-    private void refreshList(LanguageListWidget list, Stream<? extends LanguageEntry> entries) {
-        var selectedEntry = list.getSelectedOrNull();
-        list.setSelected(null);
-        list.children().clear();
-        entries.forEach(entry -> {
-            list.children().add(entry);
-            entry.setParent(list);
-            if (entry == selectedEntry) {
-                list.setSelected(entry);
-            }
-        });
-        list.refreshScroll();
     }
 
     @Override
