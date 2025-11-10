@@ -14,6 +14,7 @@ import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.text.Text;
+import net.minecraft.util.Language;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -40,8 +41,14 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     @Inject(method = "<init>", at = @At("TAIL"))
     void onConstructed(Screen parent, GameOptions options, LanguageManager languageManager, CallbackInfo ci) {
         selectedLanguages.addAll(LanguageReload.getLanguages());
-        languageManager.getAllLanguages().forEach((code, language) ->
-                languageEntries.put(code, new LanguageEntry(this::refresh, code, language, selectedLanguages)));
+
+        var languages = languageManager.getAllLanguages();
+        if (languages.isEmpty()) {
+            var defaultLanguage = LanguageManagerAccessor.languagereload_getEnglishUs();
+            languageEntries.put(Language.DEFAULT_LANGUAGE, new LanguageEntry(this::refresh, Language.DEFAULT_LANGUAGE, defaultLanguage, selectedLanguages));
+        } else {
+            languages.forEach((code, language) -> languageEntries.put(code, new LanguageEntry(this::refresh, code, language, selectedLanguages)));
+        }
 
         layout.setHeaderHeight(48);
         layout.setFooterHeight(53);
