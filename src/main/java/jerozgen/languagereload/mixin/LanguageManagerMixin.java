@@ -7,7 +7,6 @@ import jerozgen.languagereload.config.Config;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.Language;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -66,9 +65,6 @@ abstract class LanguageManagerMixin {
     @Unique
     private static void setSystemLanguage(String lang, Locale locale) {
         LanguageReload.LOGGER.info("Set language to {} (mapped from {})", lang, locale.toLanguageTag());
-        LanguageReload.setLanguage(lang, new LinkedList<>() {{
-            if (!lang.equals(Language.DEFAULT_LANGUAGE))
-                add(Language.DEFAULT_LANGUAGE);
-        }});
+        LanguageReload.setLanguage(lang);
     }
 }

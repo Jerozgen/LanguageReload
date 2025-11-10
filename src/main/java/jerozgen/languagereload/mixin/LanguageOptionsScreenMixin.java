@@ -2,7 +2,6 @@ package jerozgen.languagereload.mixin;
 
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
-import jerozgen.languagereload.config.Config;
 import jerozgen.languagereload.gui.LanguageEntry;
 import jerozgen.languagereload.gui.LanguageListWidget;
 import net.minecraft.client.gui.navigation.GuiNavigationPath;
@@ -40,10 +39,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
     @Inject(method = "<init>", at = @At("TAIL"))
     void onConstructed(Screen parent, GameOptions options, LanguageManager languageManager, CallbackInfo ci) {
-        var currentLangCode = languageManager.getLanguage();
-        if (!currentLangCode.equals(LanguageReload.NO_LANGUAGE))
-            selectedLanguages.add(currentLangCode);
-        selectedLanguages.addAll(Config.getInstance().fallbacks);
+        selectedLanguages.addAll(LanguageReload.getLanguages());
         languageManager.getAllLanguages().forEach((code, language) ->
                 languageEntries.put(code, new LanguageEntry(this::refresh, code, language, selectedLanguages)));
 
@@ -108,7 +104,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
         var language = selectedLanguages.peekFirst();
         if (language == null) {
-            LanguageReload.setLanguage(LanguageReload.NO_LANGUAGE, new LinkedList<>());
+            LanguageReload.setLanguage(null);
         } else {
             var fallbacks = new LinkedList<>(selectedLanguages);
             fallbacks.removeFirst();
