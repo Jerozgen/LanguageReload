@@ -4,6 +4,11 @@
   "options.languagereload.title": "Language Reload Opções",
   "options.languagereload.multilingualItemSearch": "Pesquisa Multilíngue",
   "options.languagereload.multilingualItemSearch.tooltip": "Permite pesquisar em qualquer um dos idiomas selecionados no inventário criativo e no livro de receitas.",
+  "options.languagereload.removableDefaultLanguage": "Linguagem padrão",
+  "options.languagereload.removableDefaultLanguage.removable": "Removível",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "Permite que o inglês (EUA) não seja selecionado. Pode ser útil para a depuração.",
+  "options.languagereload.removableDefaultLanguage.fixed": "Fixado",
+  "options.languagereload.removableDefaultLanguage.fixed.tooltip": "Impede que o inglês (EUA) seja não selecionado.",
 
   "debug.reload_languages.help": "F3 + J = Recarregar idiomas (Shift para mudar idiomas de ciclo)",
   "debug.reload_languages.message": "Idiomas recarregados",

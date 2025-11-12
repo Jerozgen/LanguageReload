@@ -2,7 +2,6 @@ package jerozgen.languagereload.mixin;
 
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
-import jerozgen.languagereload.config.Config;
 import jerozgen.languagereload.gui.LanguageEntry;
 import jerozgen.languagereload.gui.LanguageListWidget;
 import net.minecraft.client.gui.navigation.GuiNavigationPath;
@@ -15,6 +14,7 @@ import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.text.Text;
+import net.minecraft.util.Language;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -37,12 +37,15 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
     @Inject(method = "<init>", at = @At("TAIL"))
     void onConstructed(Screen parent, GameOptions options, LanguageManager languageManager, CallbackInfo ci) {
-        var currentLangCode = languageManager.getLanguage();
-        if (!currentLangCode.equals(LanguageReload.NO_LANGUAGE))
-            selectedLanguages.add(currentLangCode);
-        selectedLanguages.addAll(Config.getInstance().fallbacks);
-        languageManager.getAllLanguages().forEach((code, language) ->
-                languageEntries.put(code, new LanguageEntry(this::refresh, code, language, selectedLanguages)));
+        selectedLanguages.addAll(LanguageReload.getLanguages());
+
+        var languages = languageManager.getAllLanguages();
+        if (languages.isEmpty()) {
+            var defaultLanguage = LanguageManagerAccessor.languagereload_getEnglishUs();
+            languageEntries.put(Language.DEFAULT_LANGUAGE, new LanguageEntry(this::refresh, Language.DEFAULT_LANGUAGE, defaultLanguage, selectedLanguages));
+        } else {
+            languages.forEach((code, language) -> languageEntries.put(code, new LanguageEntry(this::refresh, code, language, selectedLanguages)));
+        }
 
         layout.setHeaderHeight(48);
         layout.setFooterHeight(53);
@@ -105,7 +108,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
         var language = selectedLanguages.peekFirst();
         if (language == null) {
-            LanguageReload.setLanguage(LanguageReload.NO_LANGUAGE, new LinkedList<>());
+            LanguageReload.setLanguage(null);
         } else {
             var fallbacks = new LinkedList<>(selectedLanguages);
             fallbacks.removeFirst();
