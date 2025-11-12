@@ -3,7 +3,6 @@ package jerozgen.languagereload.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.access.ILanguageOptionsScreen;
-import jerozgen.languagereload.config.Config;
 import jerozgen.languagereload.gui.LanguageEntry;
 import jerozgen.languagereload.gui.LanguageListWidget;
 import net.minecraft.client.gui.DrawContext;
@@ -17,6 +16,7 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
+import net.minecraft.util.Language;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,7 +25,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @Mixin(LanguageOptionsScreen.class)
@@ -50,12 +54,15 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
     @Inject(method = "<init>", at = @At("TAIL"))
     void onConstructed(Screen parent, GameOptions options, LanguageManager languageManager, CallbackInfo ci) {
-        var currentLangCode = languageManager.getLanguage();
-        if (!currentLangCode.equals(LanguageReload.NO_LANGUAGE))
-            selectedLanguages.add(currentLangCode);
-        selectedLanguages.addAll(Config.getInstance().fallbacks);
-        languageManager.getAllLanguages().forEach((code, language) ->
-                languageEntries.put(code, new LanguageEntry(this::refresh, code, language, selectedLanguages)));
+        selectedLanguages.addAll(LanguageReload.getLanguages());
+
+        var languages = languageManager.getAllLanguages();
+        if (languages.isEmpty()) {
+            var defaultLanguage = LanguageManagerAccessor.languagereload_getEnglishUs();
+            languageEntries.put(Language.DEFAULT_LANGUAGE, new LanguageEntry(this::refresh, Language.DEFAULT_LANGUAGE, defaultLanguage, selectedLanguages));
+        } else {
+            languages.forEach((code, language) -> languageEntries.put(code, new LanguageEntry(this::refresh, code, language, selectedLanguages)));
+        }
     }
 
     @Inject(method = "init", at = @At("HEAD"), cancellable = true)
@@ -100,7 +107,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
 
         var language = selectedLanguages.peekFirst();
         if (language == null) {
-            LanguageReload.setLanguage(LanguageReload.NO_LANGUAGE, new LinkedList<>());
+            LanguageReload.setLanguage(null);
         } else {
             var fallbacks = new LinkedList<>(selectedLanguages);
             fallbacks.removeFirst();

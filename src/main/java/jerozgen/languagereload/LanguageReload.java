@@ -10,8 +10,11 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
 import net.minecraft.entity.decoration.DisplayEntity;
+import net.minecraft.util.Language;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 
@@ -71,25 +74,50 @@ public class LanguageReload {
         searchManager.reload(client.getResourceManager());
     }
 
-    public static void setLanguage(String language, LinkedList<String> fallbacks) {
+    public static void setLanguage(@Nullable String language) {
+        if (language == null || language.equals(NO_LANGUAGE)) {
+            setLanguage(NO_LANGUAGE, null);
+        } else if (language.equals(Language.DEFAULT_LANGUAGE)) {
+            setLanguage(Language.DEFAULT_LANGUAGE, null);
+        } else {
+            setLanguage(language, new LinkedList<>() {{ add(Language.DEFAULT_LANGUAGE); }});
+        }
+    }
+
+    public static void setLanguage(
+            @Nullable String language,
+            @Nullable LinkedList<@NotNull String> fallbacks
+    ) {
+        var newLanguage = language == null ? NO_LANGUAGE : language;
+        var newFallbacks = fallbacks == null ? new LinkedList<String>() : fallbacks;
         var client = MinecraftClient.getInstance();
         var languageManager = client.getLanguageManager();
         var config = Config.getInstance();
 
-        var languageIsSame = languageManager.getLanguage().equals(language);
-        var fallbacksAreSame = config.fallbacks.equals(fallbacks);
+        var languageIsSame = languageManager.getLanguage().equals(newLanguage);
+        var fallbacksAreSame = config.fallbacks.equals(newFallbacks);
         if (languageIsSame && fallbacksAreSame) return;
 
         config.previousLanguage = languageManager.getLanguage();
         config.previousFallbacks = config.fallbacks;
-        config.language = language;
-        config.fallbacks = fallbacks;
+        config.language = newLanguage;
+        config.fallbacks = newFallbacks;
         Config.save();
 
-        languageManager.setLanguage(language);
-        client.options.language = language;
+        languageManager.setLanguage(newLanguage);
+        client.options.language = newLanguage;
         client.options.write();
 
         reloadLanguages();
+    }
+
+    public static @NotNull LinkedList<@NotNull String> getLanguages() {
+        var list = new LinkedList<String>();
+        var language = MinecraftClient.getInstance().getLanguageManager().getLanguage();
+        if (!language.equals(LanguageReload.NO_LANGUAGE)) {
+            list.add(language);
+        }
+        list.addAll(Config.getInstance().fallbacks);
+        return list;
     }
 }
