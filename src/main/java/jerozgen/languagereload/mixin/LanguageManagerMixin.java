@@ -7,7 +7,6 @@ import jerozgen.languagereload.config.Config;
 import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.resource.language.LanguageManager;
 import net.minecraft.resource.ResourceManager;
-import net.minecraft.util.Language;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -16,7 +15,10 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 @Mixin(LanguageManager.class)
 abstract class LanguageManagerMixin {
@@ -27,6 +29,14 @@ abstract class LanguageManagerMixin {
     @Redirect(method = "reload", at = @At(value = "INVOKE", ordinal = 0, remap = false,
             target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     boolean onReload$addFallbacks(List<String> list, Object enUsCode) {
+        if (Config.getInstance().language.equals(LanguageReload.NO_LANGUAGE)) {
+            return true;
+        }
+
+        if (languageDefs.isEmpty()) {
+            return list.add((String) enUsCode);
+        }
+
         Lists.reverse(Config.getInstance().fallbacks).stream()
                 .filter(code -> Objects.nonNull(getLanguage(code)))
                 .forEach(list::add);
@@ -36,7 +46,7 @@ abstract class LanguageManagerMixin {
     @ModifyExpressionValue(method = "reload", at = @At(value = "INVOKE", remap = false,
             target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z"))
     boolean onReload$ignoreNoLanguage(boolean original) {
-        return Config.getInstance().language.equals(LanguageReload.NO_LANGUAGE);
+        return Config.getInstance().language.equals(LanguageReload.NO_LANGUAGE) || languageDefs.isEmpty();
     }
 
     @Inject(method = "reload", at = @At(value = "INVOKE", ordinal = 0, remap = false,
@@ -66,9 +76,6 @@ abstract class LanguageManagerMixin {
     @Unique
     private static void setSystemLanguage(String lang, Locale locale) {
         LanguageReload.LOGGER.info("Set language to {} (mapped from {})", lang, locale.toLanguageTag());
-        LanguageReload.setLanguage(lang, new LinkedList<>() {{
-            if (!lang.equals(Language.DEFAULT_LANGUAGE))
-                add(Language.DEFAULT_LANGUAGE);
-        }});
+        LanguageReload.setLanguage(lang);
     }
 }

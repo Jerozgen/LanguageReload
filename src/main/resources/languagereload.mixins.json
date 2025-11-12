@@ -13,6 +13,7 @@
     "EntryListWidgetAccessor",
     "GameOptionsMixin",
     "KeyboardMixin",
+    "LanguageManagerAccessor",
     "LanguageManagerMixin",
     "LanguageMixin",
     "LanguageOptionsScreenMixin",
