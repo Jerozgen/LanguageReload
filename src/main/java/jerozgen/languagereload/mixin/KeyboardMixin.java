@@ -9,6 +9,7 @@ import net.minecraft.client.resource.language.LanguageDefinition;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import net.minecraft.text.Texts;
+import net.minecraft.util.Language;
 import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -39,22 +40,26 @@ public abstract class KeyboardMixin {
             var languageManager = client.getLanguageManager();
 
             var language = languageManager.getLanguage(config.previousLanguage);
+            if (language == null && config.previousLanguage.equals(Language.DEFAULT_LANGUAGE)) {
+                language = LanguageManagerAccessor.languagereload_getEnglishUs();
+            }
             var noLanguage = config.previousLanguage.equals(LanguageReload.NO_LANGUAGE);
             if (language == null && !noLanguage) {
                 debugError("debug.reload_languages.switch.failure");
             } else {
                 LanguageReload.setLanguage(config.previousLanguage, config.previousFallbacks);
-                var languages = new ArrayList<Text>() {{
-                    if (noLanguage)
-                        add(Text.of("∅"));
-                    if (language != null)
-                        add(language.getDisplayText());
-                    addAll(config.fallbacks.stream()
-                            .map(languageManager::getLanguage)
-                            .filter(Objects::nonNull)
-                            .map(LanguageDefinition::getDisplayText)
-                            .toList());
-                }};
+                var languages = new ArrayList<Text>();
+                if (noLanguage) {
+                    languages.add(Text.of("∅"));
+                }
+                if (language != null) {
+                    languages.add(language.getDisplayText());
+                }
+                languages.addAll(config.fallbacks.stream()
+                        .map(languageManager::getLanguage)
+                        .filter(Objects::nonNull)
+                        .map(LanguageDefinition::getDisplayText)
+                        .toList());
                 debugLog("debug.reload_languages.switch.success", Texts.join(languages, Text.of(", ")));
             }
         } else {
