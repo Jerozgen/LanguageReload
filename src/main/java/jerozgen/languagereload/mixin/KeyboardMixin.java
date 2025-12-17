@@ -65,15 +65,8 @@ public abstract class KeyboardMixin {
             }
         } else {
             LanguageReload.reloadLanguages();
-            this.debugLog("debug.reload_languages.message");
+            this.debugLog(Text.translatable("debug.reload_languages.message"));
         }
-    }
-
-    @Inject(method = "processF3", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/client/Keyboard;sendMessage(Lnet/minecraft/text/Text;)V",
-            ordinal = 6, shift = At.Shift.AFTER))
-    private void onProcessF3$addHelp(KeyInput keyInput, CallbackInfoReturnable<Boolean> cir) {
-        this.sendMessage(Text.translatable("debug.reload_languages.help"));
     }
 
     @Inject(method = "processF3", at = @At("RETURN"), cancellable = true)
