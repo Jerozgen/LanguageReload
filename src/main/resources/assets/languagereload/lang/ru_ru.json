@@ -10,6 +10,8 @@
   "options.languagereload.removableDefaultLanguage.fixed": "Фиксирован",
   "options.languagereload.removableDefaultLanguage.fixed.tooltip": "Не позволяет убрать стандартный язык из списка выбранных.",
 
+  "key.debug.reloadLanguages": "Перезагрузить языки",
+
   "debug.reload_languages.help": "F3 + J = Перезагрузить языки (Shift — сменить на прошлый)",
   "debug.reload_languages.message": "Языки перезагружены",
   "debug.reload_languages.switch.success": "Язык изменён на %s",

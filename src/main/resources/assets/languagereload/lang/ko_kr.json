@@ -10,6 +10,8 @@
   "options.languagereload.removableDefaultLanguage.fixed": "고정됨",
   "options.languagereload.removableDefaultLanguage.fixed.tooltip": "English (US)를 선택 해제할 수 없도록 합니다.",
 
+  "key.debug.reloadLanguages": "언어 새로 고침",
+
   "debug.reload_languages.help": "F3 + J = 언어 새로 고침 (Shift로 언어 번경)",
   "debug.reload_languages.message": "언어를 새로 고쳤습니다",
   "debug.reload_languages.switch.success": "언어를 %s(으)로 설정",

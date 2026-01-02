@@ -10,6 +10,8 @@
   "options.languagereload.removableDefaultLanguage.fixed": "Cố định",
   "options.languagereload.removableDefaultLanguage.fixed.tooltip": "Ngăn không cho phép bỏ lựa chọn English (US).",
 
+  "key.debug.reloadLanguages": "Tải lại ngôn ngữ",
+
   "debug.reload_languages.help": "F3 + J = Tải lại ngôn ngữ (nhấn kèm Shift để đổi xoay vòng giữa các ngôn ngữ)",
   "debug.reload_languages.message": "Đã tải lại ngôn ngữ",
   "debug.reload_languages.switch.success": "Đã đặt ngôn ngữ thành %s",

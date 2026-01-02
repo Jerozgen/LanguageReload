@@ -5,6 +5,8 @@
   "options.languagereload.multilingualItemSearch": "多言語検索",
   "options.languagereload.multilingualItemSearch.tooltip": "クリエイティブインベントリやレシピ本で、選択した複数の言語で検索できるようになります。",
 
+  "key.debug.reloadLanguages": "言語を再読み込み",
+
   "debug.reload_languages.help": "F3 + J = 言語を再読み込み（Shiftと同時押しで言語を入れ替え)",
   "debug.reload_languages.message": "言語を再読み込みしました。",
   "debug.reload_languages.switch.success": "言語を %s に設定しました。",

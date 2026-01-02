@@ -10,6 +10,8 @@
   "options.languagereload.removableDefaultLanguage.fixed": "Fijo",
   "options.languagereload.removableDefaultLanguage.fixed.tooltip": "Evita que se desmarque Inglés (EE. UU.).",
 
+  "key.debug.reloadLanguages": "Recargar idiomas",
+
   "debug.reload_languages.help": "F3 + J = Recargar idiomas (Shift para cambiar entre idiomas)",
   "debug.reload_languages.message": "Idiomas recargados",
   "debug.reload_languages.switch.success": "Idioma cambiado a %s",

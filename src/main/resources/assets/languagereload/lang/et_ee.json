@@ -5,6 +5,8 @@
   "options.languagereload.multilingualItemSearch": "Mitmekeelne otsing",
   "options.languagereload.multilingualItemSearch.tooltip": "Lubab loomingurežiimi seljakotist ja retseptiraamatust otsida mistahes valitud keeltes.",
 
+  "key.debug.reloadLanguages": "Laadi keeled uuesti",
+
   "debug.reload_languages.help": "F3 + J = Laadi keeled uuesti (tsüklina vahetamiseks hoia shifti)",
   "debug.reload_languages.message": "Keeled taaslaaditud",
   "debug.reload_languages.switch.success": "Keeleks on määratud %s",

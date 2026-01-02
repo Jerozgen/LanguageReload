@@ -2,30 +2,51 @@ package jerozgen.languagereload;
 
 import jerozgen.languagereload.access.IAdvancementsScreen;
 import jerozgen.languagereload.config.Config;
-import jerozgen.languagereload.mixin.*;
+import jerozgen.languagereload.mixin.BookScreenAccessor;
+import jerozgen.languagereload.mixin.ClientChunkManagerAccessor;
+import jerozgen.languagereload.mixin.ClientChunkMapAccessor;
+import jerozgen.languagereload.mixin.SignTextAccessor;
+import jerozgen.languagereload.mixin.TextDisplayEntityAccessor;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.block.entity.SignBlockEntity;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
 import net.minecraft.client.gui.screen.ingame.BookScreen;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.decoration.DisplayEntity;
 import net.minecraft.util.Language;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.LinkedList;
 
 @Environment(EnvType.CLIENT)
-public class LanguageReload {
+public class LanguageReload implements ClientModInitializer {
     public static final Logger LOGGER = LogManager.getLogger("Language Reload");
     public static final String MOD_ID = "languagereload";
 
     public static final String NO_LANGUAGE = "*";
 
+    public static KeyBinding reloadLanguagesKey;
+
     public static boolean shouldSetSystemLanguage = false;
+
+    @Override
+    public void onInitializeClient() {
+        reloadLanguagesKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.debug.reloadLanguages",
+                InputUtil.Type.KEYSYM,
+                GLFW.GLFW_KEY_J,
+                KeyBinding.Category.DEBUG
+        ));
+    }
 
     public static void reloadLanguages() {
         var client = MinecraftClient.getInstance();

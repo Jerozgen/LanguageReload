@@ -11,8 +11,8 @@ public class LanguageEntryButtonWidget extends TexturedButtonWidget {
     }
 
     @Override
-    public void renderWidget(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
-        super.renderWidget(context, mouseX, mouseY, deltaTicks);
+    public void drawIcon(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+        super.drawIcon(context, mouseX, mouseY, deltaTicks);
         if (this.isHovered()) {
             context.setCursor(StandardCursors.POINTING_HAND);
         }

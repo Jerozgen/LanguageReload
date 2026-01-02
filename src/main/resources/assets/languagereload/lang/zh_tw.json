@@ -9,7 +9,9 @@
   "options.languagereload.removableDefaultLanguage.removable.tooltip": "允許取消選擇「English (US)」。可能對除錯有用。",
   "options.languagereload.removableDefaultLanguage.fixed": "已固定",
   "options.languagereload.removableDefaultLanguage.fixed.tooltip": "防止取消選擇「English (US)」。",
-  
+
+  "key.debug.reloadLanguages": "重新載入語言",
+
   "debug.reload_languages.help": "F3 + J = 重新載入語言（同時按住 Shift 來循環切換語言）",
   "debug.reload_languages.message": "已重新載入語言",
   "debug.reload_languages.switch.success": "設置語言到 %s",

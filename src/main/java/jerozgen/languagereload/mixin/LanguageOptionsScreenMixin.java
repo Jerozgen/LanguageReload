@@ -71,7 +71,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     }
 
     @Override
-    protected void initHeader() {
+    public void initHeader() {
         searchBox = new TextFieldWidget(textRenderer, width / 2 - 100, 22, 200, 20, searchBox, Text.empty()) {
             @Override
             public void setFocused(boolean focused) {
@@ -135,7 +135,7 @@ public abstract class LanguageOptionsScreenMixin extends GameOptionsScreen imple
     }
 
     @Override
-    protected void setInitialFocus() {
+    public void setInitialFocus() {
         focusSearch();
     }
 

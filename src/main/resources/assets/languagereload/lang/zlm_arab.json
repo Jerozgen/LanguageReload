@@ -1,5 +1,6 @@
 {
   "language.default.tooltip": "بهاس لالاي ماٴينکرف‌ت",
+
   "options.languagereload.title": "ڤيليهن Language Reload",
   "options.languagereload.multilingualItemSearch": "چارين مولتيبهاس",
   "options.languagereload.multilingualItemSearch.tooltip": "ممبوليهکن چارين دالم مان٢ بهاس ترڤيليه د دالم اينۏينتوري کرياتيف دان بوکو رسيڤي.",
@@ -8,10 +9,14 @@
   "options.languagereload.removableDefaultLanguage.removable.tooltip": "ممبنرکن English (US) اونتوق دڽهڤيليه. موڠکين برݢونا اونتوق ڽهڤڤيجت.",
   "options.languagereload.removableDefaultLanguage.fixed": "دباٴيقي",
   "options.languagereload.removableDefaultLanguage.fixed.tooltip": "مڠهالڠ English (US) درڤد دڽهڤيليه.",
+
+  "key.debug.reloadLanguages": "موات سمولا بهاس",
+
   "debug.reload_languages.help": "F3 + J = موات سمولا بهاس (shift اونتوق مڠيتر بهاس)",
   "debug.reload_languages.message": "بهاس تله دمواتکن سمولا",
   "debug.reload_languages.switch.success": "بهاس تله دتتقکن کڤد %s",
   "debug.reload_languages.switch.failure": "تيدق داڤت مڠيتر بهاس. توکر کڤد بهاس لاٴين دالم تتڤن دان چوبا لاݢي",
+
   "modmenu.summaryTranslation.languagereload": "مڠورڠکن ماس موات دان منمبه ساندرن اونتوق بهاس.",
   "modmenu.descriptionTranslation.languagereload": "ممڤرچڤتکن ڤنوکرن بهاس⹁ ممڤرکنلکن کوتق چارين دان مولتيڤيليهن دالم مينو بهاس⹁ منجاديکن چارين اٴيتم مولتيبهاس⹁ منمبه چيري ڽهڤڤيجت اونتوق مڠيتر بهاس دڠن Shift + F3 + J دان ممواتکن سمولا بهاس دڠن F3 + J."
 }

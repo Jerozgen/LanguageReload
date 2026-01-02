@@ -5,6 +5,8 @@
   "options.languagereload.multilingualItemSearch": "Ricerca Multilingua",
   "options.languagereload.multilingualItemSearch.tooltip": "Permette di cercare oggetti nel menu creativa ed il menù delle ricette in qualsiasi lingua",
 
+  "key.debug.reloadLanguages": "Ricarica lingua",
+
   "debug.reload_languages.help": "F3 + J = Ricarica lingua, Premi Shift per cambiare lingua",
   "debug.reload_languages.message": "Lingua Ricaricata",
   "debug.reload_languages.switch.success": "Lingua impostata su %s",

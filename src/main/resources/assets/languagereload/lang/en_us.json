@@ -10,6 +10,8 @@
   "options.languagereload.removableDefaultLanguage.fixed": "Fixed",
   "options.languagereload.removableDefaultLanguage.fixed.tooltip": "Prevents English (US) from being unselected.",
 
+  "key.debug.reloadLanguages": "Reload Languages",
+
   "debug.reload_languages.help": "F3 + J = Reload languages (shift to cycle languages)",
   "debug.reload_languages.message": "Reloaded languages",
   "debug.reload_languages.switch.success": "Set language to %s",

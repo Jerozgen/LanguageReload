@@ -5,6 +5,8 @@
   "options.languagereload.multilingualItemSearch": "Мультымоўны пошук",
   "options.languagereload.multilingualItemSearch.tooltip": "Дазваляе пошук на адной з абраных моў у кнізе рэцэптаў ці творчым меню.",
 
+  "key.debug.reloadLanguages": "Перазагрузіць мовы",
+
   "debug.reload_languages.help": "F3 + J = Перазагрузіць мовы (shift каб зацыкліць мовы)",
   "debug.reload_languages.message": "Перазагружаныя мовы",
   "debug.reload_languages.switch.success": "Змяніць мову на %s",
