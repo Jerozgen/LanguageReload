@@ -1,24 +1,24 @@
 package jerozgen.languagereload;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import jerozgen.languagereload.access.IAdvancementsScreen;
 import jerozgen.languagereload.config.Config;
-import jerozgen.languagereload.mixin.BookScreenAccessor;
-import jerozgen.languagereload.mixin.ClientChunkManagerAccessor;
-import jerozgen.languagereload.mixin.ClientChunkMapAccessor;
+import jerozgen.languagereload.mixin.BookViewScreenAccessor;
+import jerozgen.languagereload.mixin.ClientChunkCacheAccessor;
+import jerozgen.languagereload.mixin.ClientChunkCacheStorageAccessor;
 import jerozgen.languagereload.mixin.SignTextAccessor;
-import jerozgen.languagereload.mixin.TextDisplayEntityAccessor;
+import jerozgen.languagereload.mixin.TextDisplayAccessor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.block.entity.SignBlockEntity;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.advancement.AdvancementsScreen;
-import net.minecraft.client.gui.screen.ingame.BookScreen;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.util.InputUtil;
-import net.minecraft.entity.decoration.DisplayEntity;
-import net.minecraft.util.Language;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
+import net.minecraft.client.gui.screens.inventory.BookViewScreen;
+import net.minecraft.locale.Language;
+import net.minecraft.world.entity.Display;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
@@ -34,55 +34,55 @@ public class LanguageReload implements ClientModInitializer {
 
     public static final String NO_LANGUAGE = "*";
 
-    public static KeyBinding reloadLanguagesKey;
+    public static KeyMapping reloadLanguagesKey;
 
     public static boolean shouldSetSystemLanguage = false;
 
     @Override
     public void onInitializeClient() {
-        reloadLanguagesKey = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        reloadLanguagesKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
                 "key.debug.reloadLanguages",
-                InputUtil.Type.KEYSYM,
+                InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_J,
-                KeyBinding.Category.DEBUG
+                KeyMapping.Category.DEBUG
         ));
     }
 
     public static void reloadLanguages() {
-        var client = MinecraftClient.getInstance();
+        var client = Minecraft.getInstance();
 
         // Reload language manager
-        client.getLanguageManager().reload(client.getResourceManager());
+        client.getLanguageManager().onResourceManagerReload(client.getResourceManager());
 
         // Update window title and chat
-        client.updateWindowTitle();
-        client.inGameHud.getChatHud().reset();
+        client.updateTitle();
+        client.gui.getChat().rescaleChat();
 
         // Update book and advancements screens
-        if (client.currentScreen instanceof BookScreen bookScreen) {
-            ((BookScreenAccessor) bookScreen).languagereload_setCachedPageIndex(-1);
-        } else if (client.currentScreen instanceof AdvancementsScreen advancementsScreen) {
+        if (client.screen instanceof BookViewScreen bookScreen) {
+            ((BookViewScreenAccessor) bookScreen).languagereload_setCachedPage(-1);
+        } else if (client.screen instanceof AdvancementsScreen advancementsScreen) {
             ((IAdvancementsScreen) advancementsScreen).languagereload_recreateWidgets();
         }
 
-        if (client.world != null) {
+        if (client.level != null) {
             // Update signs
-            var chunkManager = (ClientChunkManagerAccessor) client.world.getChunkManager();
-            var chunks = ((ClientChunkMapAccessor) chunkManager.languagereload_getChunks()).languagereload_getChunks();
+            var chunkManager = (ClientChunkCacheAccessor) client.level.getChunkSource();
+            var chunks = ((ClientChunkCacheStorageAccessor) chunkManager.languagereload_getStorage()).languagereload_getChunks();
             for (int i = 0; i < chunks.length(); i++) {
                 var chunk = chunks.get(i);
                 if (chunk == null) continue;
                 for (var blockEntity : chunk.getBlockEntities().values()) {
                     if (!(blockEntity instanceof SignBlockEntity sign)) continue;
-                    ((SignTextAccessor) sign.getFrontText()).languagereload_setOrderedMessages(null);
-                    ((SignTextAccessor) sign.getBackText()).languagereload_setOrderedMessages(null);
+                    ((SignTextAccessor) sign.getFrontText()).languagereload_setRenderMessages(null);
+                    ((SignTextAccessor) sign.getBackText()).languagereload_setRenderMessages(null);
                 }
             }
 
             // Update text displays
-            for (var entity : client.world.getEntities()) {
-                if (entity instanceof DisplayEntity.TextDisplayEntity textDisplay) {
-                    ((TextDisplayEntityAccessor) textDisplay).languagereload_setTextLines(null);
+            for (var entity : client.level.entitiesForRendering()) {
+                if (entity instanceof Display.TextDisplay textDisplay) {
+                    ((TextDisplayAccessor) textDisplay).languagereload_setClientDisplayCache(null);
                 }
             }
         }
@@ -91,10 +91,10 @@ public class LanguageReload implements ClientModInitializer {
     public static void setLanguage(@Nullable String language) {
         if (language == null || language.equals(NO_LANGUAGE)) {
             setLanguage(NO_LANGUAGE, null);
-        } else if (language.equals(Language.DEFAULT_LANGUAGE)) {
-            setLanguage(Language.DEFAULT_LANGUAGE, null);
+        } else if (language.equals(Language.DEFAULT)) {
+            setLanguage(Language.DEFAULT, null);
         } else {
-            setLanguage(language, new LinkedList<>() {{ add(Language.DEFAULT_LANGUAGE); }});
+            setLanguage(language, new LinkedList<>() {{ add(Language.DEFAULT); }});
         }
     }
 
@@ -105,30 +105,30 @@ public class LanguageReload implements ClientModInitializer {
         var newLanguage = language == null ? NO_LANGUAGE : language;
         var newFallbacks = fallbacks == null ? new LinkedList<String>() : fallbacks;
 
-        var client = MinecraftClient.getInstance();
+        var client = Minecraft.getInstance();
         var languageManager = client.getLanguageManager();
         var config = Config.getInstance();
 
-        var languageIsSame = languageManager.getLanguage().equals(newLanguage);
+        var languageIsSame = languageManager.getSelected().equals(newLanguage);
         var fallbacksAreSame = config.fallbacks.equals(newFallbacks);
         if (languageIsSame && fallbacksAreSame) return;
 
-        config.previousLanguage = languageManager.getLanguage();
+        config.previousLanguage = languageManager.getSelected();
         config.previousFallbacks = config.fallbacks;
         config.language = newLanguage;
         config.fallbacks = newFallbacks;
         Config.save();
 
-        languageManager.setLanguage(newLanguage);
-        client.options.language = newLanguage;
-        client.options.write();
+        languageManager.setSelected(newLanguage);
+        client.options.languageCode = newLanguage;
+        client.options.save();
 
         reloadLanguages();
     }
 
     public static @NotNull LinkedList<@NotNull String> getLanguages() {
         var list = new LinkedList<String>();
-        var language = MinecraftClient.getInstance().getLanguageManager().getLanguage();
+        var language = Minecraft.getInstance().getLanguageManager().getSelected();
         if (!language.equals(LanguageReload.NO_LANGUAGE)) {
             list.add(language);
         }

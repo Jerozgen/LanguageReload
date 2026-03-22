@@ -5,7 +5,7 @@ import net.fabricmc.api.Environment;
 import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public interface ITranslationStorage {
+public interface IClientLanguage {
     String languagereload_get(String key);
 
     @Nullable String languagereload_getTargetLanguage();

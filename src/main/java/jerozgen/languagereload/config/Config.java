@@ -6,7 +6,7 @@ import jerozgen.languagereload.LanguageReload;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.util.Language;
+import net.minecraft.locale.Language;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -71,14 +71,14 @@ public class Config {
         INSTANCE.version = 1;
 
         if (!INSTANCE.language.isEmpty()
-                && !INSTANCE.language.equals(Language.DEFAULT_LANGUAGE)
-                && !INSTANCE.fallbacks.contains(Language.DEFAULT_LANGUAGE))
-            INSTANCE.fallbacks.add(Language.DEFAULT_LANGUAGE);
+                && !INSTANCE.language.equals(Language.DEFAULT)
+                && !INSTANCE.fallbacks.contains(Language.DEFAULT))
+            INSTANCE.fallbacks.add(Language.DEFAULT);
 
         if (!INSTANCE.previousLanguage.isEmpty()
-                && !INSTANCE.previousLanguage.equals(Language.DEFAULT_LANGUAGE)
-                && !INSTANCE.previousFallbacks.contains(Language.DEFAULT_LANGUAGE))
-            INSTANCE.previousFallbacks.add(Language.DEFAULT_LANGUAGE);
+                && !INSTANCE.previousLanguage.equals(Language.DEFAULT)
+                && !INSTANCE.previousFallbacks.contains(Language.DEFAULT))
+            INSTANCE.previousFallbacks.add(Language.DEFAULT);
 
         save();
     }

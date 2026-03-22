@@ -4,9 +4,9 @@ import com.google.common.collect.Lists;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.config.Config;
-import net.minecraft.client.resource.language.LanguageDefinition;
-import net.minecraft.client.resource.language.LanguageManager;
-import net.minecraft.resource.ResourceManager;
+import net.minecraft.client.resources.language.LanguageInfo;
+import net.minecraft.client.resources.language.LanguageManager;
+import net.minecraft.server.packs.resources.ResourceManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -15,22 +15,25 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
 
 @Mixin(LanguageManager.class)
-abstract class LanguageManagerMixin {
-    @Shadow private Map<String, LanguageDefinition> languageDefs;
+public abstract class LanguageManagerMixin {
+    @Shadow private Map<String, LanguageInfo> languages;
 
-    @Shadow public abstract LanguageDefinition getLanguage(String code);
+    @Shadow public abstract LanguageInfo getLanguage(String code);
 
-    @Redirect(method = "reload", at = @At(value = "INVOKE", ordinal = 0, remap = false,
+    @Redirect(method = "onResourceManagerReload", at = @At(value = "INVOKE", ordinal = 0, remap = false,
             target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
-    boolean onReload$addFallbacks(List<String> list, Object enUsCode) {
+    boolean onResourceManagerReload$addFallbacks(List<String> list, Object enUsCode) {
         if (Config.getInstance().language.equals(LanguageReload.NO_LANGUAGE)) {
             return true;
         }
 
-        if (languageDefs.isEmpty()) {
+        if (languages.isEmpty()) {
             return list.add((String) enUsCode);
         }
 
@@ -40,21 +43,21 @@ abstract class LanguageManagerMixin {
         return true;
     }
 
-    @ModifyExpressionValue(method = "reload", at = @At(value = "INVOKE", remap = false,
+    @ModifyExpressionValue(method = "onResourceManagerReload", at = @At(value = "INVOKE", remap = false,
             target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z"))
-    boolean onReload$ignoreNoLanguage(boolean original) {
-        return Config.getInstance().language.equals(LanguageReload.NO_LANGUAGE) || languageDefs.isEmpty();
+    boolean onResourceManagerReload$ignoreNoLanguage(boolean original) {
+        return Config.getInstance().language.equals(LanguageReload.NO_LANGUAGE) || languages.isEmpty();
     }
 
-    @Inject(method = "reload", at = @At(value = "INVOKE", ordinal = 0, remap = false,
+    @Inject(method = "onResourceManagerReload", at = @At(value = "INVOKE", ordinal = 0, remap = false,
             target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
-    void onReload$setSystemLanguage(ResourceManager manager, CallbackInfo ci) {
+    void onResourceManagerReload$setSystemLanguage(ResourceManager resourceManager, CallbackInfo ci) {
         if (LanguageReload.shouldSetSystemLanguage) {
             LanguageReload.shouldSetSystemLanguage = false;
             LanguageReload.LOGGER.info("Language is not set. Setting it to system language");
 
             var locale = Locale.getDefault();
-            var matchingLanguages = languageDefs.keySet().stream()
+            var matchingLanguages = languages.keySet().stream()
                     .filter(code -> code.split("_")[0].equalsIgnoreCase(locale.getLanguage()))
                     .toList();
             var count = matchingLanguages.size();

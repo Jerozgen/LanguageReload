@@ -1,72 +1,72 @@
 package jerozgen.languagereload.gui;
 
 import jerozgen.languagereload.LanguageReload;
-import jerozgen.languagereload.access.ILanguageOptionsScreen;
+import jerozgen.languagereload.access.ILanguageSelectScreen;
 import jerozgen.languagereload.config.Config;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.Click;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ButtonTextures;
-import net.minecraft.client.gui.tooltip.TooltipPositioner;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.client.resource.language.LanguageDefinition;
-import net.minecraft.text.Text;
-import net.minecraft.util.Colors;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.Language;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.AbstractWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.WidgetSprites;
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipPositioner;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+import net.minecraft.client.resources.language.LanguageInfo;
+import net.minecraft.locale.Language;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.util.CommonColors;
 import org.joml.Vector2i;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class LanguageEntry extends LanguageListWidget.Entry {
-    private static final Text DEFAULT_LANGUAGE_TOOLTIP = Text.translatable("language.default.tooltip");
+public class LanguageEntry extends LanguageList.Entry {
+    private static final Component DEFAULT_LANGUAGE_TOOLTIP = Component.translatable("language.default.tooltip");
 
-    private static final ButtonTextures ADD_TEXTURES = new ButtonTextures(
-            Identifier.of(LanguageReload.MOD_ID, "language_selection/add"),
-            Identifier.of(LanguageReload.MOD_ID, "language_selection/add_highlighted"));
-    private static final ButtonTextures REMOVE_TEXTURES = new ButtonTextures(
-            Identifier.of(LanguageReload.MOD_ID, "language_selection/remove"),
-            Identifier.of(LanguageReload.MOD_ID, "language_selection/remove_highlighted"));
-    private static final ButtonTextures MOVE_UP_TEXTURES = new ButtonTextures(
-            Identifier.of(LanguageReload.MOD_ID, "language_selection/move_up"),
-            Identifier.of(LanguageReload.MOD_ID, "language_selection/move_up_highlighted"));
-    private static final ButtonTextures MOVE_DOWN_TEXTURES = new ButtonTextures(
-            Identifier.of(LanguageReload.MOD_ID, "language_selection/move_down"),
-            Identifier.of(LanguageReload.MOD_ID, "language_selection/move_down_highlighted"));
+    private static final WidgetSprites ADD_TEXTURES = new WidgetSprites(
+            Identifier.fromNamespaceAndPath(LanguageReload.MOD_ID, "language_selection/add"),
+            Identifier.fromNamespaceAndPath(LanguageReload.MOD_ID, "language_selection/add_highlighted"));
+    private static final WidgetSprites REMOVE_TEXTURES = new WidgetSprites(
+            Identifier.fromNamespaceAndPath(LanguageReload.MOD_ID, "language_selection/remove"),
+            Identifier.fromNamespaceAndPath(LanguageReload.MOD_ID, "language_selection/remove_highlighted"));
+    private static final WidgetSprites MOVE_UP_TEXTURES = new WidgetSprites(
+            Identifier.fromNamespaceAndPath(LanguageReload.MOD_ID, "language_selection/move_up"),
+            Identifier.fromNamespaceAndPath(LanguageReload.MOD_ID, "language_selection/move_up_highlighted"));
+    private static final WidgetSprites MOVE_DOWN_TEXTURES = new WidgetSprites(
+            Identifier.fromNamespaceAndPath(LanguageReload.MOD_ID, "language_selection/move_down"),
+            Identifier.fromNamespaceAndPath(LanguageReload.MOD_ID, "language_selection/move_down_highlighted"));
 
-    private final MinecraftClient client = MinecraftClient.getInstance();
+    private final Minecraft client = Minecraft.getInstance();
 
     private final String code;
-    private final LanguageDefinition language;
+    private final LanguageInfo language;
     private final LinkedList<String> selectedLanguages;
     private final Runnable refreshListsAction;
 
-    private final List<ClickableWidget> buttons = new ArrayList<>();
-    private final ButtonWidget addButton = addButton(15, 24, ADD_TEXTURES, __ -> toggle());
-    private final ButtonWidget removeButton = addButton(15, 24, REMOVE_TEXTURES, __ -> toggle());
-    private final ButtonWidget moveUpButton = addButton(11, 11, MOVE_UP_TEXTURES, __ -> moveUp());
-    private final ButtonWidget moveDownButton = addButton(11, 11, MOVE_DOWN_TEXTURES, __ -> moveDown());
+    private final List<AbstractWidget> buttons = new ArrayList<>();
+    private final Button addButton = addButton(15, 24, ADD_TEXTURES, __ -> toggle());
+    private final Button removeButton = addButton(15, 24, REMOVE_TEXTURES, __ -> toggle());
+    private final Button moveUpButton = addButton(11, 11, MOVE_UP_TEXTURES, __ -> moveUp());
+    private final Button moveDownButton = addButton(11, 11, MOVE_DOWN_TEXTURES, __ -> moveDown());
 
-    public LanguageEntry(Runnable refreshListsAction, String code, LanguageDefinition language, LinkedList<String> selectedLanguages) {
+    public LanguageEntry(Runnable refreshListsAction, String code, LanguageInfo language, LinkedList<String> selectedLanguages) {
         this.code = code;
         this.language = language;
         this.selectedLanguages = selectedLanguages;
         this.refreshListsAction = refreshListsAction;
     }
 
-    protected ButtonWidget addButton(int width, int height, ButtonTextures textures, ButtonWidget.PressAction action) {
-        var button = new LanguageEntryButtonWidget(width, height, textures, action);
+    protected Button addButton(int width, int height, WidgetSprites textures, Button.OnPress action) {
+        var button = new LanguageEntryButton(width, height, textures, action);
         button.visible = false;
         buttons.add(button);
         return button;
     }
 
     private boolean isDefault() {
-        return code.equals(Language.DEFAULT_LANGUAGE);
+        return code.equals(Language.DEFAULT);
     }
 
     private boolean isSelected() {
@@ -91,7 +91,7 @@ public class LanguageEntry extends LanguageListWidget.Entry {
             selectedLanguages.addFirst(code);
         }
         refreshListsAction.run();
-        ((ILanguageOptionsScreen) parentList.getScreen()).languagereload_focusEntry(this);
+        ((ILanguageSelectScreen) parentList.getScreen()).languagereload_focusEntry(this);
     }
 
     public void moveUp() {
@@ -111,10 +111,10 @@ public class LanguageEntry extends LanguageListWidget.Entry {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
+    public void renderContent(GuiGraphics context, int mouseX, int mouseY, boolean hovered, float deltaTicks) {
         var x = this.getX();
         var y = this.getY();
-        if (hovered || isFocused() || client.options.getTouchscreen().getValue()) {
+        if (hovered || isFocused() || client.options.touchscreen().get()) {
             var x1 = x + 1;
             var y1 = y + 1;
             var x2 = parentList.getHoveredSelectionRight() - 1;
@@ -131,8 +131,8 @@ public class LanguageEntry extends LanguageListWidget.Entry {
                 renderDefaultLanguageTooltip(context, x, y);
             }
         }
-        context.drawTextWithShadow(client.textRenderer, language.name(), x + 29, y + 3, Colors.WHITE);
-        context.drawTextWithShadow(client.textRenderer, language.region(), x + 29, y + 14, Colors.GRAY);
+        context.drawString(client.font, language.name(), x + 29, y + 3, CommonColors.WHITE);
+        context.drawString(client.font, language.region(), x + 29, y + 14, CommonColors.GRAY);
     }
 
     private void renderButtons(ButtonRenderer renderer, int x, int y) {
@@ -143,9 +143,9 @@ public class LanguageEntry extends LanguageListWidget.Entry {
         } else renderer.render(addButton, x + 7, y);
     }
 
-    private void renderDefaultLanguageTooltip(DrawContext context, int x, int y) {
-        var tooltip = client.textRenderer.wrapLines(DEFAULT_LANGUAGE_TOOLTIP, parentList.getRowWidth() - 6);
-        TooltipPositioner positioner = (screenWidth, screenHeight, mouseX, mouseY, width, height) -> {
+    private void renderDefaultLanguageTooltip(GuiGraphics context, int x, int y) {
+        var tooltip = client.font.split(DEFAULT_LANGUAGE_TOOLTIP, parentList.getRowWidth() - 6);
+        ClientTooltipPositioner positioner = (screenWidth, screenHeight, mouseX, mouseY, width, height) -> {
             var pos = new Vector2i(
                     x + 3 + (parentList.getRowWidth() - width - 6) / 2,
                     y + parentList.getRowHeight() + 4);
@@ -153,16 +153,16 @@ public class LanguageEntry extends LanguageListWidget.Entry {
                 pos.y = y - height - 6;
             return pos;
         };
-        context.drawTooltip(client.textRenderer, tooltip, positioner, 0, 0, true);
+        context.setTooltipForNextFrame(client.font, tooltip, positioner, 0, 0, true);
     }
 
     @Override
-    public boolean keyPressed(KeyInput input) {
-        if (input.isEnter() && (!isDefault() || Config.getInstance().removableDefaultLanguage)) {
+    public boolean keyPressed(KeyEvent input) {
+        if (input.isConfirmation() && (!isDefault() || Config.getInstance().removableDefaultLanguage)) {
             this.toggle();
             return true;
         }
-        if (input.hasShift()) {
+        if (input.hasShiftDown()) {
             if (input.isUp()) {
                 this.moveUp();
                 return true;
@@ -176,12 +176,12 @@ public class LanguageEntry extends LanguageListWidget.Entry {
     }
 
     @Override
-    public Text getNarration() {
-        return Text.translatable("narrator.select", language.getDisplayText());
+    public Component getNarration() {
+        return Component.translatable("narrator.select", language.toComponent());
     }
 
     @Override
-    public boolean mouseClicked(Click click, boolean doubled) {
+    public boolean mouseClicked(MouseButtonEvent click, boolean doubled) {
         for (var widget : buttons)
             if (widget.mouseClicked(click, doubled)) {
                 return true;
@@ -194,12 +194,12 @@ public class LanguageEntry extends LanguageListWidget.Entry {
         return code;
     }
 
-    public LanguageDefinition getLanguage() {
+    public LanguageInfo getLanguage() {
         return language;
     }
 
     @FunctionalInterface
     private interface ButtonRenderer {
-        void render(ButtonWidget button, int x, int y);
+        void render(Button button, int x, int y);
     }
 }

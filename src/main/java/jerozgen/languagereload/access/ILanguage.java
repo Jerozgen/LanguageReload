@@ -2,11 +2,11 @@ package jerozgen.languagereload.access;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.resource.language.TranslationStorage;
+import net.minecraft.client.resources.language.ClientLanguage;
 
 @Environment(EnvType.CLIENT)
 public interface ILanguage {
-    void languagereload_setTranslationStorage(TranslationStorage translationStorage);
+    void languagereload_setClientLanguage(ClientLanguage clientLanguage);
 
-    TranslationStorage languagereload_getTranslationStorage();
+    ClientLanguage languagereload_getClientLanguage();
 }

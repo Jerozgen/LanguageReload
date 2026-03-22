@@ -2,10 +2,10 @@ package jerozgen.languagereload.mixin;
 
 import jerozgen.languagereload.LanguageReload;
 import jerozgen.languagereload.config.Config;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.option.GameOptions;
-import net.minecraft.nbt.NbtCompound;
-import net.minecraft.util.Language;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
+import net.minecraft.locale.Language;
+import net.minecraft.nbt.CompoundTag;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -17,15 +17,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.io.File;
 
-@Mixin(GameOptions.class)
-abstract class GameOptionsMixin {
+@Mixin(Options.class)
+public abstract class OptionsMixin {
     @Shadow @Final private File optionsFile;
-    @Shadow public String language;
+    @Shadow public String languageCode;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    void onConstructed(MinecraftClient client, File optionsFile, CallbackInfo ci) {
+    void onConstructed(Minecraft minecraft, File workingDirectory, CallbackInfo ci) {
         if (!LanguageReload.shouldSetSystemLanguage) {
-            checkConfigLanguage(language);
+            checkConfigLanguage(languageCode);
         }
     }
 
@@ -36,9 +36,9 @@ abstract class GameOptionsMixin {
         }
     }
 
-    @Inject(method = "update", at = @At("RETURN"))
-    void onUpdate(NbtCompound nbt, CallbackInfoReturnable<NbtCompound> cir) {
-        var lang = cir.getReturnValue().getString("lang", "");
+    @Inject(method = "dataFix", at = @At("RETURN"))
+    void onDataFix(CompoundTag tag, CallbackInfoReturnable<CompoundTag> cir) {
+        var lang = cir.getReturnValue().getStringOr("lang", "");
         if (lang.isEmpty()) {
             LanguageReload.shouldSetSystemLanguage = true;
         } else checkConfigLanguage(lang);
@@ -57,8 +57,8 @@ abstract class GameOptionsMixin {
             config.previousFallbacks = config.fallbacks;
             config.language = language;
             config.fallbacks.clear();
-            if (!language.equals(Language.DEFAULT_LANGUAGE))
-                config.fallbacks.add(Language.DEFAULT_LANGUAGE);
+            if (!language.equals(Language.DEFAULT))
+                config.fallbacks.add(Language.DEFAULT);
             Config.save();
         }
     }
