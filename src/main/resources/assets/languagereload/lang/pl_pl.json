@@ -4,6 +4,11 @@
   "options.languagereload.title": "Opcje Language Reload",
   "options.languagereload.multilingualItemSearch": "Wyszukiw. wielojęzyczne",
   "options.languagereload.multilingualItemSearch.tooltip": "Włącza wyszukiwanie w dowolnym z wybranych języków w ekwipunku trybu kreatywnego i księdze receptur.",
+  "options.languagereload.removableDefaultLanguage": "Domyślny język",
+  "options.languagereload.removableDefaultLanguage.removable": "Usuwalny",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "Umożliwia odznaczenie English (US). Może być przydatne do debugowania.",
+  "options.languagereload.removableDefaultLanguage.fixed": "Nieusuwalny",
+  "options.languagereload.removableDefaultLanguage.fixed.tooltip": "Blokuje możliwość odznaczenia English (US).",
 
   "debug.reload_languages.help": "F3 + J = Ponowne wczytanie języków (shift, aby przełączać się między językami)",
   "debug.reload_languages.message": "Języki zostały wczytane ponownie",
