@@ -15,6 +15,7 @@ import net.minecraft.client.gui.screens.options.OptionsSubScreen;
 import net.minecraft.client.resources.language.LanguageManager;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -32,10 +33,11 @@ import java.util.Objects;
 public abstract class LanguageSelectScreenMixin extends OptionsSubScreen implements ILanguageSelectScreen {
     @Unique private LanguageList availableLanguageList;
     @Unique private LanguageList selectedLanguageList;
-    @Unique private EditBox searchBox;
+    @Unique private EditBox search;
     @Unique private final LinkedList<String> selectedLanguages = new LinkedList<>();
     @Unique private final Map<String, LanguageEntry> languageEntries = new LinkedHashMap<>();
 
+    @Shadow @Final private static Component SEARCH_HINT;
     @Shadow private LanguageSelectScreen.LanguageSelectionList languageSelectionList;
 
     @Inject(method = "<init>", at = @At("TAIL"))
@@ -72,7 +74,7 @@ public abstract class LanguageSelectScreenMixin extends OptionsSubScreen impleme
 
     @Override
     public void addTitle() {
-        searchBox = new EditBox(font, width / 2 - 100, 22, 200, 20, searchBox, Component.empty()) {
+        search = new EditBox(font, width / 2 - 100, 22, 200, 20, search, Component.empty()) {
             @Override
             public void setFocused(boolean focused) {
                 if (!isFocused() && focused) {
@@ -81,12 +83,13 @@ public abstract class LanguageSelectScreenMixin extends OptionsSubScreen impleme
                 } else super.setFocused(focused);
             }
         };
-        searchBox.setResponder(__ -> refresh());
+        search.setHint(SEARCH_HINT);
+        search.setResponder(__ -> refresh());
 
         var header = layout.addToHeader(LinearLayout.vertical().spacing(5));
         header.defaultCellSetting().alignHorizontallyCenter();
         header.addChild(new StringWidget(title, font));
-        header.addChild(searchBox);
+        header.addChild(search);
     }
 
     @Inject(method = "repositionElements", at = @At("HEAD"), cancellable = true)
@@ -127,7 +130,7 @@ public abstract class LanguageSelectScreenMixin extends OptionsSubScreen impleme
         availableLanguageList.set(languageEntries.values().stream()
                 .filter(entry -> {
                     if (selectedLanguageList.children().contains(entry)) return false;
-                    var query = searchBox.getValue().toLowerCase(Locale.ROOT);
+                    var query = search.getValue().toLowerCase(Locale.ROOT);
                     var langCode = entry.getCode().toLowerCase(Locale.ROOT);
                     var langName = entry.getLanguage().toComponent().getString().toLowerCase(Locale.ROOT);
                     return langCode.contains(query) || langName.contains(query);
@@ -141,7 +144,7 @@ public abstract class LanguageSelectScreenMixin extends OptionsSubScreen impleme
 
     @Unique
     private void focusSearch() {
-        changeFocus(ComponentPath.path(searchBox, this));
+        changeFocus(ComponentPath.path(search, this));
     }
 
     @Override

@@ -18,6 +18,8 @@ public class Config {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path PATH = FabricLoader.getInstance().getConfigDir().resolve(LanguageReload.MOD_ID + ".json");
 
+    public static final String NO_LANGUAGE = "*";
+
     private static Config INSTANCE;
 
     public int version = 0;
@@ -44,10 +46,10 @@ public class Config {
 
         migrateToVersion1();
 
-        if (INSTANCE.language.equals(LanguageReload.NO_LANGUAGE) && !INSTANCE.fallbacks.isEmpty()) {
+        if (INSTANCE.language.equals(NO_LANGUAGE) && !INSTANCE.fallbacks.isEmpty()) {
             INSTANCE.language = INSTANCE.fallbacks.pollFirst();
         }
-        if (INSTANCE.previousLanguage.equals(LanguageReload.NO_LANGUAGE) && !INSTANCE.previousFallbacks.isEmpty()) {
+        if (INSTANCE.previousLanguage.equals(NO_LANGUAGE) && !INSTANCE.previousFallbacks.isEmpty()) {
             INSTANCE.previousLanguage = INSTANCE.previousFallbacks.pollFirst();
         }
     }

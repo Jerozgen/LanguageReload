@@ -29,7 +29,7 @@ public abstract class LanguageManagerMixin {
     @Redirect(method = "onResourceManagerReload", at = @At(value = "INVOKE", ordinal = 0, remap = false,
             target = "Ljava/util/List;add(Ljava/lang/Object;)Z"))
     boolean onResourceManagerReload$addFallbacks(List<String> list, Object enUsCode) {
-        if (Config.getInstance().language.equals(LanguageReload.NO_LANGUAGE)) {
+        if (Config.getInstance().language.equals(Config.NO_LANGUAGE)) {
             return true;
         }
 
@@ -46,7 +46,7 @@ public abstract class LanguageManagerMixin {
     @ModifyExpressionValue(method = "onResourceManagerReload", at = @At(value = "INVOKE", remap = false,
             target = "Ljava/lang/String;equals(Ljava/lang/Object;)Z"))
     boolean onResourceManagerReload$ignoreNoLanguage(boolean original) {
-        return Config.getInstance().language.equals(LanguageReload.NO_LANGUAGE) || languages.isEmpty();
+        return Config.getInstance().language.equals(Config.NO_LANGUAGE) || languages.isEmpty();
     }
 
     @Inject(method = "onResourceManagerReload", at = @At(value = "INVOKE", ordinal = 0, remap = false,

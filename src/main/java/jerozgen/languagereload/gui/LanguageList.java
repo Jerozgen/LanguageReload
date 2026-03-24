@@ -2,7 +2,7 @@ package jerozgen.languagereload.gui;
 
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.ObjectSelectionList;
 import net.minecraft.client.gui.screens.options.LanguageSelectScreen;
 import net.minecraft.client.input.KeyEvent;
@@ -44,27 +44,27 @@ public class LanguageList extends ObjectSelectionList<LanguageList.Entry> {
     @Nullable
     protected Entry getEntryAtPosition(double posX, double posY) {
         var entry = super.getEntryAtPosition(posX, posY);
-        return entry != null && this.scrollbarVisible() && posX >= this.scrollBarX()
+        return entry != null && this.scrollable() && posX >= this.scrollBarX()
                 ? null
                 : entry;
     }
 
     @Override
-    protected void renderSelection(GuiGraphics graphics, Entry entry, int color) {
-        if (this.scrollbarVisible()) {
+    protected void extractSelection(GuiGraphicsExtractor graphics, Entry entry, int outlineColor) {
+        if (this.scrollable()) {
             var x1 = entry.getX();
             var y1 = entry.getY();
             var x2 = this.scrollBarX();
             var y2 = y1 + entry.getHeight();
-            graphics.fill(x1, y1, x2, y2, color);
+            graphics.fill(x1, y1, x2, y2, outlineColor);
             graphics.fill(x1 + 1, y1 + 1, x2 - 1, y2 - 1, CommonColors.BLACK);
         } else {
-            super.renderSelection(graphics, entry, color);
+            super.extractSelection(graphics, entry, outlineColor);
         }
     }
 
     public int getHoveredSelectionRight() {
-        return this.scrollbarVisible()
+        return this.scrollable()
                 ? this.scrollBarX()
                 : this.getRowRight();
     }

@@ -11,7 +11,7 @@ import jerozgen.languagereload.mixin.TextDisplayAccessor;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.advancements.AdvancementsScreen;
@@ -32,15 +32,13 @@ public class LanguageReload implements ClientModInitializer {
     public static final Logger LOGGER = LogManager.getLogger("Language Reload");
     public static final String MOD_ID = "languagereload";
 
-    public static final String NO_LANGUAGE = "*";
-
     public static KeyMapping reloadLanguagesKey;
 
     public static boolean shouldSetSystemLanguage = false;
 
     @Override
     public void onInitializeClient() {
-        reloadLanguagesKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+        reloadLanguagesKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key.debug.reloadLanguages",
                 InputConstants.Type.KEYSYM,
                 GLFW.GLFW_KEY_J,
@@ -68,7 +66,7 @@ public class LanguageReload implements ClientModInitializer {
         if (client.level != null) {
             // Update signs
             var chunkManager = (ClientChunkCacheAccessor) client.level.getChunkSource();
-            var chunks = ((ClientChunkCacheStorageAccessor) chunkManager.languagereload_getStorage()).languagereload_getChunks();
+            var chunks = ((ClientChunkCacheStorageAccessor) (Object) chunkManager.languagereload_getStorage()).languagereload_getChunks();
             for (int i = 0; i < chunks.length(); i++) {
                 var chunk = chunks.get(i);
                 if (chunk == null) continue;
@@ -89,8 +87,8 @@ public class LanguageReload implements ClientModInitializer {
     }
 
     public static void setLanguage(@Nullable String language) {
-        if (language == null || language.equals(NO_LANGUAGE)) {
-            setLanguage(NO_LANGUAGE, null);
+        if (language == null || language.equals(Config.NO_LANGUAGE)) {
+            setLanguage(Config.NO_LANGUAGE, null);
         } else if (language.equals(Language.DEFAULT)) {
             setLanguage(Language.DEFAULT, null);
         } else {
@@ -102,7 +100,7 @@ public class LanguageReload implements ClientModInitializer {
             @Nullable String language,
             @Nullable LinkedList<@NotNull String> fallbacks
     ) {
-        var newLanguage = language == null ? NO_LANGUAGE : language;
+        var newLanguage = language == null ? Config.NO_LANGUAGE : language;
         var newFallbacks = fallbacks == null ? new LinkedList<String>() : fallbacks;
 
         var client = Minecraft.getInstance();
@@ -129,7 +127,7 @@ public class LanguageReload implements ClientModInitializer {
     public static @NotNull LinkedList<@NotNull String> getLanguages() {
         var list = new LinkedList<String>();
         var language = Minecraft.getInstance().getLanguageManager().getSelected();
-        if (!language.equals(LanguageReload.NO_LANGUAGE)) {
+        if (!language.equals(Config.NO_LANGUAGE)) {
             list.add(language);
         }
         list.addAll(Config.getInstance().fallbacks);

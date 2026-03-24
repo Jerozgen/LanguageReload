@@ -21,7 +21,7 @@ import java.util.List;
 
 @Mixin(value = SessionSearchTrees.class, priority = 990)
 public abstract class SessionSearchTreesMixin {
-    @WrapOperation(method = {"method_60365"},
+    @WrapOperation(method = {"lambda$getTooltipLines$0"},
             at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;getTooltipLines(Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/TooltipFlag;)Ljava/util/List;"))
     private static List<Component> addFallbackTranslationsToSearchTooltips(ItemStack instance, Item.TooltipContext context, @Nullable Player player, TooltipFlag flag, Operation<List<Component>> operation) {
         var original = operation.call(instance, context, player, flag);

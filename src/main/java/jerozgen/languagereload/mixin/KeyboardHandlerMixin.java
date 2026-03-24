@@ -42,7 +42,7 @@ public abstract class KeyboardHandlerMixin {
             if (language == null && config.previousLanguage.equals(Language.DEFAULT)) {
                 language = LanguageManagerAccessor.languagereload_getDefaultLanguage();
             }
-            var noLanguage = config.previousLanguage.equals(LanguageReload.NO_LANGUAGE);
+            var noLanguage = config.previousLanguage.equals(Config.NO_LANGUAGE);
             if (language == null && !noLanguage) {
                 this.debugWarningComponent(Component.translatable("debug.reload_languages.switch.failure"));
             } else {

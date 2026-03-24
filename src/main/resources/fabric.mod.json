@@ -5,7 +5,7 @@
   "name": "Language Reload",
   "description": "Reduces load times and adds fallbacks for languages.",
   "authors": [
-    {"name": "Jerozgen", "contact": {"homepage": "https://github.com/Jerozgen", "discord": "jerozgen"}}
+    {"name": "Jerozgen", "contact": {"homepage": "https://jerozgen.dev", "discord": "jerozgen"}}
   ],
   "contributors": [
     {"name": "Benonardo", "contact": {"homepage": "https://github.com/Benonardo"}},
@@ -44,7 +44,7 @@
   "mixins": [
     "languagereload.mixins.json"
   ],
-  "accessWidener": "languagereload.accesswidener",
+  "accessWidener": "languagereload.classtweaker",
   "entrypoints": {
     "client": [
       "jerozgen.languagereload.LanguageReload"
@@ -55,9 +55,9 @@
   },
   "depends": {
     "fabric-resource-loader-v0": "*",
-    "fabric-key-binding-api-v1": "*",
-    "fabricloader": ">=0.16.14",
-    "minecraft": ">=1.21.11"
+    "fabric-key-mapping-api-v1": "*",
+    "fabricloader": ">=0.18.4",
+    "minecraft": ">=26.1"
   },
   "suggests": {
     "modmenu": "*"

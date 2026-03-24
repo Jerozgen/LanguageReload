@@ -1,14 +1,14 @@
 plugins {
-    id 'fabric-loom' version '1.13-SNAPSHOT'
+    id 'net.fabricmc.fabric-loom' version "${loom_version}"
     id 'maven-publish'
-}
-
-loom {
-    accessWidenerPath = file("src/main/resources/languagereload.accesswidener")
 }
 
 version = "${project.mod_version}+${project.minecraft_version}"
 group = project.maven_group
+
+base {
+    archivesName = project.archives_base_name
+}
 
 repositories {
     maven { url "https://maven.terraformersmc.com" }
@@ -16,14 +16,17 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.officialMojangMappings()
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-    modImplementation fabricApi.module("fabric-resource-loader-v0", project.fabric_version)
-    modImplementation fabricApi.module("fabric-key-binding-api-v1", project.fabric_version)
+    implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    implementation fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)
+    implementation fabricApi.module("fabric-key-mapping-api-v1", project.fabric_api_version)
 
-    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-    modRuntimeOnly fabricApi.module("fabric-screen-api-v1", project.fabric_version)
-    modRuntimeOnly fabricApi.module("fabric-lifecycle-events-v1", project.fabric_version)
+    implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+    runtimeOnly fabricApi.module("fabric-screen-api-v1", project.fabric_api_version)
+    runtimeOnly fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version)
+}
+
+loom {
+    accessWidenerPath = file("src/main/resources/languagereload.classtweaker")
 }
 
 processResources {
@@ -36,14 +39,19 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
+    it.options.release = 25
     it.options.encoding = "UTF-8"
 }
 
 java {
-    archivesBaseName = project.archives_base_name
     withSourcesJar()
+
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 jar {
+    inputs.property "archivesName", project.base.archivesName
+
     from("LICENSE")
 }

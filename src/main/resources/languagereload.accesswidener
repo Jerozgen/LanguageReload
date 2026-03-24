@@ -1,6 +1,0 @@
-accessWidener   v1  named
-
-accessible  class   net/minecraft/client/gui/screens/options/LanguageSelectScreen$LanguageSelectionList
-extendable  class   net/minecraft/client/multiplayer/ClientChunkCache$Storage
-
-extendable  method  net/minecraft/client/gui/components/AbstractSelectionList     getEntryAtPosition  (DD)Lnet/minecraft/client/gui/components/AbstractSelectionList$Entry;
