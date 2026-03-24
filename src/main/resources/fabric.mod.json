@@ -57,7 +57,7 @@
     "fabric-resource-loader-v0": "*",
     "fabric-key-binding-api-v1": "*",
     "fabricloader": ">=0.16.14",
-    "minecraft": ">=1.21.11"
+    "minecraft": ">=1.21.11 <26.1"
   },
   "suggests": {
     "modmenu": "*"
