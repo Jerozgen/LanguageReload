@@ -4,6 +4,11 @@
   "options.languagereload.title": "Language Reload көйләүләре",
   "options.languagereload.multilingualItemSearch": "Күптелле эзләү",
   "options.languagereload.multilingualItemSearch.tooltip": "Сайланган телләрнең һәрберсендә иҗат инвентарендә һәм рецептлар китабында эзләргә рөхсәт итә.",
+  "options.languagereload.removableDefaultLanguage": "English (US)",
+  "options.languagereload.removableDefaultLanguage.removable": "Бетерүчән",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "Инглиз (КШ) сайланмаганны рөхсәт итә. Төзәтү өчен файда булырга мөмкин.",
+  "options.languagereload.removableDefaultLanguage.fixed": "Беркетелгән",
+  "options.languagereload.removableDefaultLanguage.fixed.tooltip": "Инглиз (КШ) сайланганны юл куймый.",
 
   "key.debug.reloadLanguages": "Телләрне яңадан йөкләү",
 
