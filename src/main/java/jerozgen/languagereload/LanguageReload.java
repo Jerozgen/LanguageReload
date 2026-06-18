@@ -54,12 +54,13 @@ public class LanguageReload implements ClientModInitializer {
 
         // Update window title and chat
         client.updateTitle();
-        client.gui.getChat().rescaleChat();
+        client.gui.hud.getChat().rescaleChat();
 
         // Update book and advancements screens
-        if (client.screen instanceof BookViewScreen bookScreen) {
+        var screen = client.gui.screen();
+        if (screen instanceof BookViewScreen bookScreen) {
             ((BookViewScreenAccessor) bookScreen).languagereload_setCachedPage(-1);
-        } else if (client.screen instanceof AdvancementsScreen advancementsScreen) {
+        } else if (screen instanceof AdvancementsScreen advancementsScreen) {
             ((IAdvancementsScreen) advancementsScreen).languagereload_recreateWidgets();
         }
 

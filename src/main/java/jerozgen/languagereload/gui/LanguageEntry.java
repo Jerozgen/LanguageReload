@@ -114,7 +114,7 @@ public class LanguageEntry extends LanguageList.Entry {
     public void extractContent(GuiGraphicsExtractor graphics, int mouseX, int mouseY, boolean hovered, float a) {
         var x = this.getX();
         var y = this.getY();
-        if (hovered || isFocused() || client.options.touchscreen().get()) {
+        if (hovered || isFocused()) {
             var x1 = x + 1;
             var y1 = y + 1;
             var x2 = parentList.getHoveredSelectionRight() - 1;
