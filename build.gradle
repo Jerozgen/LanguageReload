@@ -19,10 +19,10 @@ dependencies {
     implementation "net.fabricmc:fabric-loader:${project.loader_version}"
     implementation fabricApi.module("fabric-resource-loader-v0", project.fabric_api_version)
     implementation fabricApi.module("fabric-key-mapping-api-v1", project.fabric_api_version)
+    implementation fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version)
 
     implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
     runtimeOnly fabricApi.module("fabric-screen-api-v1", project.fabric_api_version)
-    runtimeOnly fabricApi.module("fabric-lifecycle-events-v1", project.fabric_api_version)
 }
 
 loom {

@@ -8,6 +8,7 @@
     {"name": "Jerozgen", "contact": {"homepage": "https://jerozgen.dev", "discord": "jerozgen"}}
   ],
   "contributors": [
+    {"name": "oblyq", "contact": {"homepage": "https://github.com/r03kt"}},
     {"name": "Benonardo", "contact": {"homepage": "https://github.com/Benonardo"}},
     {"name": "Alex Gazmanovich — Belarusian", "contact": {"homepage": "https://github.com/Gazmanovich"}},
     {"name": "Madis0 — Estonian", "contact": {"homepage": "https://github.com/Madis0"}},
@@ -56,8 +57,9 @@
   "depends": {
     "fabric-resource-loader-v0": "*",
     "fabric-key-mapping-api-v1": "*",
-    "fabricloader": ">=0.18.4",
-    "minecraft": ">=26.1"
+    "fabric-lifecycle-events-v1": "*",
+    "fabricloader": ">=0.19.0",
+    "minecraft": ">=26.2"
   },
   "suggests": {
     "modmenu": "*"

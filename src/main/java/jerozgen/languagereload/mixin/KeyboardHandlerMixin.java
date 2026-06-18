@@ -77,7 +77,7 @@ public abstract class KeyboardHandlerMixin {
 
     @Inject(method = "keyPress", at = @At(value = "FIELD", target = "Lnet/minecraft/client/KeyboardHandler;debugCrashKeyTime:J", ordinal = 0, opcode = Opcodes.GETFIELD), cancellable = true)
     private void onKeyPress(long handle, int action, KeyEvent event, CallbackInfo ci) {
-        if (minecraft.screen != null && minecraft.options.keyDebugModifier.isDown() && LanguageReload.reloadLanguagesKey.matches(event)) {
+        if (minecraft.gui.screen() != null && minecraft.options.keyDebugModifier.isDown() && LanguageReload.reloadLanguagesKey.matches(event)) {
             this.usedDebugKeyAsModifier = true;
             if (action != InputConstants.PRESS) {
                 processLanguageReloadKeys(event);
