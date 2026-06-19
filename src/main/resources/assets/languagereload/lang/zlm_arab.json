@@ -3,11 +3,11 @@
 
   "options.languagereload.title": "ڤيليهن Language Reload",
   "options.languagereload.multilingualItemSearch": "چارين مولتيبهاس",
-  "options.languagereload.multilingualItemSearch.tooltip": "ممبوليهکن چارين دالم مان٢ بهاس ترڤيليه د دالم اينۏينتوري کرياتيف دان بوکو رسيڤي.",
+  "options.languagereload.multilingualItemSearch.tooltip": "ممبوليهکن چارين دالم مان٢ بهاس ترڤيليه ددالم اينۏينتوري کرياتيف دان بوکو رسيڤي.",
   "options.languagereload.removableDefaultLanguage": "بهاس لالاي",
   "options.languagereload.removableDefaultLanguage.removable": "بوليه دأليه کلوار",
-  "options.languagereload.removableDefaultLanguage.removable.tooltip": "ممبنرکن English (US) اونتوق دڽهڤيليه. موڠکين برݢونا اونتوق ڽهڤڤيجت.",
-  "options.languagereload.removableDefaultLanguage.fixed": "دباٴيقي",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "ممبنرکن English (US) دڽهڤيليه. موڠکين برݢونا اونتوق ڤڽهڤڤيجتن.",
+  "options.languagereload.removableDefaultLanguage.fixed": "تتڤ",
   "options.languagereload.removableDefaultLanguage.fixed.tooltip": "مڠهالڠ English (US) درڤد دڽهڤيليه.",
 
   "key.debug.reloadLanguages": "موات سمولا بهاس",
