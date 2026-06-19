@@ -4,6 +4,11 @@
   "options.languagereload.title": "Налады Language Reload",
   "options.languagereload.multilingualItemSearch": "Мультымоўны пошук",
   "options.languagereload.multilingualItemSearch.tooltip": "Дазваляе пошук на адной з абраных моў у кнізе рэцэптаў ці творчым меню.",
+  "options.languagereload.removableDefaultLanguage": "Мова па-змаўчанні",
+  "options.languagereload.removableDefaultLanguage.removable": "Выдаляема",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "Дазволіць English (US) быць не выбранай. Можа быць карысна для дэбага.",
+  "options.languagereload.removableDefaultLanguage.fixed": "Зафіксіравана",
+  "options.languagereload.removableDefaultLanguage.fixed.tooltip": "Прадухіляе English (US) ад выдалення.",
 
   "key.debug.reloadLanguages": "Перазагрузіць мовы",
 
