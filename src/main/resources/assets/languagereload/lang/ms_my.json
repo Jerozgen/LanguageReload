@@ -6,8 +6,8 @@
   "options.languagereload.multilingualItemSearch.tooltip": "Membolehkan carian dalam mana-mana bahasa terpilih di dalam inventori kreatif dan buku resipi.",
   "options.languagereload.removableDefaultLanguage": "Bahasa Lalai",
   "options.languagereload.removableDefaultLanguage.removable": "Boleh Dialih Keluar",
-  "options.languagereload.removableDefaultLanguage.removable.tooltip": "Membenarkan English (US) untuk dinyahpilih. Mungkin berguna untuk nyahpepijat.",
-  "options.languagereload.removableDefaultLanguage.fixed": "Dibaiki",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "Membenarkan English (US) dinyahpilih. Mungkin berguna untuk penyahpepijatan.",
+  "options.languagereload.removableDefaultLanguage.fixed": "Tetap",
   "options.languagereload.removableDefaultLanguage.fixed.tooltip": "Menghalang English (US) daripada dinyahpilih.",
 
   "key.debug.reloadLanguages": "Muat Semula Bahasa",
