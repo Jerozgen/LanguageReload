@@ -7,25 +7,29 @@
     "AdvancementsScreenMixin",
     "AdvancementTabMixin",
     "AdvancementWidgetAccessor",
+    "AdvancementWidgetInvoker",
     "BookViewScreenAccessor",
     "ClientChunkCacheAccessor",
     "ClientChunkCacheStorageAccessor",
-    "OptionsMixin",
-    "KeyMappingAccessor",
+    "ClientLanguageMixin",
     "KeyboardHandlerMixin",
+    "KeyMappingAccessor",
     "LanguageManagerAccessor",
     "LanguageManagerMixin",
     "LanguageMixin",
-    "LanguageSelectScreenMixin",
     "LanguageSelectionListAccessor",
+    "LanguageSelectScreenMixin",
+    "OptionsMixin",
     "RecipeBookComponentMixin",
     "SessionSearchTreesMixin",
     "SignTextAccessor",
     "TextDisplayAccessor",
-    "TranslatableContentsMixin",
-    "ClientLanguageMixin"
+    "TranslatableContentsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "SignBlockEntityAccessor"
+  ]
 }

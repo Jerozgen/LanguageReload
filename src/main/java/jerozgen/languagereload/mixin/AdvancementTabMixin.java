@@ -18,7 +18,7 @@ public abstract class AdvancementTabMixin implements IAdvancementsTab {
 
     @Override
     public void languagereload_recreateWidgets() {
-        widgets.replaceAll((advancement, widget) -> {
+        widgets.replaceAll((_, widget) -> {
             var accessor = (AdvancementWidgetAccessor) widget;
 
             var newWidget = AdvancementWidgetInvoker.languagereload_create(
