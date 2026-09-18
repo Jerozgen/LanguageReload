@@ -19,15 +19,28 @@ public abstract class AdvancementTabMixin implements IAdvancementsTab {
     @Override
     public void languagereload_recreateWidgets() {
         widgets.replaceAll((advancement, widget) -> {
-            var newWidget = new AdvancementWidget(
-                    ((AdvancementWidgetAccessor) widget).languagereload_getTab(),
+            var accessor = (AdvancementWidgetAccessor) widget;
+
+            var newWidget = AdvancementWidgetInvoker.languagereload_create(
                     minecraft,
-                    ((AdvancementWidgetAccessor) widget).languagereload_getAdvancementNode(),
-                    ((AdvancementWidgetAccessor) widget).languagereload_getDisplay()
+                    accessor.languagereload_getAdvancementNode(),
+                    accessor.languagereload_getDisplay()
             );
-            newWidget.setProgress(((AdvancementWidgetAccessor) widget).languagereload_getProgress());
-            ((AdvancementWidgetAccessor) newWidget).languagereload_setParent(((AdvancementWidgetAccessor) widget).languagereload_getParent());
-            ((AdvancementWidgetAccessor) newWidget).languagereload_setChildren(((AdvancementWidgetAccessor) widget).languagereload_getChildren());
+
+            newWidget.setProgress(
+                    accessor.languagereload_getProgress()
+            );
+
+            ((AdvancementWidgetAccessor) newWidget)
+                    .languagereload_setParent(
+                            accessor.languagereload_getParent()
+                    );
+
+            ((AdvancementWidgetAccessor) newWidget)
+                    .languagereload_setChildren(
+                            accessor.languagereload_getChildren()
+                    );
+
             return newWidget;
         });
     }

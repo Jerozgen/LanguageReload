@@ -3,11 +3,7 @@ package jerozgen.languagereload;
 import com.mojang.blaze3d.platform.InputConstants;
 import jerozgen.languagereload.access.IAdvancementsScreen;
 import jerozgen.languagereload.config.Config;
-import jerozgen.languagereload.mixin.BookViewScreenAccessor;
-import jerozgen.languagereload.mixin.ClientChunkCacheAccessor;
-import jerozgen.languagereload.mixin.ClientChunkCacheStorageAccessor;
-import jerozgen.languagereload.mixin.SignTextAccessor;
-import jerozgen.languagereload.mixin.TextDisplayAccessor;
+import jerozgen.languagereload.mixin.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -23,7 +19,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.LinkedList;
 
@@ -40,8 +35,7 @@ public class LanguageReload implements ClientModInitializer {
     public void onInitializeClient() {
         reloadLanguagesKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key.debug.reloadLanguages",
-                InputConstants.Type.KEYSYM,
-                GLFW.GLFW_KEY_J,
+                InputConstants.KEY_J,
                 KeyMapping.Category.DEBUG
         ));
     }
@@ -73,8 +67,14 @@ public class LanguageReload implements ClientModInitializer {
                 if (chunk == null) continue;
                 for (var blockEntity : chunk.getBlockEntities().values()) {
                     if (!(blockEntity instanceof SignBlockEntity sign)) continue;
-                    ((SignTextAccessor) sign.getFrontText()).languagereload_setRenderMessages(null);
-                    ((SignTextAccessor) sign.getBackText()).languagereload_setRenderMessages(null);
+
+                    var signAccessor = (SignBlockEntityAccessor) sign;
+
+                    ((SignTextAccessor) signAccessor.languagereload_getFrontText())
+                            .languagereload_setRenderMessages(null);
+
+                    ((SignTextAccessor) signAccessor.languagereload_getBackText())
+                            .languagereload_setRenderMessages(null);
                 }
             }
 

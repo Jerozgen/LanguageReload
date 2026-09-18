@@ -89,8 +89,7 @@ public abstract class KeyboardHandlerMixin {
     @Inject(method = "charTyped", at = @At("HEAD"), cancellable = true)
     private void onCharTyped(long handle, CharacterEvent event, CallbackInfo ci) {
         if (minecraft.options.keyDebugModifier.isDown()) {
-            var reloadLanguagesKeyCode = ((KeyMappingAccessor) LanguageReload.reloadLanguagesKey).languagereload_getKey().getValue();
-            if (InputConstants.isKeyDown(minecraft.getWindow(), reloadLanguagesKeyCode)) {
+            if (LanguageReload.reloadLanguagesKey.isDown()) {
                 ci.cancel();
             }
         }
