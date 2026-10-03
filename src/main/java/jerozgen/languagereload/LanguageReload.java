@@ -19,11 +19,11 @@ import net.minecraft.client.gui.screens.inventory.BookViewScreen;
 import net.minecraft.locale.Language;
 import net.minecraft.world.entity.Display;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
+import net.minecraft.world.level.block.entity.SignTextSlot;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.LinkedList;
 
@@ -40,8 +40,7 @@ public class LanguageReload implements ClientModInitializer {
     public void onInitializeClient() {
         reloadLanguagesKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                 "key.debug.reloadLanguages",
-                InputConstants.Type.KEYSYM,
-                GLFW.GLFW_KEY_J,
+                InputConstants.KEY_J,
                 KeyMapping.Category.DEBUG
         ));
     }
@@ -73,8 +72,8 @@ public class LanguageReload implements ClientModInitializer {
                 if (chunk == null) continue;
                 for (var blockEntity : chunk.getBlockEntities().values()) {
                     if (!(blockEntity instanceof SignBlockEntity sign)) continue;
-                    ((SignTextAccessor) sign.getFrontText()).languagereload_setRenderMessages(null);
-                    ((SignTextAccessor) sign.getBackText()).languagereload_setRenderMessages(null);
+                    ((SignTextAccessor) sign.getText(SignTextSlot.FRONT)).languagereload_setRenderMessages(null);
+                    ((SignTextAccessor) sign.getText(SignTextSlot.BACK)).languagereload_setRenderMessages(null);
                 }
             }
 

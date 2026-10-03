@@ -90,7 +90,7 @@ public abstract class KeyboardHandlerMixin {
     private void onCharTyped(long handle, CharacterEvent event, CallbackInfo ci) {
         if (minecraft.options.keyDebugModifier.isDown()) {
             var reloadLanguagesKeyCode = ((KeyMappingAccessor) LanguageReload.reloadLanguagesKey).languagereload_getKey().getValue();
-            if (InputConstants.isKeyDown(minecraft.getWindow(), reloadLanguagesKeyCode)) {
+            if (InputConstants.isKeyDown(reloadLanguagesKeyCode)) {
                 ci.cancel();
             }
         }
