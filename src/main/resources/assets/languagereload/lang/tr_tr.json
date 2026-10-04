@@ -1,0 +1,22 @@
+{
+  "language.default.tooltip": "Minecraft'ın varsayılan dili",
+
+  "options.languagereload.title": "Dil Yeniden Yükleme Seçenekleri",
+  "options.languagereload.multilingualItemSearch": "Çoklu Dil Araması",
+  "options.languagereload.multilingualItemSearch.tooltip": "Yaratıcı envanterinde ve tarif kitabında tüm seçili dillerde aramayı etkinleştirir.",
+  "options.languagereload.removableDefaultLanguage": "Varsayılan Dil",
+  "options.languagereload.removableDefaultLanguage.removable": "Kaldırılabilir",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "English (US) seçiminin kaldırılmasına izin verir. Hata ayıklarken işe yarayabilir.",
+  "options.languagereload.removableDefaultLanguage.fixed": "Sabit",
+  "options.languagereload.removableDefaultLanguage.fixed.tooltip": "English (US) seçiminin kaldırılmasını engeller.",
+
+  "key.debug.reloadLanguages": "Dilleri Yeniden Yükle",
+
+  "debug.reload_languages.help": "F3 + J = Dilleri yeniden yükle (Shift ile dil değiştir)",
+  "debug.reload_languages.message": "Diller yeniden yüklendi",
+  "debug.reload_languages.switch.success": "Dil %s olarak ayarlandı",
+  "debug.reload_languages.switch.failure": "Hiçbir dile geçiş yapılamadı. Ayarlardan başka bir dil seç ve yeniden dene",
+
+  "modmenu.summaryTranslation.languagereload": "Yükleme sürelerini kısaltır ve yedek dil desteği ekler.",
+  "modmenu.descriptionTranslation.languagereload": "Dil değiştirmeyi hızlandırır, dil menüsüne çoklu seçim ve arama kutusu ekler, eşya aramasını çok dilli yapar, Shift + F3 + J ile geçiş yapma ve F3 + J ile yeniden yükleme gibi hata ayıklama özellikleri ekler."
+}
