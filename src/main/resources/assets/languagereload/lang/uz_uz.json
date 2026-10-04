@@ -1,0 +1,22 @@
+{
+  "language.default.tooltip": "Minecraft'ning birlamchi tili",
+
+  "options.languagereload.title": "Language Reload sozlamalari",
+  "options.languagereload.multilingualItemSearch": "Ko'p tilli qidiruv",
+  "options.languagereload.multilingualItemSearch.tooltip": "Ijod rejimi inventarida va retsept kitobida belgilangan tillardan istalganidan tilda qidirish imkoniyatini beradi.",
+  "options.languagereload.removableDefaultLanguage": "English (US)",
+  "options.languagereload.removableDefaultLanguage.removable": "O'chirsa bo'ladi",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "English (US) opsiyasini o'chirishga imkon beradi. Nosozlikni aniqlash uchun asqatishi mumkin.",
+  "options.languagereload.removableDefaultLanguage.fixed": "Mahkamlangan",
+  "options.languagereload.removableDefaultLanguage.fixed.tooltip": "English (US) opsiyasini o'chirishga imkon bermaydi.",
+
+  "key.debug.reloadLanguages": "Tillarni qayta yuklash",
+
+  "debug.reload_languages.help": "F3 + J = Tillarni qayta yuklash (Shift — oldingi tilga o'tish)",
+  "debug.reload_languages.message": "Tillar qayta yuklandi",
+  "debug.reload_languages.switch.success": "Til %s tiliga o'zgartirildi",
+  "debug.reload_languages.switch.failure": "Tilni o'zgartirib bo'lmadi. Sozlamalarda boshqa tilni tanlang va qayta urinib ko'ring",
+
+  "modmenu.summaryTranslation.languagereload": "Birnecha tilni tanlashga imkon beradi va tilni o'zgartirishni tezlashtiradi.",
+  "modmenu.descriptionTranslation.languagereload": "Tilni o'zgartirishni tezlashtiradi, til sozlamasi menyusida qidiruv funksiyasini qo'shadi, birnecha tilni tanlash va buyumlarni birnecha tilda qidirish imkoniyatini beradi, nosozliklarni topish uchun Shift + F3 + J tugmalarini bosib tilni almashtirish va F3 + J tugmalarini bosib tillarni qayta yuklash funksiyalarini qo'shadi."
+}
