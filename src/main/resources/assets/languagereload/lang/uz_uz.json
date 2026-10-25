@@ -1,22 +1,22 @@
 {
-  "language.default.tooltip": "Minecraft'ning birlamchi tili",
+  "language.default.tooltip": "Minecraft'ning birlamçi tili",
 
   "options.languagereload.title": "Language Reload sozlamalari",
-  "options.languagereload.multilingualItemSearch": "Ko'p tilli qidiruv",
-  "options.languagereload.multilingualItemSearch.tooltip": "Ijod rejimi inventarida va retsept kitobida belgilangan tillardan istalganidan tilda qidirish imkoniyatini beradi.",
+  "options.languagereload.multilingualItemSearch": "Köp tilli qidiruv",
+  "options.languagereload.multilingualItemSearch.tooltip": "Ijod rejimi inventarida va retsept kitobida belgilangan tillardan istalgan tilda qidiriş imkoniyatini beradi.",
   "options.languagereload.removableDefaultLanguage": "English (US)",
-  "options.languagereload.removableDefaultLanguage.removable": "O'chirsa bo'ladi",
-  "options.languagereload.removableDefaultLanguage.removable.tooltip": "English (US) opsiyasini o'chirishga imkon beradi. Nosozlikni aniqlash uchun asqatishi mumkin.",
+  "options.languagereload.removableDefaultLanguage.removable": "Öchirsa böladi",
+  "options.languagereload.removableDefaultLanguage.removable.tooltip": "English (US) opsiyasini öchirişga imkon beradi. Nosozlikni aniqlaş uçun asqotişi mumkin.",
   "options.languagereload.removableDefaultLanguage.fixed": "Mahkamlangan",
-  "options.languagereload.removableDefaultLanguage.fixed.tooltip": "English (US) opsiyasini o'chirishga imkon bermaydi.",
+  "options.languagereload.removableDefaultLanguage.fixed.tooltip": "English (US) opsiyasini öçirişga imkon bermaydi.",
 
-  "key.debug.reloadLanguages": "Tillarni qayta yuklash",
+  "key.debug.reloadLanguages": "Tillarni qayta yuklaş",
 
-  "debug.reload_languages.help": "F3 + J = Tillarni qayta yuklash (Shift — oldingi tilga o'tish)",
+  "debug.reload_languages.help": "F3 + J = Tillarni qayta yuklaş (Shift — oldingi tilga ötish)",
   "debug.reload_languages.message": "Tillar qayta yuklandi",
-  "debug.reload_languages.switch.success": "Til %s tiliga o'zgartirildi",
-  "debug.reload_languages.switch.failure": "Tilni o'zgartirib bo'lmadi. Sozlamalarda boshqa tilni tanlang va qayta urinib ko'ring",
+  "debug.reload_languages.switch.success": "Til %s tiliga özgartirildi",
+  "debug.reload_languages.switch.failure": "Tilni özgartirib bölmadi. Sozlamalarda boşqa tilni tanlang va qayta urinib köring",
 
-  "modmenu.summaryTranslation.languagereload": "Birnecha tilni tanlashga imkon beradi va tilni o'zgartirishni tezlashtiradi.",
-  "modmenu.descriptionTranslation.languagereload": "Tilni o'zgartirishni tezlashtiradi, til sozlamasi menyusida qidiruv funksiyasini qo'shadi, birnecha tilni tanlash va buyumlarni birnecha tilda qidirish imkoniyatini beradi, nosozliklarni topish uchun Shift + F3 + J tugmalarini bosib tilni almashtirish va F3 + J tugmalarini bosib tillarni qayta yuklash funksiyalarini qo'shadi."
+  "modmenu.summaryTranslation.languagereload": "Birneça tilni tanlaşga imkon beradi va tilni özgartirişni tezlaştiradi.",
+  "modmenu.descriptionTranslation.languagereload": "Tilni özgartirişni tezlaştiradi, til sozlamasi menyusida qidiruv funksiyasini qöşadi, birneça tilni tanlaş va buyumlarni birneça tilda qidiriş imkoniyatini beradi, nosozliklarni topiş uçun Shift + F3 + J tugmalarini bosib tilni almashtiriş va F3 + J tugmalarini bosib tillarni qayta yuklaş funksiyalarini qöşadi."
 }
